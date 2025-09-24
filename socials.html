@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/theme.css" />
+  <title data-i18n="socials.title">Réseaux</title>
+</head>
+<body>
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+
+  <header class="site-header">
+    <a class="logo" href="index.html"><span>&lt;/&gt;</span> <span data-i18n="brand">Mon Portfolio</span></a>
+    <nav aria-label="Navigation principale">
+      <button class="menu-toggle" aria-expanded="false" aria-controls="nav-list">☰</button>
+      <ul id="nav-list" class="nav">
+        <li><a href="index.html" data-i18n="nav.home">Accueil</a></li>
+        <li><a href="projects.html" data-i18n="nav.projects">Projets</a></li>
+        <li><a href="socials.html" data-i18n="nav.socials" data-active>Réseaux</a></li>
+        <li><a href="contact.html" data-i18n="nav.contact">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="toggles">
+      <button id="theme-toggle" class="icon-btn">🌗</button>
+      <button id="lang-toggle" class="chip">FR</button>
+    </div>
+  </header>
+
+  <main id="content">
+    <section class="page-header reveal">
+      <h1 data-i18n="socials.heading">Où me trouver</h1>
+      <p data-i18n="socials.lead">Suivez mon activité et mes mises à jour.</p>
+    </section>
+
+    <section class="grid cards reveal">
+      <a class="card link-card" href="#" target="_blank" rel="noopener noreferrer">
+        <h3>GitHub</h3><p>Open‑source & projets</p>
+      </a>
+      <a class="card link-card" href="#" target="_blank" rel="noopener noreferrer">
+        <h3>LinkedIn</h3><p>Parcours & réseau pro</p>
+      </a>
+      <a class="card link-card" href="#" target="_blank" rel="noopener noreferrer">
+        <h3>Itch.io</h3><p>Jeux et prototypes</p>
+      </a>
+      <a class="card link-card" href="#" target="_blank" rel="noopener noreferrer">
+        <h3>X/Twitter</h3><p>Actus rapides</p>
+      </a>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <small>© <span id="year"></span> <span data-i18n="brand">Mon Portfolio</span></small>
+  </footer>
+
+  <script src="js/i18n.js" defer></script>
+  <script src="js/particles.js" defer></script>
+  <script src="js/app.js" defer></script>
+</body>
+</html>

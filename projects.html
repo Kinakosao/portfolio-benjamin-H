@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/theme.css" />
+  <title data-i18n="projects.title">Projets</title>
+</head>
+<body>
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+
+  <header class="site-header">
+    <a class="logo" href="index.html"><span>&lt;/&gt;</span> <span data-i18n="brand">Mon Portfolio</span></a>
+    <nav aria-label="Navigation principale">
+      <button class="menu-toggle" aria-expanded="false" aria-controls="nav-list">☰</button>
+      <ul id="nav-list" class="nav">
+        <li><a href="index.html" data-i18n="nav.home">Accueil</a></li>
+        <li><a href="projects.html" data-i18n="nav.projects" data-active>Projets</a></li>
+        <li><a href="socials.html" data-i18n="nav.socials">Réseaux</a></li>
+        <li><a href="contact.html" data-i18n="nav.contact">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="toggles">
+      <button id="theme-toggle" class="icon-btn">🌗</button>
+      <button id="lang-toggle" class="chip">FR</button>
+    </div>
+  </header>
+
+  <main id="content">
+    <section class="page-header reveal">
+      <h1 data-i18n="projects.heading">Mes projets</h1>
+      <p data-i18n="projects.lead">Sélection de projets perso et pros.</p>
+    </section>
+
+    <section class="grid portfolio reveal" id="project-list">
+      <!-- Exemple de carte projet -->
+      <article class="project">
+        <img src="assets/favicon.svg" alt="" loading="lazy" />
+        <div>
+          <h3>RogueLike JS</h3>
+          <p data-i18n="projects.sample.desc">Petit jeu roguelike en canvas avec génération procédurale.</p>
+          <ul class="tags"><li>JS</li><li>Canvas</li><li>Game</li></ul>
+          <p class="links">
+            <a href="#" target="_blank" rel="noopener noreferrer">Demo</a> ·
+            <a href="#" target="_blank" rel="noopener noreferrer">Code</a>
+          </p>
+        </div>
+      </article>
+
+      <article class="project">
+        <img src="assets/favicon.svg" alt="" loading="lazy" />
+        <div>
+          <h3>API Leaderboard</h3>
+          <p data-i18n="projects.sample2.desc">API Node pour scores de jeu avec JWT & rate limiting.</p>
+          <ul class="tags"><li>Node</li><li>Express</li><li>Postgres</li></ul>
+          <p class="links">
+            <a href="#" target="_blank" rel="noopener noreferrer">Demo</a> ·
+            <a href="#" target="_blank" rel="noopener noreferrer">Code</a>
+          </p>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <small>© <span id="year"></span> <span data-i18n="brand">Mon Portfolio</span></small>
+  </footer>
+
+  <script src="js/i18n.js" defer></script>
+  <script src="js/particles.js" defer></script>
+  <script src="js/app.js" defer></script>
+</body>
+</html>

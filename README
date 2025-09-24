@@ -1,1 +1,10 @@
-ReadMESTART
+# Portfolio
+
+- Multi-pages: index, projects, socials, contact
+- FR/EN, mode clair/sombre, fond canvas interactif
+- Animations au scroll, responsive
+
+Déploiement:
+1. Pousse sur une branche `main`.
+2. Active GitHub Pages: Settings → Pages → Deploy from branch → `main` → `/root`.
+3. Ajoute ton domaine Name.com: Settings → Pages → Custom domain → `ton-domaine.com`. Coche **Enforce HTTPS**.

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/theme.css" />
+  <title data-i18n="contact.title">Contact</title>
+</head>
+<body>
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+
+  <header class="site-header">
+    <a class="logo" href="index.html"><span>&lt;/&gt;</span> <span data-i18n="brand">Mon Portfolio</span></a>
+    <nav aria-label="Navigation principale">
+      <button class="menu-toggle" aria-expanded="false" aria-controls="nav-list">☰</button>
+      <ul id="nav-list" class="nav">
+        <li><a href="index.html" data-i18n="nav.home">Accueil</a></li>
+        <li><a href="projects.html" data-i18n="nav.projects">Projets</a></li>
+        <li><a href="socials.html" data-i18n="nav.socials">Réseaux</a></li>
+        <li><a href="contact.html" data-i18n="nav.contact" data-active>Contact</a></li>
+      </ul>
+    </nav>
+    <div class="toggles">
+      <button id="theme-toggle" class="icon-btn">🌗</button>
+      <button id="lang-toggle" class="chip">FR</button>
+    </div>
+  </header>
+
+  <main id="content">
+    <section class="page-header reveal">
+      <h1 data-i18n="contact.heading">Me contacter</h1>
+      <p data-i18n="contact.lead">Réponse sous 24/48h.</p>
+    </section>
+
+    <section class="form-wrap reveal">
+      <!-- Utilise Formspree, Netlify Forms ou un backend perso. Ici, exemple mailto sécurisé -->
+      <form id="contact-form" action="https://formspree.io/f/your_id" method="POST" novalidate>
+        <label>
+          <span data-i18n="contact.form.name">Nom</span>
+          <input type="text" name="name" autocomplete="name" required maxlength="80" />
+        </label>
+        <label>
+          <span data-i18n="contact.form.email">Email</span>
+          <input type="email" name="email" autocomplete="email" required />
+        </label>
+        <label>
+          <span data-i18n="contact.form.msg">Message</span>
+          <textarea name="message" rows="6" required minlength="10" maxlength="2000"></textarea>
+        </label>
+        <input type="hidden" name="_subject" value="Portfolio Contact" />
+        <button class="btn primary" type="submit" data-i18n="contact.form.send">Envoyer</button>
+        <p id="form-status" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <small>© <span id="year"></span> <span data-i18n="brand">Mon Portfolio</span></small>
+  </footer>
+
+  <script src="js/i18n.js" defer></script>
+  <script src="js/particles.js" defer></script>
+  <script src="js/app.js" defer></script>
+</body>
+</html>

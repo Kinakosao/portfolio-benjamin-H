@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="description" content="Portfolio — Développeur : projets, compétences et contact." />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- Sécurité côté client (limité sur GitHub Pages) -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; script-src 'self'; style-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'">
+  <meta name="referrer" content="no-referrer" />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="preload" href="css/base.css" as="style">
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/theme.css" />
+  <title data-i18n="site.title">Portfolio</title>
+</head>
+<body>
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+
+  <header class="site-header">
+    <a class="logo" href="index.html" aria-label="Accueil"> <span>&lt;/&gt;</span> <span data-i18n="brand">Mon Portfolio</span> </a>
+    <nav aria-label="Navigation principale">
+      <button class="menu-toggle" aria-expanded="false" aria-controls="nav-list">☰</button>
+      <ul id="nav-list" class="nav">
+        <li><a href="index.html" data-i18n="nav.home" data-active>Accueil</a></li>
+        <li><a href="projects.html" data-i18n="nav.projects">Projets</a></li>
+        <li><a href="socials.html" data-i18n="nav.socials">Réseaux</a></li>
+        <li><a href="contact.html" data-i18n="nav.contact">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="toggles">
+      <button id="theme-toggle" class="icon-btn" aria-label="Basculer clair/sombre">🌗</button>
+      <button id="lang-toggle" class="chip" aria-label="Basculer langue">FR</button>
+    </div>
+  </header>
+
+  <main id="content">
+    <section class="hero reveal">
+      <h1 data-i18n="home.title">Bonjour, je suis [Ton Nom]</h1>
+      <p class="subtitle" data-i18n="home.subtitle">Développeur orienté code / jeux vidéo. Voici mon travail.</p>
+      <div class="cta-row">
+        <a class="btn primary" href="projects.html" data-i18n="home.ctaProjects">Voir les projets</a>
+        <a class="btn ghost" href="contact.html" data-i18n="home.ctaContact">Me contacter</a>
+      </div>
+    </section>
+
+    <section class="grid cards reveal">
+      <article class="card">
+        <h3 data-i18n="home.section.projects.title">Projets récents</h3>
+        <p data-i18n="home.section.projects.text">Un aperçu de mes derniers travaux techniques.</p>
+        <a class="btn link" href="projects.html" data-i18n="home.section.projects.link">Parcourir</a>
+      </article>
+      <article class="card">
+        <h3 data-i18n="home.section.skills.title">Compétences</h3>
+        <ul class="tags">
+          <li>JavaScript</li><li>TypeScript</li><li>React</li><li>Node</li><li>Game Dev</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3 data-i18n="home.section.socials.title">Réseaux</h3>
+        <p data-i18n="home.section.socials.text">Retrouvez-moi sur les plateformes pro.</p>
+        <a class="btn link" href="socials.html" data-i18n="home.section.socials.link">Mes réseaux</a>
+      </article>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <small>© <span id="year"></span> <span data-i18n="brand">Mon Portfolio</span> • <a href="contact.html" data-i18n="footer.contact">Contact</a></small>
+  </footer>
+  
+  <script src="js/i18n.js" defer></script>
+  <script src="js/particles.js" defer></script>
+  <script src="js/app.js" defer></script>
+</body>
+</html>

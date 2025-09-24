@@ -1,0 +1,14 @@
+/* Mode sombre par défaut (préférences système respectées via color-scheme) */
+:root[data-theme="light"] {
+    --bg: #f7f8fb;
+    --bg-soft: #ffffff;
+    --text: #0b0e14;
+    --muted: #5b6472;
+    --primary: #0066ff;
+    --accent: #7c3aed;
+    --card: #ffffff;
+    --border: #dfe3eb;
+    --shadow: 0 10px 25px rgba(0,0,0,.07);
+  }
+  body { color-scheme: dark light; }
+  
