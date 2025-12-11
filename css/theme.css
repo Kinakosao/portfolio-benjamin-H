@@ -1,4 +1,13 @@
-/* Mode sombre par défaut (préférences système respectées via color-scheme) */
+/* Thèmes clair et sombre */
+:root {
+  --hue: 210;
+  --sat: 10%;
+  --shadow-strength: .07;
+  --shadow: 0 10px 25px rgba(0,0,0,var(--shadow-strength));
+  --border-radius: 5px;
+  color-scheme: light dark;
+}
+
 :root[data-theme="light"] {
     --bg: #f7f8fb;
     --bg-soft: #ffffff;
@@ -8,7 +17,19 @@
     --accent: #7c3aed;
     --card: #ffffff;
     --border: #dfe3eb;
-    --shadow: 0 10px 25px rgba(0,0,0,.07);
-  }
+    --shadow-strength: .07;
+}
+
+:root[data-theme="dark"] {
+    --bg: #1a1a1a;
+    --bg-soft: #2a2a2a;
+    --text: #eaeaea;
+    --muted: #999;
+    --primary: #009cff;
+    --accent: #9d5fff;
+    --card: #2f2f2f;
+    --border: #3a3a3a;
+    --shadow-strength: .15;
+}
   body { color-scheme: dark light; }
   
