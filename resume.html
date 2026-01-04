@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon CV - Portfolio</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="resume.css">
+</head>
+<body>
+    <div id="preloader">
+        <div class="spinner"></div>
+    </div>
+
+    <div id="main-content" class="hidden-content">
+        <div class="cursor-dot"></div>
+        <div class="cursor-outline"></div>
+
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top navbar-scrolled">
+             <div class="container">
+                <a class="navbar-brand" href="index.html">Mon Portfolio</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html#hero">Portfolio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="resume.html">Mon CV</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="blog.html">Blog</a>
+                        </li>
+                        <li class="nav-item ms-lg-3 d-flex align-items-center">
+                           <label class="theme-switcher-label" for="theme-switch-checkbox" aria-label="Changer de thème">
+                               <input type="checkbox" id="theme-switch-checkbox">
+                               <span class="theme-switcher-icon sun"><i class="bi bi-sun-fill"></i></span>
+                               <span class="theme-switcher-icon moon"><i class="bi bi-moon-stars-fill"></i></span>
+                           </label>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <main class="container resume-container py-5">
+            <header class="text-center mb-5">
+                <h1 class="display-4 fade-in-up">Mon Parcours</h1>
+                <p class="lead text-muted fade-in-up">Un aperçu détaillé de ma formation, mes expériences et mes compétences.</p>
+                <a href="CV_Ben.pdf" class="btn btn-primary mt-3 fade-in-up" download="CV_Ben.pdf">
+                    <i class="bi bi-download me-2"></i>Télécharger mon CV
+                </a>
+            </header>
+
+            <!-- Education Section -->
+            <section id="education" class="mb-5">
+                <h2 class="section-title fade-in-up">Formation</h2>
+                <div class="timeline">
+                    <div class="timeline-item fade-in-up">
+                        <div class="timeline-content">
+                            <h3>BUT (Bachelor Universitaire de Technologie) - Informatique</h3>
+                            <p class="timeline-institution">IUT de Vélizy, Vélizy-Villacoublay</p>
+                            <p class="timeline-date">2023 - Présent</p>
+                            <ul>
+                                <li>Parcours Réalisation d'Applications : Conception, Développement, Validation.</li>
+                                <li>Matières principales : Algorithmique avancée, Développement Web (Vue.js, Node.js), Bases de Données (PL/SQL), Programmation Orientée Objet (Java/JEE), Programmation système (C).</li>
+                                <li>Projets notables : Application de gestion de bibliothèque en Java, Site de e-commerce en PHP/Symfony.</li>
+                            </ul>
+                        </div>
+                    </div>
+                     <div class="timeline-item fade-in-up">
+                        <div class="timeline-content">
+                            <h3>Baccalauréat Général</h3>
+                            <p class="timeline-institution">Lycée Louis de Broglie, Marly-le-Roi</p>
+                            <p class="timeline-date">2023</p>
+                            <ul>
+                                <li>Spécialités : Numérique et Sciences de l'Informatique (NSI), Mathématiques.</li>
+                                <li>Mention : Très Bien.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Experience Section -->
+            <section id="experience" class="mb-5">
+                <h2 class="section-title fade-in-up">Expériences Professionnelles</h2>
+                <div class="timeline">
+                    <!-- Placeholder pour un stage -->
+                    <div class="timeline-item fade-in-up">
+                        <div class="timeline-content">
+                            <h3>Stage - Développeur Web</h3>
+                            <p class="timeline-institution">Entreprise Fictive, Paris</p>
+                            <p class="timeline-date">Juin 2024 - Août 2024</p>
+                            <p>Participation au développement d'une nouvelle fonctionnalité pour une application web en utilisant React et Node.js. Missions incluant l'intégration d'API, la création de composants et la participation aux sprints agiles.</p>
+                        </div>
+                    </div>
+                     <!-- Placeholder pour un projet majeur -->
+                    <div class="timeline-item fade-in-up">
+                        <div class="timeline-content">
+                            <h3>Projet Personnel - Portfolio</h3>
+                            <p class="timeline-institution">Projet Personnel</p>
+                            <p class="timeline-date">2024</p>
+                            <p>Création de ce portfolio en utilisant HTML, CSS, et JavaScript. Le projet inclut un design responsive, un mode sombre, des animations et un blog fonctionnel.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Skills Section -->
+            <section id="skills" class="mb-5">
+                <h2 class="section-title fade-in-up">Compétences Techniques</h2>
+                <div class="skills-grid">
+                    <div class="skill-category fade-in-up">
+                        <h4>Langages</h4>
+                        <div class="skill-icons">
+                            <i class="devicon-java-plain-wordmark colored" title="Java"></i>
+                            <i class="devicon-c-plain-wordmark colored" title="C"></i>
+                            <i class="devicon-python-plain-wordmark colored" title="Python"></i>
+                            <i class="devicon-html5-plain-wordmark colored" title="HTML5"></i>
+                            <i class="devicon-css3-plain-wordmark colored" title="CSS3"></i>
+                            <i class="devicon-javascript-plain colored" title="JavaScript"></i>
+                            <i class="devicon-mysql-plain-wordmark colored" title="SQL"></i>
+                        </div>
+                    </div>
+                    <div class="skill-category fade-in-up">
+                        <h4>Frameworks & Bibliothèques</h4>
+                        <div class="skill-icons">
+                            <i class="devicon-spring-plain-wordmark colored" title="Spring"></i>
+                            <i class="devicon-express-original-wordmark colored" title="Express"></i>
+                            <i class="devicon-symfony-original-wordmark colored" title="Symfony"></i>
+                            <i class="devicon-vuejs-plain-wordmark colored" title="Vue.js"></i>
+                            <i class="devicon-nodejs-plain-wordmark colored" title="Node.js"></i>
+                            <i class="devicon-bootstrap-plain-wordmark colored" title="Bootstrap"></i>
+                        </div>
+                    </div>
+                    <div class="skill-category fade-in-up">
+                        <h4>Outils & Concepts</h4>
+                        <div class="skill-icons">
+                            <i class="devicon-git-plain-wordmark colored" title="Git"></i>
+                            <i class="devicon-docker-plain-wordmark colored" title="Docker"></i>
+                            <i class="devicon-visualstudio-plain colored" title="VS Code"></i>
+                            <i class="devicon-intellij-plain-wordmark colored" title="IntelliJ"></i>
+                            <i class="devicon-npm-original-wordmark colored" title="npm"></i>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer class="main-footer py-4">
+            <div class="container text-center">
+                <div class="footer-social-links mb-3">
+                    <a href="#" title="GitHub" class="social-link" aria-label="Voir mon profil GitHub"><i class="bi bi-github"></i></a>
+                    <a href="#" title="LinkedIn" class="social-link" aria-label="Voir mon profil LinkedIn"><i class="bi bi-linkedin"></i></a>
+                </div>
+                <p class="mb-0">&copy; 2026 Benjamin. Tous droits réservés.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+.error-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    text-align: center;
+    padding: 2rem;
+}
+
+.error-title {
+    font-size: 8rem;
+    font-weight: bold;
+    color: var(--bs-primary);
+}
+
+body.dark-mode .error-title {
+    color: var(--bs-info);
+}

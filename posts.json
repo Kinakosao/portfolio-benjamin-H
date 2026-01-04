@@ -1,0 +1,26 @@
+[
+    {
+        "id": 1,
+        "title": "Mon Premier Article de Blog",
+        "excerpt": "Ceci est un extrait de mon premier article de blog. Cliquez pour en savoir plus !",
+        "content": "<h2>Mon Premier Article de Blog</h2><p>Ceci est le contenu complet de mon premier article de blog. Ici, je peux développer mes idées et partager mes connaissances avec le monde.</p><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor.</p>",
+        "image": "https://picsum.photos/400/250?random=7",
+        "date": "2026-01-05"
+    },
+    {
+        "id": 2,
+        "title": "Développement Web Moderne",
+        "excerpt": "Un aperçu des technologies et des pratiques du développement web d'aujourd'hui.",
+        "content": "<h2>Développement Web Moderne</h2><p>Le développement web a beaucoup évolué ces dernières années. Dans cet article, nous allons explorer les frameworks JavaScript populaires comme React, Vue et Angular, ainsi que l'importance du design responsive et de l'expérience utilisateur.</p><p>Nous aborderons également des sujets tels que les Progressive Web Apps (PWA), les API RESTful et l'importance de la sécurité dans le développement web.</p>",
+        "image": "https://picsum.photos/400/250?random=8",
+        "date": "2026-01-06"
+    },
+    {
+        "id": 3,
+        "title": "Introduction à Java",
+        "excerpt": "Un guide pour débutants pour commencer avec le langage de programmation Java.",
+        "content": "<h2>Introduction à Java</h2><p>Java est l'un des langages de programmation les plus populaires et les plus polyvalents au monde. Dans cet article, nous allons couvrir les bases de la syntaxe Java, les concepts de la programmation orientée objet (POO) et comment compiler et exécuter votre premier programme Java.</p><p>Nous verrons également comment mettre en place un environnement de développement Java et explorerons quelques-unes des bibliothèques et frameworks les plus courants de l'écosystème Java.</p>",
+        "image": "https://picsum.photos/400/250?random=9",
+        "date": "2026-01-07"
+    }
+]

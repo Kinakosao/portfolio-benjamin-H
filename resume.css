@@ -1,0 +1,134 @@
+.resume-container {
+    margin-top: 80px; /* Espace pour la navbar fixe */
+}
+
+.section-title {
+    margin-bottom: 2rem;
+    position: relative;
+    padding-bottom: 0.5rem;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background-color: var(--bs-primary);
+}
+
+body.dark-mode .section-title::after {
+     background-color: var(--bs-info);
+}
+
+/* Timeline */
+.timeline {
+    position: relative;
+    padding: 2rem 0;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 15px;
+    height: 100%;
+    width: 3px;
+    background-color: #e9ecef;
+}
+
+body.dark-mode .timeline::before {
+    background-color: #343a40;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 2rem;
+    padding-left: 40px;
+}
+
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    top: 5px;
+    left: 6.5px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: var(--bg-color);
+    border: 3px solid var(--bs-primary);
+    z-index: 1;
+}
+
+body.dark-mode .timeline-item::before {
+     border-color: var(--bs-info);
+}
+
+.timeline-content {
+    background-color: var(--section-bg-light);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border-left: 3px solid var(--bs-primary);
+}
+
+body.dark-mode .timeline-content {
+     border-left-color: var(--bs-info);
+}
+
+.timeline-content h3 {
+    margin-top: 0;
+    font-size: 1.5rem;
+}
+
+.timeline-institution {
+    font-weight: bold;
+    color: #6c757d;
+    margin-bottom: 0.25rem;
+}
+body.dark-mode .timeline-institution {
+    color: #adb5bd;
+}
+
+.timeline-date {
+    font-style: italic;
+    color: #6c757d;
+    margin-bottom: 1rem;
+}
+body.dark-mode .timeline-date {
+    color: #adb5bd;
+}
+
+/* Skills Section */
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+}
+
+.skill-category h4 {
+    margin-bottom: 1.5rem;
+    color: var(--bs-primary);
+    border-bottom: 2px solid var(--bs-primary);
+    padding-bottom: 0.5rem;
+}
+
+body.dark-mode .skill-category h4 {
+    color: var(--bs-info);
+    border-bottom-color: var(--bs-info);
+}
+
+.skill-icons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    font-size: 3rem;
+}
+
+.skill-icons i {
+    transition: transform 0.3s ease;
+}
+
+.skill-icons i:hover {
+    transform: scale(1.2);
+}

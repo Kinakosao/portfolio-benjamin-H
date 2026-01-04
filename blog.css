@@ -1,0 +1,86 @@
+/* Blog List Page */
+.blog-container {
+    padding-top: 80px; /* Adjust for fixed navbar */
+}
+
+.blog-post-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid var(--bs-border-color);
+}
+
+.blog-post-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+body.dark-mode .blog-post-card:hover {
+     box-shadow: 0 0.5rem 1rem rgba(255, 255, 255, 0.08);
+}
+
+
+.blog-post-card .card-title {
+    color: var(--bs-primary);
+}
+
+body.dark-mode .blog-post-card .card-title {
+    color: var(--bs-info);
+}
+
+
+/* Single Post Page */
+.post-container {
+    padding-top: 80px;
+}
+
+.post-header h1 {
+    font-weight: 700;
+}
+
+.post-body h2, .post-body h3, .post-body h4 {
+    color: var(--bs-dark);
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+body.dark-mode .post-body h2, 
+body.dark-mode .post-body h3, 
+body.dark-mode .post-body h4 {
+    color: var(--bs-light);
+}
+
+
+.post-body p {
+    line-height: 1.8;
+    margin-bottom: 1.2rem;
+}
+
+.post-body a {
+    text-decoration: underline;
+    color: var(--bs-primary);
+}
+
+body.dark-mode .post-body a {
+    color: var(--bs-info);
+}
+
+.post-body img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.25rem;
+    margin: 1rem 0;
+}
+
+/* Ensure fade-in animations are ready */
+.blog-container .fade-in-up,
+.post-container .fade-in-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.blog-container .fade-in-up.is-visible,
+.post-container .fade-in-up.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
