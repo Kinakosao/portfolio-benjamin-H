@@ -12,7 +12,6 @@
     <meta property="og:title" content="Portfolio de Benjamin">
     <meta property="og:description" content="Étudiant en BUT Informatique, passionné par le développement.">
     <meta property="og:image" content="https://ben-dev.github.io/path/to/your/social-preview-image.jpg">
-
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://ben-dev.github.io/">
@@ -54,9 +53,6 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="resume.html">Mon CV</a>
-                        </li>
-                         <li class="nav-item">
-                            <a class="nav-link" href="blog.html">Blog</a>
                         </li>
                         <li class="nav-item ms-lg-3 d-flex align-items-center">
                            <label class="theme-switcher-label" for="theme-switch-checkbox" aria-label="Changer de thème">
@@ -115,7 +111,7 @@
             </div>
         </section>
 
-        <section id="projects" class="py-5 bg-light">
+        <section id="projects" class="py-5">
             <div class="container">
                 <h2 class="text-center mb-5 fade-in-up">Mes Projets</h2>
 
@@ -130,31 +126,31 @@
                     <!-- Projet 1 -->
                     <div class="col-md-4 mb-4 fade-in-up project-item" data-category="java">
                         <div class="card project-card">
-                            <img src="https://picsum.photos/400/250?random=4" class="card-img-top" alt="Image du projet 1" loading="lazy">
+                            <img src="https://picsum.photos/400/250?random=4"    class="card-img-top" alt="Image du projet 1" loading="lazy">
                             <div class="card-body text-center">
-                                <h5 class="card-title">Application de Gestion</h5>
+                                <h5 class="card-title">Jeux en Java-RISK</h5>
                                 <p class="card-text">Un outil de gestion de stock développé en Java avec une interface graphique intuitive.</p>
                                 <button class="btn btn-primary" data-modal-target="#project-modal-1">En savoir plus</button>
                             </div>
                         </div>
                     </div>
                     <!-- Projet 2 -->
-                    <div class="col-md-4 mb-4 fade-in-up project-item" data-category="web">
+                    <div class="col-md-4 mb-4 fade-in-up project-item" data-category="java">
                         <div class="card project-card">
                             <img src="https://picsum.photos/400/250?random=5" class="card-img-top" alt="Image du projet 2" loading="lazy">
                             <div class="card-body text-center">
-                                <h5 class="card-title">Site E-commerce</h5>
+                                <h5 class="card-title">Jeux Java Labyrinthe</h5>
                                 <p class="card-text">Une plateforme de vente en ligne responsive avec un back-end robuste.</p>
                                  <button class="btn btn-primary" data-modal-target="#project-modal-2">En savoir plus</button>
                             </div>
                         </div>
                     </div>
                     <!-- Projet 3 -->
-                    <div class="col-md-4 mb-4 fade-in-up project-item" data-category="c">
+                    <div class="col-md-4 mb-4 fade-in-up project-item" data-category="web">
                         <div class="card project-card">
                             <img src="https://picsum.photos/400/250?random=6" class="card-img-top" alt="Image du projet 3" loading="lazy">
                             <div class="card-body text-center">
-                                <h5 class="card-title">Jeu en C</h5>
+                                <h5 class="card-title">Un Casino heberger en local</h5>
                                 <p class="card-text">Un jeu de type rogue-like développé en C avec la librairie SDL2.</p>
                                  <button class="btn btn-primary" data-modal-target="#project-modal-3">En savoir plus</button>
                             </div>
@@ -199,47 +195,41 @@
         <dialog id="project-modal-1" class="project-modal">
             <div class="modal-content">
                 <button class="close-modal-btn" aria-label="Fermer la modale">&times;</button>
-                <h2>Application de Gestion de Stock</h2>
-                <p>Ce projet est une application de bureau complète pour la gestion de stock. Elle permet de suivre les entrées et sorties de produits, de gérer les fournisseurs et de générer des rapports. L'interface a été conçue pour être simple et efficace, et l'application est connectée à une base de données MySQL.</p>
+                <h2>Jeux Java - RISK</h2>
+                <p>Ce projet est un Jeux en java créer pour etre utlisant dans un terminal linux.</p>
                 <h5>Technologies utilisées :</h5>
                 <div class="skills mb-3">
                     <span class="badge bg-primary">Java</span>
-                    <span class="badge bg-info">JavaFX</span>
-                    <span class="badge bg-warning text-dark">MySQL</span>
                 </div>
-                <a href="#" class="btn btn-success me-2">Voir le site</a>
-                <a href="#" class="btn btn-dark">Code source</a>
+                <a href="https://gitlab.univ-lille.fr/iut-info/p3.01/2025-2026/groupe-7" class="btn btn-dark">Code source</a>
             </div>
         </dialog>
 
         <dialog id="project-modal-2" class="project-modal">
             <div class="modal-content">
                 <button class="close-modal-btn" aria-label="Fermer la modale">&times;</button>
-                <h2>Site E-commerce "TechShop"</h2>
-                <p>TechShop est une plateforme de e-commerce responsive que j'ai développée. Les utilisateurs peuvent parcourir les produits, les ajouter à leur panier et passer des commandes. Le site est construit avec les technologies web modernes et intègre une fausse API pour simuler la gestion des produits.</p>
+                <h2>Jeux Java Labyrinthe</h2>
+                <p>Ce projet Java etais destinée a créer un labyrinthe de facon aléatorie et d'en faire un jeux avec plusieur sorte de labyrinthe, d'avoir plusieur mode de jeux.</p>
                 <h5>Technologies utilisées :</h5>
                 <div class="skills mb-3">
-                    <span class="badge bg-success">HTML5</span>
-                    <span class="badge bg-danger">CSS3</span>
-                    <span class="badge bg-warning text-dark">JavaScript</span>
+                    <span class="badge bg-success">Java</span>
+                    <span class="badge bg-danger">JavaFX</span>
                 </div>
-                <a href="#" class="btn btn-success me-2">Voir le site</a>
-                <a href="#" class="btn btn-dark">Code source</a>
+                <a href="https://gitlab.univ-lille.fr/sae302/2025/I4_SAE3.3" class="btn btn-dark">Code source</a>
             </div>
         </dialog>
 
         <dialog id="project-modal-3" class="project-modal">
             <div class="modal-content">
                 <button class="close-modal-btn" aria-label="Fermer la modale">&times;</button>
-                <h2>Jeu Rogue-like en C</h2>
-                <p>Un jeu de type rogue-like développé en C avec la librairie graphique SDL2. Le jeu génère des niveaux de manière procédurale, et le joueur doit naviguer dans des donjons, combattre des monstres et collecter des trésors.</p>
+                <h2>Un Casino heberger en local</h2>
+                <p>ce projet est un serveur tomcat hebergent un casino, permettant donc la sauvegard de donnée , et d'avoir plusieur sessions disponible,!!! il est en cours de fabrication !!!</p>
                 <h5>Technologies utilisées :</h5>
                 <div class="skills mb-3">
-                     <span class="badge bg-secondary">C</span>
-                     <span class="badge bg-info">SDL2</span>
+                     <span class="badge bg-secondary">Java</span>
+                     <span class="badge bg-info">HTML</span>
                 </div>
-                <a href="#" class="btn btn-success me-2 disabled">Site non disponible</a>
-                <a href="#" class="btn btn-dark">Code source</a>
+                <a href="https://github.com/Kinakosao/CasinoTomcat" class="btn btn-dark">Code source</a>
             </div>
         </dialog>
 
@@ -247,8 +237,8 @@
         <footer class="main-footer py-4">
             <div class="container text-center">
                 <div class="footer-social-links mb-3">
-                    <a href="#" title="GitHub" class="social-link" aria-label="Voir mon profil GitHub"><i class="bi bi-github"></i></a>
-                    <a href="#" title="LinkedIn" class="social-link" aria-label="Voir mon profil LinkedIn"><i class="bi bi-linkedin"></i></a>
+                    <a href="https://github.com/Kinakosao" title="GitHub" class="social-link" aria-label="Voir mon profil GitHub"><i class="bi bi-github"></i></a>
+                    <a href="https://www.linkedin.com/in/benjamin-hanquart-692b10288/" title="LinkedIn" class="social-link" aria-label="Voir mon profil LinkedIn"><i class="bi bi-linkedin"></i></a>
                 </div>
                 <p class="mb-0">&copy; 2026 Benjamin. Tous droits réservés.</p>
             </div>

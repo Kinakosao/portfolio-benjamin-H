@@ -74,6 +74,7 @@ body.dark-mode .timeline-item::before {
 
 body.dark-mode .timeline-content {
      border-left-color: var(--bs-info);
+     background-color: var(--card-bg) !important;
 }
 
 .timeline-content h3 {
