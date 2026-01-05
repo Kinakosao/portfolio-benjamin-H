@@ -69,6 +69,12 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Update copyright year dynamically
+    const copyrightYearSpan = document.getElementById('copyright-year');
+    if (copyrightYearSpan) {
+        copyrightYearSpan.textContent = new Date().getFullYear();
+    }
+
     // Custom cursor logic
     const cursorDot = document.querySelector('.cursor-dot');
     const cursorOutline = document.querySelector('.cursor-outline');
@@ -278,17 +284,4 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// Easter Egg - Konami Code
-const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
-let konamiIndex = 0;
-window.addEventListener('keydown', e => {
-    if (e.key === konamiCode[konamiIndex]) {
-        konamiIndex++;
-        if (konamiIndex === konamiCode.length) {
-            window.location.href = 'snake.html';
-            konamiIndex = 0;
-        }
-    } else {
-        konamiIndex = 0;
-    }
-});
+
