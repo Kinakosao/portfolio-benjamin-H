@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 top: `${posY}px`
             }, { duration: 500, fill: "forwards" });
         });
-        const interactiveElements = document.querySelectorAll('a, button, .theme-switch');
+        const interactiveElements = document.querySelectorAll('a, button, .theme-switcher-label');
         interactiveElements.forEach(el => {
             el.addEventListener('mouseenter', () => cursorOutline.classList.add('grow'));
             el.addEventListener('mouseleave', () => cursorOutline.classList.remove('grow'));

@@ -90,7 +90,7 @@ git push -u origin main
 ### Étape C : Activer GitHub Pages
 Normalement, si vous avez bien nommé votre dépôt `votre-pseudo.github.io`, GitHub déploie automatiquement le site.
 
-1.  Attendez une minute ou two.
+1.  Attendez une minute ou deux.
 2.  Votre site sera accessible à l'adresse : `https://votre-pseudo.github.io`
 
 **Si ça ne fonctionne pas :**
