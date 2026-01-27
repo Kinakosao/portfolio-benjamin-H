@@ -199,20 +199,47 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Contact form validation
+    // Contact form validation and submission with EmailJS
     const contactForm = document.getElementById('contact-form');
     if (contactForm) {
         const formStatus = document.getElementById('form-status');
 
-        async function handleSubmit(event) {
+        contactForm.addEventListener('submit', function(event) {
             event.preventDefault();
-            const form = event.target;
-            const data = new FormData(form);
+
+            // Gestion de la limite d'envoi (2 par semaine, reset le lundi)
+            const now = new Date();
+            const day = now.getDay();
+            // Calcul du lundi de la semaine courante
+            // Si dimanche (0), on recule de 6 jours. Sinon on recule de (day - 1) jours.
+            const diff = now.getDate() - day + (day === 0 ? -6 : 1);
+            
+            // On crée une date calée sur ce lundi à 00:00:00
+            const mondayDate = new Date(now);
+            mondayDate.setDate(diff);
+            mondayDate.setHours(0, 0, 0, 0);
+            const currentMondayTimestamp = mondayDate.getTime();
+
+            const storedMonday = localStorage.getItem('emailResetDate');
+            let emailCount = parseInt(localStorage.getItem('emailCount') || '0');
+
+            // Si c'est une nouvelle semaine (le timestamp du lundi a changé)
+            if (!storedMonday || parseInt(storedMonday) !== currentMondayTimestamp) {
+                emailCount = 0;
+                localStorage.setItem('emailResetDate', currentMondayTimestamp.toString());
+                localStorage.setItem('emailCount', '0');
+            }
+
+            // Vérification de la limite
+            if (emailCount >= 2) {
+                formStatus.innerHTML = `<div class="alert alert-warning" role="alert"><strong>Limite atteinte :</strong> Vous ne pouvez envoyer que 2 messages par semaine. Le compteur sera réinitialisé lundi prochain.</div>`;
+                return;
+            }
             
             // Basic client-side validation
             let isValid = true;
             ['name', 'email', 'message'].forEach(fieldName => {
-                const input = form.querySelector(`#${fieldName}`);
+                const input = contactForm.querySelector(`#${fieldName}`);
                 input.classList.remove('is-valid', 'is-invalid');
                 if (!input.value.trim()) {
                     input.classList.add('is-invalid');
@@ -229,37 +256,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
             formStatus.innerHTML = `<div class="alert alert-info" role="alert">Envoi en cours...</div>`;
 
-            try {
-                const response = await fetch(form.action, {
-                    method: form.method,
-                    body: data,
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                });
+            // EmailJS parameters
+            const serviceID = 'service_rgr1e1c';
+            const templateID = 'template_ubusx5c';
 
-                if (response.ok) {
+            emailjs.sendForm(serviceID, templateID, this)
+                .then(() => {
+                    // Incrémenter le compteur après succès
+                    let currentCount = parseInt(localStorage.getItem('emailCount') || '0');
+                    currentCount++;
+                    localStorage.setItem('emailCount', currentCount.toString());
+
                     formStatus.innerHTML = `<div class="alert alert-success" role="alert"><strong>Merci pour votre message !</strong> Je vous répondrai dès que possible.</div>`;
-                    form.reset();
+                    contactForm.reset();
                     ['name', 'email', 'message'].forEach(fieldName => {
-                        form.querySelector(`#${fieldName}`).classList.remove('is-valid');
+                        contactForm.querySelector(`#${fieldName}`).classList.remove('is-valid');
                     });
-                } else {
-                    response.json().then(data => {
-                        if (Object.hasOwn(data, 'errors')) {
-                            const errorMsg = data["errors"].map(error => error["message"]).join(", ");
-                            formStatus.innerHTML = `<div class="alert alert-danger" role="alert"><strong>Erreur :</strong> ${errorMsg}</div>`;
-                        } else {
-                           formStatus.innerHTML = `<div class="alert alert-danger" role="alert"><strong>Oops!</strong> Une erreur s'est produite lors de l'envoi du formulaire.</div>`;
-                        }
-                    });
-                }
-            } catch (error) {
-                formStatus.innerHTML = `<div class="alert alert-danger" role="alert"><strong>Oops!</strong> Une erreur s'est produite lors de l'envoi du formulaire.</div>`;
-            }
-        }
-
-        contactForm.addEventListener("submit", handleSubmit);
+                }, (err) => {
+                    formStatus.innerHTML = `<div class="alert alert-danger" role="alert"><strong>Erreur :</strong> Une erreur s'est produite lors de l'envoi du formulaire. ${JSON.stringify(err)}</div>`;
+                });
+        });
     }
 
     // Project filtering logic
