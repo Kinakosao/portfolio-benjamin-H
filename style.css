@@ -121,7 +121,7 @@ body.dark-mode .navbar-scrolled {
 /* Hero Section */
 #hero {
     height: 80vh;
-    background: var(--hero-overlay), url('https://source.unsplash.com/random/1920x1080?code,technology') no-repeat center center/cover;
+    background: var(--hero-overlay), linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
 }
 
 #hero h1 {
