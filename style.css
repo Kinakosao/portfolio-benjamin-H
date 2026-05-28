@@ -77,7 +77,6 @@ body {
     background-color: var(--bg-color);
     color: var(--text-color);
     transition: background-color 0.3s ease, color 0.3s ease;
-    cursor: none;
 }
 
 section {
@@ -372,48 +371,6 @@ body.dark-mode .project-modal h2 {
     border-color: #198754;
 }
 
-/* Custom Cursor */
-.cursor-dot,
-.cursor-outline {
-    pointer-events: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    border-radius: 50%;
-    opacity: 1;
-    transform: translate(-50%, -50%);
-    transition: opacity 0.3s ease-in-out, transform 0.2s ease-in-out;
-    z-index: 1051; /* High z-index to be on top of everything */
-}
-
-.cursor-dot {
-    width: 8px;
-    height: 8px;
-    background-color: #0d6efd;
-}
-
-body.dark-mode .cursor-dot {
-    background-color: var(--bs-info);
-}
-
-.cursor-outline {
-    width: 40px;
-    height: 40px;
-    border: 2px solid #0d6efd;
-    transition: width 0.3s, height 0.3s, border-color 0.3s;
-}
-
-body.dark-mode .cursor-outline {
-    border-color: var(--bs-info);
-}
-
-.cursor-outline.grow {
-    width: 60px;
-    height: 60px;
-    border: 2px solid #0dcaf0;
-    background-color: rgba(13, 202, 240, 0.2);
-}
-
 /* Scroll-triggered Animations */
 .fade-in-up {
     opacity: 0;
@@ -530,5 +487,107 @@ body.dark-mode .profile-picture-container {
     color: #0d1117;
     transform: scale(1.05);
     text-decoration: none;
+}
+
+/* ── Évaluation portfolio: structure enrichie des modales ── */
+.modal-context-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(13,110,253,0.08);
+    border: 1px solid rgba(13,110,253,0.2);
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 0.85rem;
+    color: #0d6efd;
+    margin-bottom: 16px;
+}
+body.dark-mode .modal-context-badge {
+    background: rgba(13,202,240,0.08);
+    border-color: rgba(13,202,240,0.2);
+    color: #0dcaf0;
+}
+.modal-section-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #6c757d;
+    margin: 14px 0 5px;
+}
+.soft-skill-badge {
+    display: inline-block;
+    background: rgba(25,135,84,0.1);
+    border: 1px solid rgba(25,135,84,0.3);
+    color: #198754;
+    font-size: 0.8rem;
+    padding: 4px 10px;
+    border-radius: 20px;
+    margin: 3px;
+}
+body.dark-mode .soft-skill-badge {
+    background: rgba(87,171,90,0.1);
+    border-color: rgba(87,171,90,0.3);
+    color: #57ab5a;
+}
+.modal-reflexive {
+    background: rgba(13,110,253,0.04);
+    border-left: 3px solid #0d6efd;
+    border-radius: 0 6px 6px 0;
+    padding: 12px 16px;
+    margin-top: 16px;
+    font-size: 0.9rem;
+}
+body.dark-mode .modal-reflexive {
+    background: rgba(13,202,240,0.04);
+    border-left-color: #0dcaf0;
+}
+.modal-reflexive-title {
+    font-weight: 700;
+    margin-bottom: 6px;
+    font-size: 0.85rem;
+    color: #0d6efd;
+}
+body.dark-mode .modal-reflexive-title {
+    color: #0dcaf0;
+}
+
+.soft-skill-badge[data-context] {
+  cursor: pointer;
+  transition: transform 0.1s, opacity 0.1s;
+}
+.soft-skill-badge[data-context]:hover {
+  opacity: 0.85;
+  transform: scale(1.04);
+}
+.skill-tooltip-popup {
+  position: fixed;
+  background: #1e2a3a;
+  color: #e8eaed;
+  border: 1px solid #3a7bd5;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  max-width: 270px;
+  z-index: 99999;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.45);
+  pointer-events: none;
+  animation: fadeIn 0.15s ease;
+}
+body:not(.dark-mode) .skill-tooltip-popup {
+  background: #1c2b3a;
+  color: #f0f2f5;
+}
+
+@media print {
+  #preloader, .cursor-dot, .cursor-outline, #scroll-to-top-btn,
+  #linux-mode-btn, nav.navbar, .project-modal, #reading-progress,
+  #share-btn, #copy-email-btn, #lang-toggle { display: none !important; }
+  body { padding-top: 0; background: white; color: black; }
+  section { padding: 20px 0; page-break-inside: avoid; }
+  .card, .project-card { box-shadow: none; border: 1px solid #ccc; }
+  a[href]::after { content: " (" attr(href) ")"; font-size: 10px; color: #666; }
+  .main-footer { background: white; color: black; }
 }
 

@@ -75,26 +75,6 @@ document.addEventListener('DOMContentLoaded', function() {
         copyrightYearSpan.textContent = new Date().getFullYear();
     }
 
-    // Custom cursor logic
-    const cursorDot = document.querySelector('.cursor-dot');
-    const cursorOutline = document.querySelector('.cursor-outline');
-    if (cursorDot && cursorOutline) {
-        window.addEventListener('mousemove', e => {
-            const posX = e.clientX;
-            const posY = e.clientY;
-            cursorDot.style.left = `${posX}px`;
-            cursorDot.style.top = `${posY}px`;
-            cursorOutline.animate({
-                left: `${posX}px`,
-                top: `${posY}px`
-            }, { duration: 500, fill: "forwards" });
-        });
-        const interactiveElements = document.querySelectorAll('a, button, .theme-switcher-label');
-        interactiveElements.forEach(el => {
-            el.addEventListener('mouseenter', () => cursorOutline.classList.add('grow'));
-            el.addEventListener('mouseleave', () => cursorOutline.classList.remove('grow'));
-        });
-    }
 
     // --- INDEX.HTML SPECIFIC LOGIC ---
     
@@ -151,6 +131,17 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
+    }
+
+    // Reading progress bar
+    const progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', () => {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        progressBar.style.width = pct + '%';
+      });
     }
 
     // Project modal logic
@@ -267,6 +258,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     currentCount++;
                     localStorage.setItem('emailCount', currentCount.toString());
 
+                    if (typeof confetti !== 'undefined') {
+                        confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+                    }
                     formStatus.innerHTML = `<div class="alert alert-success" role="alert"><strong>Merci pour votre message !</strong> Je vous répondrai dès que possible.</div>`;
                     contactForm.reset();
                     ['name', 'email', 'message'].forEach(fieldName => {
@@ -298,6 +292,105 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
+
+    // Apply language on load
+    if (currentLang !== 'fr') applyLang(currentLang);
+    const langBtn = document.getElementById('lang-toggle');
+    if (langBtn) langBtn.textContent = currentLang === 'fr' ? 'EN' : 'FR';
 });
+
+
+// Soft skill badge tooltip on click
+(function() {
+  const tip = document.createElement('div');
+  tip.className = 'skill-tooltip-popup';
+  tip.style.display = 'none';
+  document.body.appendChild(tip);
+
+  document.addEventListener('click', e => {
+    const badge = e.target.closest('.soft-skill-badge[data-context]');
+    if (badge) {
+      tip.textContent = badge.dataset.context;
+
+      // Le tooltip doit vivre dans le même dialog que le badge
+      // pour ne pas passer en dessous (les <dialog> sont dans le "top layer")
+      const dialog = badge.closest('dialog');
+      const container = dialog || document.body;
+      if (tip.parentNode !== container) container.appendChild(tip);
+
+      tip.style.display = 'block';
+      const rect = badge.getBoundingClientRect();
+      let top = rect.bottom + 8;
+      let left = rect.left;
+      if (left + 275 > window.innerWidth) left = window.innerWidth - 280;
+      if (top + 90 > window.innerHeight) top = rect.top - 100;
+      tip.style.top = top + 'px';
+      tip.style.left = left + 'px';
+      e.stopPropagation();
+    } else {
+      tip.style.display = 'none';
+    }
+  });
+})();
+
+function copyEmail() {
+  const email = 'benjamin.hanquart03@gmail.com';
+  navigator.clipboard.writeText(email).then(() => {
+    const btn = document.getElementById('copy-email-btn');
+    if (btn) { const orig = btn.innerHTML; btn.innerHTML = '<i class="bi bi-check"></i> Copié !'; btn.classList.replace('btn-outline-secondary','btn-success'); setTimeout(() => { btn.innerHTML = orig; btn.classList.replace('btn-success','btn-outline-secondary'); }, 2000); }
+  });
+}
+
+function sharePortfolio() {
+  const url = 'https://benjaminhanquart.dev/?utm_source=social&utm_medium=share&utm_campaign=portfolio';
+  if (navigator.share) {
+    navigator.share({ title: 'Portfolio de Benjamin Hanquart', text: 'Découvrez mon portfolio !', url });
+  } else {
+    navigator.clipboard.writeText(url).then(() => {
+      const btn = document.getElementById('share-btn');
+      if (btn) { const orig = btn.innerHTML; btn.innerHTML = '<i class="bi bi-check"></i> Lien copié !'; setTimeout(() => btn.innerHTML = orig, 2000); }
+    });
+  }
+}
+
+// i18n
+const TRANSLATIONS = {
+  fr: {
+    'nav-about': 'À propos',
+    'nav-projects': 'Projets',
+    'nav-contact': 'Contact',
+    'hero-title': 'Benjamin Hanquart',
+    'about-title': 'À propos de moi',
+    'projects-title': 'Mes Projets',
+    'contact-title': 'Me Contacter',
+    'filter-all': 'Tous',
+  },
+  en: {
+    'nav-about': 'About',
+    'nav-projects': 'Projects',
+    'nav-contact': 'Contact',
+    'hero-title': 'Benjamin Hanquart',
+    'about-title': 'About Me',
+    'projects-title': 'My Projects',
+    'contact-title': 'Contact Me',
+    'filter-all': 'All',
+  }
+};
+let currentLang = localStorage.getItem('portfolioLang') || 'fr';
+
+function applyLang(lang) {
+  currentLang = lang;
+  localStorage.setItem('portfolioLang', lang);
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    if (TRANSLATIONS[lang][key]) el.textContent = TRANSLATIONS[lang][key];
+  });
+  const btn = document.getElementById('lang-toggle');
+  if (btn) btn.textContent = lang === 'fr' ? 'EN' : 'FR';
+}
+
+function toggleLang() {
+  applyLang(currentLang === 'fr' ? 'en' : 'fr');
+}
 
 

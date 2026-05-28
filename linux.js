@@ -21,6 +21,153 @@ const state = {
   wallpaperIdx: 0,
 };
 
+/* ── Sound system ───────────────────────────────────────────── */
+let soundEnabled = JSON.parse(localStorage.getItem("portfolioOS_sound") || "false");
+
+function playSound(type) {
+  if (!soundEnabled) return;
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    if (type === "beep") {
+      osc.frequency.value = 440;
+      gain.gain.setValueAtTime(0.08, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
+      osc.start(); osc.stop(ctx.currentTime + 0.12);
+    } else if (type === "boot") {
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(220, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.3);
+      gain.gain.setValueAtTime(0.15, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
+      osc.start(); osc.stop(ctx.currentTime + 0.5);
+    } else if (type === "notify") {
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(660, ctx.currentTime);
+      osc.frequency.setValueAtTime(880, ctx.currentTime + 0.1);
+      gain.gain.setValueAtTime(0.12, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
+      osc.start(); osc.stop(ctx.currentTime + 0.3);
+    }
+  } catch(e) {}
+}
+
+function toggleSound() {
+  soundEnabled = !soundEnabled;
+  localStorage.setItem("portfolioOS_sound", JSON.stringify(soundEnabled));
+  const btn = document.getElementById("sound-toggle");
+  if (btn) btn.textContent = soundEnabled ? "🔊" : "🔇";
+  if (soundEnabled) playSound("notify");
+}
+
+/* ── System Notifications ───────────────────────────────────── */
+function showNotification(msg, type = "info") {
+  const colors = { success: "var(--green)", error: "var(--red)", info: "var(--blue)", warn: "var(--yellow)" };
+  let container = document.getElementById("notif-container");
+  if (!container) {
+    container = document.createElement("div");
+    container.id = "notif-container";
+    container.style.cssText = "position:fixed;top:40px;right:12px;z-index:9500;display:flex;flex-direction:column;gap:8px;pointer-events:none;width:260px;";
+    document.body.appendChild(container);
+  }
+  const n = document.createElement("div");
+  n.style.cssText = `background:rgba(22,27,34,0.97);border:1px solid ${colors[type]};color:${colors[type]};font-family:var(--font-mono);font-size:12px;padding:10px 14px;border-radius:6px;backdrop-filter:blur(12px);box-shadow:0 4px 16px rgba(0,0,0,0.5);pointer-events:all;transform:translateX(20px);opacity:0;transition:all 0.2s ease;`;
+  n.textContent = msg;
+  container.appendChild(n);
+  requestAnimationFrame(() => { n.style.transform = "translateX(0)"; n.style.opacity = "1"; });
+  setTimeout(() => { n.style.transform = "translateX(20px)"; n.style.opacity = "0"; setTimeout(() => n.remove(), 300); }, 3500);
+  playSound("notify");
+}
+
+/* ── Screensaver (Matrix rain) ──────────────────────────────── */
+let ssTimer = null;
+let ssActive = false;
+const SS_DELAY = 60000;
+
+function startSsTimer() {
+  clearTimeout(ssTimer);
+  ssTimer = setTimeout(activateScreensaver, SS_DELAY);
+}
+
+function resetSsTimer() {
+  if (ssActive) return;
+  startSsTimer();
+}
+
+function activateScreensaver() {
+  if (ssActive) return;
+  ssActive = true;
+  const canvas = document.createElement("canvas");
+  canvas.id = "screensaver-canvas";
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  canvas.style.cssText = "position:fixed;inset:0;z-index:9800;cursor:pointer;background:#000;";
+  document.body.appendChild(canvas);
+
+  const ctx = canvas.getContext("2d");
+  const cols = Math.floor(canvas.width / 16);
+  const drops = Array(cols).fill(0);
+  const chars = "PortfolioOSLinuxJavaTypeScriptAPIDevOps01アイウエオカキ∑∫≈§";
+  let rafId;
+
+  function draw() {
+    ctx.fillStyle = "rgba(0,0,0,0.05)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    drops.forEach((y, x) => {
+      const ch = chars[Math.floor(Math.random() * chars.length)];
+      ctx.fillStyle = y < 2 ? "#c9d1d9" : "#57ab5a";
+      ctx.font = "14px 'JetBrains Mono', monospace";
+      ctx.fillText(ch, x * 16, y * 16);
+      if (y * 16 > canvas.height && Math.random() > 0.975) drops[x] = 0;
+      else drops[x]++;
+    });
+    rafId = requestAnimationFrame(draw);
+  }
+  draw();
+
+  // Clock overlay
+  const clockEl = document.createElement("div");
+  clockEl.style.cssText = "position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'JetBrains Mono',monospace;font-size:52px;font-weight:700;color:rgba(87,171,90,0.95);text-shadow:0 0 30px #57ab5a;pointer-events:none;text-align:center;";
+  const sub = document.createElement("div");
+  sub.style.cssText = "font-size:14px;color:rgba(87,171,90,0.6);margin-top:8px;";
+  sub.textContent = "Appuyez sur une touche ou cliquez pour continuer";
+  clockEl.appendChild(document.createTextNode(""));
+  clockEl.appendChild(sub);
+  canvas.appendChild(clockEl);
+  function updateSsClock() {
+    clockEl.firstChild.textContent = new Date().toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"});
+  }
+  updateSsClock();
+  const clockInterval = setInterval(updateSsClock, 10000);
+
+  function exitSs() {
+    cancelAnimationFrame(rafId);
+    clearInterval(clockInterval);
+    canvas.remove();
+    ssActive = false;
+    startSsTimer();
+  }
+  canvas.addEventListener("click", exitSs);
+  document.addEventListener("keydown", exitSs, { once: true });
+}
+
+/* ── Fortune quotes ─────────────────────────────────────────── */
+const FORTUNES = [
+  "Le code parfait n'existe pas, mais toi tu existes.",
+  "99 petits bugs dans le code. On en corrige 1. 127 petits bugs dans le code.",
+  "Il y a deux façons d'écrire du code sans erreur. Seule la troisième fonctionne.",
+  "Un commit par jour éloigne le merge hell.",
+  "La documentation, c'est comme la floss : tout le monde sait que c'est bien mais personne ne le fait.",
+  "Ctrl+Z est le meilleur ami de l'informaticien.",
+  "Code, coffee, compile, repeat.",
+  "git commit -m 'fix stuff' — le classique du dimanche soir.",
+  "Stack Overflow est ma deuxième maison.",
+  "Il ne faut pas remettre à demain le refactor qu'on peut ne jamais faire.",
+];
+
 /* ── Boot Sequence ──────────────────────────────────────────── */
 const BOOT_LINES = [
   ['<span class="info">[  OK  ]</span> Kernel 6.12.74-portfolio chargé', 80],
@@ -216,9 +363,8 @@ function bringToFront(id) {
 
 function makeDraggable(winEl, id) {
   const titlebar = document.getElementById(`titlebar-${id}`);
-  let dragging = false,
-    ox = 0,
-    oy = 0;
+  let dragging = false, ox = 0, oy = 0;
+  let snapPreview = document.getElementById("snap-preview");
 
   titlebar.addEventListener("mousedown", (e) => {
     if (e.target.classList.contains("win-btn")) return;
@@ -232,19 +378,45 @@ function makeDraggable(winEl, id) {
 
   document.addEventListener("mousemove", (e) => {
     if (!dragging) return;
-    const area = document
-      .getElementById("desktop-area")
-      .getBoundingClientRect();
+    const area = document.getElementById("desktop-area").getBoundingClientRect();
     let nx = e.clientX - ox;
     let ny = e.clientY - oy;
     nx = Math.max(0, Math.min(nx, area.width - winEl.offsetWidth));
     ny = Math.max(0, Math.min(ny, area.height - 40));
     winEl.style.left = nx + "px";
-    winEl.style.top = ny + "px";
+    winEl.style.top  = ny + "px";
+
+    // Snap preview
+    if (!snapPreview) { snapPreview = document.getElementById("snap-preview"); }
+    if (snapPreview) {
+      const threshold = 20;
+      const relX = e.clientX - area.left;
+      if (relX < threshold) {
+        snapPreview.style.cssText = "display:block;position:absolute;left:0;top:0;width:50%;height:100%;background:rgba(87,171,90,0.1);border:2px solid rgba(87,171,90,0.4);border-radius:4px;pointer-events:none;z-index:9000;transition:all 0.1s;";
+      } else if (area.width - relX < threshold) {
+        snapPreview.style.cssText = "display:block;position:absolute;right:0;top:0;left:50%;height:100%;background:rgba(87,171,90,0.1);border:2px solid rgba(87,171,90,0.4);border-radius:4px;pointer-events:none;z-index:9000;transition:all 0.1s;";
+      } else {
+        snapPreview.style.display = "none";
+      }
+    }
   });
 
-  document.addEventListener("mouseup", () => {
+  document.addEventListener("mouseup", (e) => {
+    if (!dragging) return;
     dragging = false;
+    if (snapPreview) snapPreview.style.display = "none";
+    const area = document.getElementById("desktop-area").getBoundingClientRect();
+    const threshold = 20;
+    const relX = e.clientX - area.left;
+    if (relX < threshold) {
+      winEl.style.left = "0"; winEl.style.top = "0";
+      winEl.style.width = (area.width / 2) + "px";
+      winEl.style.height = area.height + "px";
+    } else if (area.width - relX < threshold) {
+      winEl.style.left = (area.width / 2) + "px"; winEl.style.top = "0";
+      winEl.style.width = (area.width / 2) + "px";
+      winEl.style.height = area.height + "px";
+    }
   });
 }
 
@@ -333,8 +505,8 @@ function openTerminal() {
   );
   appendLine(id, "", "");
 
-  // Input handling
-  const history = [];
+  // Persistent history — share with state.cmdHistory
+  const history = state.cmdHistory;
   let histIdx = -1;
 
   input.addEventListener("keydown", (e) => {
@@ -343,6 +515,8 @@ function openTerminal() {
       appendPromptLine(id, cmd);
       if (cmd) {
         history.unshift(cmd);
+        if (history.length > 100) history.length = 100;
+        localStorage.setItem("portfolioOS_history", JSON.stringify(history));
         histIdx = -1;
       }
       input.value = "";
@@ -366,28 +540,31 @@ function openTerminal() {
       }
     } else if (e.key === "Tab") {
       e.preventDefault();
-      const val = input.value.trim();
-      const completions = [
-        "help",
-        "ls",
-        "open",
-        "neofetch",
-        "whoami",
-        "pwd",
-        "clear",
-        "history",
-        "echo",
-        "date",
-        "uname",
-        "sudo",
-        "man",
-        "exit",
-        "cat",
-        "git",
-        "ping",
-      ];
-      const match = completions.find((c) => c.startsWith(val) && c !== val);
-      if (match) input.value = match;
+      const ALL_CMDS = ["help","ls","open","neofetch","whoami","pwd","clear","history","echo","date","uname","sudo","man","exit","cat","git","ping","vim","nano","npm","ssh","htop","cowsay","fortune","chmod","matrix","./contact.sh"];
+      const OPEN_ARGS = ["about","projects","cv","contact","github","linkedin","spotify","music"];
+      const MAN_ARGS  = ["open","ls","neofetch","help","sudo","git","cat","ping","echo","date","uname","man","whoami","pwd","clear","history","htop","cowsay","fortune","chmod","vim","npm"];
+      const GIT_ARGS  = ["log","status","branch","diff","init"];
+      const CAT_ARGS  = ["about.txt","README.md","/etc/passwd"];
+
+      const val = input.value;
+      const parts = val.trimStart().split(/\s+/);
+      if (parts.length <= 1) {
+        const partial = parts[0] || "";
+        const matches = ALL_CMDS.filter(c => c.startsWith(partial) && c !== partial);
+        if (matches.length === 1) { input.value = matches[0] + " "; }
+        else if (matches.length > 1) { appendPromptLine(id, val); appendLine(id, matches.join("   "), "term-dim"); }
+      } else {
+        const cmd0 = parts[0];
+        const partial = parts[parts.length - 1] || "";
+        let argList = [];
+        if (cmd0 === "open") argList = OPEN_ARGS;
+        if (cmd0 === "man")  argList = MAN_ARGS;
+        if (cmd0 === "git")  argList = GIT_ARGS;
+        if (cmd0 === "cat")  argList = CAT_ARGS;
+        const matches = argList.filter(a => a.startsWith(partial) && a !== partial);
+        if (matches.length === 1) input.value = parts.slice(0, -1).join(" ") + " " + matches[0];
+        else if (matches.length > 1) { appendPromptLine(id, val); appendLine(id, matches.join("   "), "term-dim"); }
+      }
     } else if (e.key === "l" && e.ctrlKey) {
       e.preventDefault();
       document.getElementById(`term-output-${id}`).innerHTML = "";
@@ -490,7 +667,12 @@ function processCommand(termId, raw) {
     ssh: () => {
       appendLine(termId, "ssh: connect to host benjaminhanquart.dev port 22: Vous êtes déjà sur ce serveur !", "term-error");
     },
-    npm: () => cmdNpm(termId, args),
+    npm:      () => cmdNpm(termId, args),
+    htop:     () => cmdHtop(termId),
+    cowsay:   () => cmdCowsay(termId, args),
+    fortune:  () => cmdFortune(termId),
+    chmod:    () => { cmdChmod(termId, args); return true; },
+    matrix:   () => { activateScreensaver(); },
     "./contact.sh": () => { cmdOpen(termId, ["contact"]); },
   };
 
@@ -500,6 +682,7 @@ function processCommand(termId, raw) {
   } else if (cmd === "") {
     appendLine(termId, "", "");
   } else {
+    playSound("beep");
     appendLine(termId, `bash: ${escHtml(cmd)}: commande introuvable`, "term-error");
     appendLine(termId, `Tapez <span style="color:var(--term-prompt)">help</span> pour afficher les commandes.`, "term-dim");
     appendLine(termId, "", "");
@@ -526,6 +709,11 @@ function cmdHelp(id) {
     ["date", "Date et heure actuelles"],
     ["uname -a", "Informations système"],
     ["sudo <cmd>", "Exécuter en root (surprenant)"],
+    ["htop", "Moniteur de processus"],
+    ["cowsay <texte>", "Une vache qui parle"],
+    ["fortune", "Citation aléatoire"],
+    ["chmod 777 life", "Easter egg"],
+    ["matrix", "Activer l'économiseur d'écran"],
     ["clear", "Vider le terminal  (ou Ctrl+L)"],
     ["man <commande>", "Manuel d'une commande"],
     ["exit", "Fermer le terminal"],
@@ -626,6 +814,14 @@ function cmdOpen(id, args) {
         "_blank",
       );
     },
+    spotify: () => {
+      appendLine(id, "Ouverture de Spotify...", "term-info-line");
+      setTimeout(() => openMusicPlayer(), 300);
+    },
+    music: () => {
+      appendLine(id, "Ouverture du lecteur...", "term-info-line");
+      setTimeout(() => openMusicPlayer(), 300);
+    },
   };
   if (actions[target]) {
     actions[target]();
@@ -633,7 +829,7 @@ function cmdOpen(id, args) {
     appendLine(id, "Usage: open <section>", "term-error");
     appendLine(
       id,
-      "Sections: about, projects, cv, contact, github, linkedin",
+      "Sections: about, projects, cv, contact, github, linkedin, spotify, music",
       "term-dim",
     );
   } else {
@@ -644,7 +840,7 @@ function cmdOpen(id, args) {
     );
     appendLine(
       id,
-      'Sections disponibles: <span style="color:var(--term-prompt)">about  projects  cv  contact  github  linkedin</span>',
+      'Sections disponibles: <span style="color:var(--term-prompt)">about  projects  cv  contact  github  linkedin  spotify  music</span>',
       "",
     );
   }
@@ -775,12 +971,16 @@ function cmdClear(id) {
 }
 
 function cmdHistory(id) {
-  appendLine(
-    id,
-    '<span style="color:var(--text-dim)">Historique des commandes :</span>',
-    "",
-  );
-  appendLine(id, "(L'historique s'efface à chaque session)", "term-dim");
+  const hist = state.cmdHistory;
+  if (hist.length === 0) {
+    appendLine(id, "(Aucune commande dans l'historique)", "term-dim");
+    return;
+  }
+  const display = hist.slice(0, 20).reverse();
+  display.forEach((cmd, i) => {
+    const num = String(hist.length - display.length + i + 1).padStart(4, " ");
+    appendLine(id, `<span style="color:var(--text-dim)">${num}</span>  ${escHtml(cmd)}`, "");
+  });
 }
 
 function cmdEcho(id, args) {
@@ -817,16 +1017,20 @@ function cmdUname(id, args) {
 
 function cmdSudo(id, args) {
   const subcmd = args[0] || "";
-  if (
-    subcmd === "rm" &&
-    args.includes("-rf") &&
-    (args.includes("/") || args.includes("/*"))
-  ) {
-    appendLine(
-      id,
-      "sudo: Permission refusée (et je t'ai à l'œil 👀)",
-      "term-error",
-    );
+  if (subcmd === "rm" && args.includes("-rf") && (args.includes("/") || args.includes("/*"))) {
+    appendLine(id, "Suppression en cours...", "term-error");
+    setTimeout(() => {
+      appendLine(id, "[██████████████████████████████] 100%", "term-error");
+      appendLine(id, "⚠️  Tout a été supprimé. PortfolioOS est détruit.", "term-error");
+      setTimeout(() => {
+        appendLine(id, "Restauration depuis la sauvegarde cloud...", "term-dim");
+        setTimeout(() => {
+          appendLine(id, "✅ Restauration complète. Tu ne peux pas me tuer.", "term-success");
+          appendLine(id, "", "");
+        }, 1000);
+      }, 600);
+    }, 600);
+    return true;
   } else if (!subcmd) {
     appendLine(id, "Usage: sudo <commande>", "term-error");
   } else {
@@ -842,20 +1046,34 @@ function cmdSudo(id, args) {
 function cmdMan(id, args) {
   const cmd = args[0] || "";
   const manPages = {
-    open: "open <section> — ouvre une fenêtre du portfolio. Sections: about, projects, cv, contact, github, linkedin",
-    ls: "ls [-la] — liste les fichiers du portfolio. Option -la pour affichage détaillé.",
-    neofetch:
-      "neofetch — affiche des informations système dans un style ASCII art.",
-    help: "help — affiche la liste des commandes disponibles.",
-    sudo: "sudo <cmd> — tente d'exécuter une commande en root. Résultats imprévisibles.",
+    open:     `OPEN(1)\n\nNOM\n  open — ouvre une fenêtre du portfolio\n\nSYNTAXE\n  open <section>\n\nSECTIONS\n  about, projects, cv, contact, github, linkedin, spotify, music`,
+    ls:       `LS(1)\n\nNOM\n  ls — liste les fichiers du répertoire courant\n\nSYNTAXE\n  ls [-la]\n\nOPTIONS\n  -l    affichage long\n  -a    afficher les fichiers cachés\n  -la   combinaison des deux`,
+    cat:      `CAT(1)\n\nNOM\n  cat — affiche le contenu d'un fichier\n\nSYNTAXE\n  cat <fichier>\n\nFICHIERS\n  about.txt, README.md, /etc/passwd`,
+    git:      `GIT(1)\n\nNOM\n  git — système de contrôle de version\n\nSYNTAXE\n  git <sous-commande>\n\nSOUS-COMMANDES\n  log     — historique des commits\n  status  — état du dépôt\n  branch  — liste des branches`,
+    neofetch: `NEOFETCH(1)\n\nNOM\n  neofetch — affiche les informations système en ASCII art\n\nSYNTAXE\n  neofetch`,
+    help:     `HELP(1)\n\nNOM\n  help — affiche l'aide des commandes\n\nSYNTAXE\n  help`,
+    sudo:     `SUDO(1)\n\nNOM\n  sudo — exécuter une commande en tant que root\n\nSYNTAXE\n  sudo <commande>\n\nNOTE\n  benjamin n'est pas dans le fichier sudoers.`,
+    ping:     `PING(1)\n\nNOM\n  ping — envoie des paquets ICMP\n\nSYNTAXE\n  ping [hôte]\n\nDÉFAUT\n  benjaminhanquart.dev`,
+    htop:     `HTOP(1)\n\nNOM\n  htop — moniteur de processus interactif\n\nSYNTAXE\n  htop\n\nNOTE\n  Les processus affichés sont fictifs mais représentatifs.`,
+    cowsay:   `COWSAY(1)\n\nNOM\n  cowsay — une vache qui parle\n\nSYNTAXE\n  cowsay [texte]\n\nEXEMPLE\n  cowsay Bonjour le monde`,
+    fortune:  `FORTUNE(1)\n\nNOM\n  fortune — affiche une citation aléatoire\n\nSYNTAXE\n  fortune`,
+    chmod:    `CHMOD(1)\n\nNOM\n  chmod — modifier les permissions d'un fichier\n\nSYNTAXE\n  chmod <permissions> <fichier>\n\nEASTER EGG\n  chmod 777 life`,
+    echo:     `ECHO(1)\n\nNOM\n  echo — affiche du texte\n\nSYNTAXE\n  echo [texte]`,
+    date:     `DATE(1)\n\nNOM\n  date — affiche la date et l'heure\n\nSYNTAXE\n  date`,
+    uname:    `UNAME(1)\n\nNOM\n  uname — informations système\n\nSYNTAXE\n  uname [-a]`,
+    whoami:   `WHOAMI(1)\n\nNOM\n  whoami — affiche le nom de l'utilisateur\n\nSYNTAXE\n  whoami`,
+    pwd:      `PWD(1)\n\nNOM\n  pwd — affiche le répertoire courant\n\nSYNTAXE\n  pwd`,
+    clear:    `CLEAR(1)\n\nNOM\n  clear — efface le terminal\n\nSYNTAXE\n  clear  (ou Ctrl+L)`,
+    history:  `HISTORY(1)\n\nNOM\n  history — affiche l'historique des commandes\n\nSYNTAXE\n  history`,
+    man:      `MAN(1)\n\nNOM\n  man — pages de manuel\n\nSYNTAXE\n  man <commande>\n\nEXEMPLE\n  man open`,
+    vim:      `VIM(1)\n\nNOM\n  vim — éditeur de texte\n\nSYNTAXE\n  vim\n\nFUITE\n  :q!  pour quitter (le plus difficile)`,
+    npm:      `NPM(1)\n\nNOM\n  npm — gestionnaire de paquets Node\n\nSYNTAXE\n  npm install`,
+    exit:     `EXIT(1)\n\nNOM\n  exit — ferme le terminal\n\nSYNTAXE\n  exit`,
   };
   if (manPages[cmd]) {
-    appendLine(
-      id,
-      `<span style="color:var(--term-cmd);font-weight:700">MAN(1) — ${cmd.toUpperCase()}</span>`,
-      "",
-    );
-    appendLine(id, manPages[cmd], "");
+    appendLine(id, `<span style="color:var(--blue);font-weight:700">MAN(1) — ${cmd.toUpperCase()}</span>`, "");
+    appendLine(id, "", "");
+    manPages[cmd].split("\n").forEach(line => appendLine(id, escHtml(line), line.startsWith("  ") ? "term-dim" : ""));
   } else if (!cmd) {
     appendLine(id, "Quel manuel voulez-vous ? Essayez: man open", "term-dim");
   } else {
@@ -871,23 +1089,32 @@ function cmdExit(id) {
 function cmdGit(id, args) {
   const sub = args[0] || "";
   if (sub === "log") {
-    const commits = [
-      ["58c39a9", "Correction Bug et ajout d'informations", "2 jours"],
-      ["6dda27a", "Mise à jour du CV", "3 jours"],
-      ["0f6f66c", "Ajout du système d'envoi de mail", "1 semaine"],
-      ["3eafb7c", "Ajout des fichiers de base", "2 semaines"],
-      ["90e28d2", "Initial commit — portfolio v1", "1 mois"],
-    ];
-    commits.forEach(([hash, msg, when]) => {
-      appendLine(
-        id,
-        `<span style="color:var(--yellow)">commit ${hash}</span>`,
-        "",
-      );
-      appendLine(id, `Date:   il y a ${when}`, "term-dim");
-      appendLine(id, `    ${escHtml(msg)}`, "");
-      appendLine(id, "", "");
-    });
+    appendLine(id, '<span style="color:var(--yellow)">* commit 58c39a9</span> <span style="color:var(--cyan)">(HEAD → main, origin/main)</span>', "");
+    appendLine(id, '<span style="color:var(--text-dim)">│ Author: Benjamin Hanquart &lt;benjamin.hanquart03@gmail.com&gt;</span>', "");
+    appendLine(id, '<span style="color:var(--text-dim)">│ Date:   il y a 2 jours</span>', "");
+    appendLine(id, "│", "term-dim");
+    appendLine(id, "│     feat: Ajout PortfolioOS — Linux Desktop Mode", "");
+    appendLine(id, "│", "term-dim");
+    appendLine(id, '<span style="color:var(--yellow)">* commit 6dda27a</span>', "");
+    appendLine(id, '<span style="color:var(--text-dim)">│ Author: Benjamin Hanquart &lt;benjamin.hanquart03@gmail.com&gt;</span>', "");
+    appendLine(id, '<span style="color:var(--text-dim)">│ Date:   il y a 3 jours</span>', "");
+    appendLine(id, "│", "term-dim");
+    appendLine(id, "│     chore: Mise à jour du CV et des informations", "");
+    appendLine(id, "│", "term-dim");
+    appendLine(id, '<span style="color:var(--yellow)">* commit 0f6f66c</span>', "");
+    appendLine(id, '<span style="color:var(--text-dim)">│ Date:   il y a 1 semaine</span>', "");
+    appendLine(id, "│", "term-dim");
+    appendLine(id, "│     feat: Système d'envoi de mail (EmailJS)", "");
+    appendLine(id, "│", "term-dim");
+    appendLine(id, '<span style="color:var(--yellow)">* commit 3eafb7c</span>', "");
+    appendLine(id, '<span style="color:var(--text-dim)">│ Date:   il y a 2 semaines</span>', "");
+    appendLine(id, "│", "term-dim");
+    appendLine(id, "│     feat: SAE4.02 EcoDrop, JSAE Syck, SAE3.03 Matrix", "");
+    appendLine(id, "│", "term-dim");
+    appendLine(id, '<span style="color:var(--yellow)">* commit 90e28d2</span>', "");
+    appendLine(id, '<span style="color:var(--text-dim)">  Date:   il y a 1 mois</span>', "");
+    appendLine(id, "", "");
+    appendLine(id, "  🎉  Initial commit — Portfolio v1.0", "term-success");
   } else if (sub === "status") {
     appendLine(id, "Sur la branche main", "");
     appendLine(id, "Votre branche est à jour avec 'origin/main'.", "");
@@ -983,6 +1210,153 @@ function cmdNpm(id, args) {
   }
 }
 
+function cmdHtop(id) {
+  appendLine(id, '<span style="background:var(--blue);color:#000;padding:0 4px;"> PID    USER       %CPU  %MEM  COMMAND                  </span>', "");
+  const procs = [
+    ["1337", "benjamin", "42.0", "23.4", "ideas --daemon --overflow"],
+    ["420",  "benjamin", "15.2", "8.1",  "coffee-script --hot-reload"],
+    ["666",  "root",     "0.1",  "0.3",  "procrastination-manager"],
+    ["1000", "benjamin", "7.3",  "12.5", "node portfolio.js --watch"],
+    ["2048", "benjamin", "3.2",  "2.1",  "git blame myself --hard"],
+    ["9999", "benjamin", "0.0",  "0.1",  "bash --shrug ¯\\_(ツ)_/¯"],
+  ];
+  procs.forEach(([pid, user, cpu, mem, cmd]) => {
+    appendLine(id,
+      `<span style="color:var(--yellow)">${pid.padEnd(7)}</span>` +
+      `<span style="color:var(--green)">${user.padEnd(11)}</span>` +
+      `<span style="color:var(--red)">${cpu.padEnd(6)}</span>` +
+      `<span style="color:var(--cyan)">${mem.padEnd(6)}</span>` +
+      `<span style="color:var(--text)">${escHtml(cmd)}</span>`, "");
+  });
+  appendLine(id, "", "");
+  appendLine(id, '<span style="color:var(--text-dim)">F10 Quitter (simulé)</span>', "");
+}
+
+function cmdCowsay(id, args) {
+  const text = args.join(" ") || "Moo! Passez-moi un bon projet 🐮";
+  const len = Math.min(text.length, 60);
+  const top    = " " + "_".repeat(len + 2);
+  const bottom = " " + "-".repeat(len + 2);
+  appendLine(id, escHtml(top), "term-dim");
+  appendLine(id, `< ${escHtml(text)} >`, "");
+  appendLine(id, escHtml(bottom), "term-dim");
+  appendLine(id, `        \\   ^__^`, "term-success");
+  appendLine(id, `         \\  (oo)\\_______`, "term-success");
+  appendLine(id, `            (__)\\       )\\/\\`, "term-success");
+  appendLine(id, `                ||----w |`, "term-success");
+  appendLine(id, `                ||     ||`, "term-success");
+}
+
+function cmdFortune(id) {
+  const f = FORTUNES[Math.floor(Math.random() * FORTUNES.length)];
+  appendLine(id, "─────────────────────────────────────────────────", "term-dim");
+  appendLine(id, escHtml(f), "term-yellow");
+  appendLine(id, "─────────────────────────────────────────────────", "term-dim");
+}
+
+function cmdChmod(id, args) {
+  if (args[0] === "777" && args[1] === "life") {
+    appendLine(id, "chmod: modification des permissions de 'life'...", "term-dim");
+    appendLine(id, "[████████████████████████████] 100%", "term-success");
+    appendLine(id, "✓ Permissions définies sur 777 (tous droits à tout le monde)", "term-success");
+    appendLine(id, "⚠️  ATTENTION: Cette décision aura des conséquences imprévisibles.", "term-yellow");
+    appendLine(id, "   Consultez un philosophe ou un psychiatre.", "term-dim");
+  } else {
+    const target = args[args.length - 1] || "fichier";
+    appendLine(id, `chmod: permissions de '${escHtml(target)}' modifiées.`, "");
+  }
+  appendLine(id, "", "");
+}
+
+/* ── Music Player ───────────────────────────────────────────── */
+const PLAYLIST = [
+  { title: "Harder, Better, Faster, Stronger", artist: "Daft Punk", dur: "3:45" },
+  { title: "Around the World",                 artist: "Daft Punk", dur: "7:09" },
+  { title: "Get Lucky",                        artist: "Daft Punk ft. Pharrell", dur: "6:09" },
+  { title: "One More Time",                    artist: "Daft Punk", dur: "5:20" },
+  { title: "Digital Love",                     artist: "Daft Punk", dur: "4:58" },
+  { title: "Technologic",                      artist: "Daft Punk", dur: "4:44" },
+];
+let musicState = { playing: false, idx: 0, progress: 0, interval: null };
+
+function openMusicPlayerContent_() {
+  const t = PLAYLIST[musicState.idx];
+  const bars = musicState.playing ? "▁▃▅▇▅▃▁▂▄▆▄▂" : "▁▁▁▁▁▁▁▁▁▁▁▁";
+  const prog = Math.floor((musicState.progress / 100) * 10);
+  const bar = "▰".repeat(prog) + "▱".repeat(10 - prog);
+  return `<div style="padding:20px;font-family:var(--font-mono);display:flex;flex-direction:column;gap:12px;height:100%;background:var(--term-bg);">
+    <div style="text-align:center;color:var(--blue);font-size:13px;font-weight:700;">🎵 PortfolioOS Music Player</div>
+    <pre style="color:var(--green);text-align:center;font-size:11px;margin:0;line-height:1.3;">${[
+      "  ╔════════════════════╗  ",
+      "  ║   ♪ ♫ ♪  ♫  ♪   ║  ",
+      `  ║  ${bars}  ║  `,
+      "  ╚════════════════════╝  ",
+    ].join("\n")}</pre>
+    <div style="text-align:center;">
+      <div style="color:var(--text);font-weight:700;font-size:14px;">${escHtml(t.title)}</div>
+      <div style="color:var(--text-dim);font-size:12px;margin-top:4px;">${escHtml(t.artist)}</div>
+    </div>
+    <div style="text-align:center;font-size:12px;color:var(--text-dim);">${bar} ${t.dur}</div>
+    <div style="display:flex;justify-content:center;gap:12px;margin-top:4px;">
+      <button onclick="musicPrev()" style="background:rgba(255,255,255,0.06);border:1px solid var(--win-border);color:var(--text);padding:6px 14px;border-radius:6px;cursor:pointer;font-family:var(--font-mono);font-size:16px;">⏮</button>
+      <button onclick="musicToggle()" style="background:rgba(87,171,90,0.15);border:1px solid var(--green);color:var(--green);padding:6px 18px;border-radius:6px;cursor:pointer;font-family:var(--font-mono);font-size:16px;">${musicState.playing ? "⏸" : "▶"}</button>
+      <button onclick="musicNext()" style="background:rgba(255,255,255,0.06);border:1px solid var(--win-border);color:var(--text);padding:6px 14px;border-radius:6px;cursor:pointer;font-family:var(--font-mono);font-size:16px;">⏭</button>
+    </div>
+    <div style="overflow-y:auto;flex:1;margin-top:8px;border-top:1px solid var(--win-border);padding-top:8px;">
+      ${PLAYLIST.map((t,i) => `<div onclick="musicSelect(${i})" style="padding:6px 8px;cursor:pointer;border-radius:4px;font-size:12px;color:${i===musicState.idx?"var(--green)":"var(--text-dim)"};background:${i===musicState.idx?"rgba(87,171,90,0.08)":"transparent"};display:flex;justify-content:space-between;">
+        <span>${i===musicState.idx?(musicState.playing?"▶ ":"■ "):"  "}${escHtml(t.title)}</span>
+        <span style="color:var(--text-dim)">${t.dur}</span>
+      </div>`).join("")}
+    </div>
+  </div>`;
+}
+
+function openMusicPlayer() {
+  if (state.windows["music"]) { bringToFront("music"); return; }
+  createWindow({ id: "music", title: "Music Player", icon: "🎵", content: openMusicPlayerContent_(), width: 340, height: 460 });
+  if (musicState.playing) musicStartInterval();
+}
+
+function musicStartInterval() {
+  if (musicState.interval) return;
+  musicState.interval = setInterval(() => {
+    if (!state.windows["music"]) { clearInterval(musicState.interval); musicState.interval = null; return; }
+    musicState.progress = (musicState.progress + 1) % 100;
+    if (musicState.progress === 0) { musicState.idx = (musicState.idx + 1) % PLAYLIST.length; }
+    const win = document.getElementById("window-music");
+    if (win) win.querySelector(".win-content").innerHTML = openMusicPlayerContent_();
+  }, 500);
+}
+
+function musicToggle() {
+  musicState.playing = !musicState.playing;
+  if (musicState.playing) { musicStartInterval(); playSound("notify"); }
+  else { clearInterval(musicState.interval); musicState.interval = null; }
+  const win = document.getElementById("window-music");
+  if (win) win.querySelector(".win-content").innerHTML = openMusicPlayerContent_();
+}
+
+function musicNext() {
+  musicState.idx = (musicState.idx + 1) % PLAYLIST.length;
+  musicState.progress = 0;
+  const win = document.getElementById("window-music");
+  if (win) win.querySelector(".win-content").innerHTML = openMusicPlayerContent_();
+}
+
+function musicPrev() {
+  musicState.idx = (musicState.idx - 1 + PLAYLIST.length) % PLAYLIST.length;
+  musicState.progress = 0;
+  const win = document.getElementById("window-music");
+  if (win) win.querySelector(".win-content").innerHTML = openMusicPlayerContent_();
+}
+
+function musicSelect(idx) {
+  musicState.idx = idx;
+  musicState.progress = 0;
+  const win = document.getElementById("window-music");
+  if (win) win.querySelector(".win-content").innerHTML = openMusicPlayerContent_();
+}
+
 /* ── Section Windows ────────────────────────────────────────── */
 
 function openAboutWindow() {
@@ -992,20 +1366,27 @@ function openAboutWindow() {
       <img src="profile.jpg" alt="Benjamin Hanquart" class="about-photo">
       <div>
         <div class="about-name">Benjamin Hanquart</div>
-        <div class="about-role">Étudiant en BUT Informatique</div>
+        <div class="about-role">Étudiant en BUT Informatique — 3ème année</div>
         <div class="about-location">📍 Lille, France</div>
       </div>
     </div>
+
     <div class="about-section-title">À propos</div>
     <p class="about-text">
-      Passionné par l'informatique et la création de logiciels permettant
-      l'automatisation de tâches, je suis actuellement en deuxième année de
-      BUT Informatique à l'IUT de Lille. Mon portfolio démontre mes compétences
-      en développement et ma capacité à relever des défis techniques.
+      Passionné par l'informatique, je suis en 3ème année de BUT Informatique à l'IUT de Lille (parcours Réalisation d'Applications). Ce portfolio retrace mon évolution du S1 au S4, à travers des projets variés en Java, TypeScript et DevOps.
     </p>
-    <div class="about-section-title">Compétences</div>
+
+    <div class="about-section-title">🎯 Orientation professionnelle</div>
+    <p class="about-text" style="line-height:1.8;">
+      <span style="color:var(--blue);font-weight:700;">Stage :</span> Application web de réservation de salles (Santelys, avr.–juin 2025) — API Microsoft Graph<br>
+      <span style="color:var(--blue);font-weight:700;">Objectif :</span> Intégrer l'école CÉSI (ingénieur) après le BUT<br>
+      <span style="color:var(--blue);font-weight:700;">Spécialisation :</span> Développement back-end · Jeux vidéo · Automatisation
+    </p>
+
+    <div class="about-section-title">Compétences techniques</div>
     <div class="skill-tags">
       <span class="skill-tag">Java</span>
+      <span class="skill-tag">TypeScript</span>
       <span class="skill-tag">C</span>
       <span class="skill-tag">HTML5</span>
       <span class="skill-tag">CSS3</span>
@@ -1015,12 +1396,24 @@ function openAboutWindow() {
     <div class="about-section-title">Frameworks & Outils</div>
     <div class="skill-tags">
       <span class="skill-tag green">Bootstrap</span>
-      <span class="skill-tag green">Tailwind</span>
+      <span class="skill-tag green">Node.js</span>
+      <span class="skill-tag green">REST API</span>
       <span class="skill-tag green">Git</span>
       <span class="skill-tag green">IntelliJ</span>
-      <span class="skill-tag green">VS Code</span>
       <span class="skill-tag green">JavaFX</span>
+      <span class="skill-tag green">Linux/Debian</span>
     </div>
+
+    <div class="about-section-title">Compétences transversales</div>
+    <div class="skill-tags">
+      <span class="skill-tag">🤝 Travail en équipe</span>
+      <span class="skill-tag">💬 Communication</span>
+      <span class="skill-tag">⏱️ Gestion du temps</span>
+      <span class="skill-tag">🔍 Autonomie</span>
+      <span class="skill-tag">📐 Organisation</span>
+      <span class="skill-tag">🔄 Adaptabilité</span>
+    </div>
+
     <div class="about-section-title">Liens</div>
     <div style="display:flex;gap:10px;margin-top:4px;">
       <a href="https://github.com/Kinakosao" target="_blank" class="proj-detail-btn">🐙 GitHub</a>
@@ -1032,8 +1425,8 @@ function openAboutWindow() {
     title: "about.txt",
     icon: "📋",
     content,
-    width: 560,
-    height: 520,
+    width: 580,
+    height: 560,
   });
 }
 
@@ -1368,6 +1761,7 @@ function initContactForm(winId) {
           status.className = "cf-status success";
           status.textContent =
             "✅ Message envoyé ! Je vous répondrai dès que possible.";
+          showNotification("✅ Message envoyé !", "success");
           form.reset();
         },
         (err) => {
@@ -1436,6 +1830,9 @@ function handleAction(action) {
     case "open-contact":
       openContactWindow();
       break;
+    case "open-music":
+      openMusicPlayer();
+      break;
     case "wallpaper":
       cycleWallpaper();
       break;
@@ -1450,6 +1847,10 @@ function initEvents() {
       e.preventDefault();
       openTerminal();
     }
+    // Super key → Activities
+    if (e.key === "Meta") { e.preventDefault(); toggleActivities(); }
+    // Ctrl+W → close focused window
+    if (e.ctrlKey && e.key === "w" && !e.altKey) { e.preventDefault(); if (state.focused) closeWindow(state.focused); }
   });
 
   // Desktop icons (double-click)
@@ -1497,12 +1898,26 @@ function initEvents() {
   document
     .getElementById("activities-btn")
     .addEventListener("click", toggleActivities);
+
+  // Screensaver activity reset
+  ["mousemove","mousedown","keydown"].forEach(ev =>
+    document.addEventListener(ev, resetSsTimer, { passive: true })
+  );
+  startSsTimer();
 }
 
 /* ── Init ───────────────────────────────────────────────────── */
 document.addEventListener("DOMContentLoaded", () => {
+  // Load persistent history
+  state.cmdHistory = JSON.parse(localStorage.getItem("portfolioOS_history") || "[]");
+
   updateClock();
   setInterval(updateClock, 60000);
+
+  // Sound button initial state
+  const soundBtn = document.getElementById("sound-toggle");
+  if (soundBtn) { soundBtn.textContent = soundEnabled ? "🔊" : "🔇"; soundBtn.onclick = toggleSound; }
+
   initEvents();
   runBoot();
 });

@@ -15,7 +15,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/devicon@2.15.1/devicon.min.css">
+  <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="linux.css">
+  <script defer data-domain="benjaminhanquart.dev" src="https://plausible.io/js/script.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script>
     (function(){ emailjs.init({ publicKey: "LL3QyQ6RwXs2v5BNk" }); })();
@@ -50,8 +52,8 @@
       <span id="topbar-clock">jeu. 28 mai 00:00</span>
     </div>
     <div class="tb-right">
+      <span class="tb-icon" id="sound-toggle" title="Son">🔇</span>
       <span class="tb-icon" title="Réseau">📶</span>
-      <span class="tb-icon" title="Volume">🔊</span>
       <span class="tb-icon" title="Batterie">⚡</span>
     </div>
   </div>
@@ -81,6 +83,10 @@
         <div class="icon-emoji">✉️</div>
         <span class="icon-label">contact.sh</span>
       </div>
+      <div class="desktop-icon" data-action="open-music" title="Lecteur musical">
+        <div class="icon-emoji">🎵</div>
+        <span class="icon-label">music.sh</span>
+      </div>
     </div>
 
     <!-- Hint overlay -->
@@ -94,6 +100,9 @@
 
     <!-- Windows rendered here -->
     <div id="windows-container"></div>
+
+    <!-- Snap preview -->
+    <div id="snap-preview" style="display:none;"></div>
 
     <!-- Context menu -->
     <div id="context-menu">
@@ -112,6 +121,9 @@
       </div>
       <div class="ctx-item" data-action="open-contact">
         <span class="ctx-icon">✉️</span> Ouvrir contact.sh
+      </div>
+      <div class="ctx-item" data-action="open-music">
+        <span class="ctx-icon">🎵</span> Ouvrir music.sh
       </div>
       <div class="ctx-sep"></div>
       <div class="ctx-item" data-action="wallpaper">
@@ -134,5 +146,6 @@
 </div>
 
 <script src="linux.js"></script>
+<script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
 </body>
 </html>
