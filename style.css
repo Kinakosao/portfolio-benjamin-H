@@ -485,3 +485,50 @@ body.dark-mode .profile-picture-container {
     background-color: #333;
 }
 
+/* Project image placeholders (for projects without screenshots) */
+.project-img-placeholder {
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    font-weight: 700;
+    gap: 10px;
+    color: rgba(255, 255, 255, 0.9);
+    letter-spacing: 0.02em;
+}
+.project-img-placeholder.eco {
+    background: linear-gradient(135deg, #1a472a 0%, #2d6a4f 60%, #1b4332 100%);
+}
+.project-img-placeholder.game {
+    background: linear-gradient(135deg, #0f0c29 0%, #302b63 60%, #24243e 100%);
+}
+.project-img-placeholder.devops {
+    background: linear-gradient(135deg, #0d1117 0%, #2d333b 60%, #1c2128 100%);
+}
+
+/* Linux Mode Button (shown on classic.html) */
+#linux-mode-btn {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    background: rgba(13, 17, 23, 0.92);
+    color: #57ab5a;
+    border: 1px solid #57ab5a;
+    border-radius: 20px;
+    padding: 8px 16px;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    text-decoration: none;
+    z-index: 1001;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+}
+#linux-mode-btn:hover {
+    background: #57ab5a;
+    color: #0d1117;
+    transform: scale(1.05);
+    text-decoration: none;
+}
+

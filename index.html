@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mon Portfolio - Benjamin Hanquart</title>
-    <meta name="description" content="Découvrez le portfolio de Benjamin Hanquart, un développeur passionné avec des projets en Java, C, et développement web.">
+    <meta name="description" content="Découvrez le portfolio de Benjamin Hanquart, étudiant en BUT Informatique passionné par le développement Java, TypeScript, DevOps et les API REST.">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
@@ -131,41 +131,64 @@
                 <div id="project-filters" class="text-center mb-4 fade-in-up">
                     <button class="btn btn-outline-primary active" data-filter="all">Tout</button>
                     <button class="btn btn-outline-primary" data-filter="java">Java</button>
-                    <button class="btn btn-outline-primary" data-filter="web">Web</button>
-                    <button class="btn btn-outline-primary" data-filter="c">C</button>
+                    <button class="btn btn-outline-primary" data-filter="typescript">TypeScript</button>
+                    <button class="btn btn-outline-primary" data-filter="api">API</button>
+                    <button class="btn btn-outline-primary" data-filter="devops">DevOps</button>
                 </div>
 
                 <div class="row" id="project-grid">
-                    <!-- Projet 1 -->
+                    <!-- RISK -->
                     <div class="col-md-4 mb-4 fade-in-up project-item" data-category="java">
                         <div class="card project-card">
-                            <img src="risk.jpg"    class="card-img-top" alt="Image du projet 1" loading="lazy">
+                            <img src="risk.jpg" class="card-img-top" alt="Jeu RISK" loading="lazy">
                             <div class="card-body text-center">
-                                <h5 class="card-title">Jeux en Java-RISK</h5>
-                                <p class="card-text">un jeu Java utilisant le terminal Linux uniquement, selon la méthode agile</p>
+                                <h5 class="card-title">Jeux en Java — RISK</h5>
+                                <p class="card-text">Jeu de stratégie en Java dans un terminal Linux, développé en méthode agile en groupe.</p>
                                 <button class="btn btn-primary" data-modal-target="#project-modal-1">En savoir plus</button>
                             </div>
                         </div>
                     </div>
-                    <!-- Projet 2 -->
+                    <!-- Labyrinthe -->
                     <div class="col-md-4 mb-4 fade-in-up project-item" data-category="java">
                         <div class="card project-card">
-                            <img src="labyritnhe.jpeg" class="card-img-top" alt="Image du projet 2" loading="lazy">
+                            <img src="labyritnhe.jpeg" class="card-img-top" alt="Labyrinthe" loading="lazy">
                             <div class="card-body text-center">
-                                <h5 class="card-title">Jeux Java Labyrinthe</h5>
-                                <p class="card-text">Un jeu Java utilisant JavaFX, permettant de créer des labyrinthes de façon aléatoire</p>
-                                 <button class="btn btn-primary" data-modal-target="#project-modal-2">En savoir plus</button>
+                                <h5 class="card-title">Jeux Java — Labyrinthe</h5>
+                                <p class="card-text">Jeu JavaFX avec génération aléatoire de labyrinthes et plusieurs modes de jeu.</p>
+                                <button class="btn btn-primary" data-modal-target="#project-modal-2">En savoir plus</button>
                             </div>
                         </div>
                     </div>
-                    <!-- Projet 3 -->
-                    <div class="col-md-4 mb-4 fade-in-up project-item" data-category="web">
+                    <!-- EcoDrop API -->
+                    <div class="col-md-4 mb-4 fade-in-up project-item" data-category="java api">
                         <div class="card project-card">
-                            <img src="casino.jpg" class="card-img-top" alt="Image du projet 3" loading="lazy">
+                            <div class="project-img-placeholder eco">🌿 EcoDrop</div>
                             <div class="card-body text-center">
-                                <h5 class="card-title">Un casino hébergé en local</h5>
-                                <p class="card-text">Un casino héberger en local grace a un serveur tomcat, attention toujours en cours.</p>
-                                 <button class="btn btn-primary" data-modal-target="#project-modal-3">En savoir plus</button>
+                                <h5 class="card-title">EcoDrop — API REST</h5>
+                                <p class="card-text">API REST de gestion de collecte de déchets : points de collecte, auth JWT, leaderboard recycleurs.</p>
+                                <button class="btn btn-primary" data-modal-target="#project-modal-eco">En savoir plus</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Syck Sai-Vhen -->
+                    <div class="col-md-4 mb-4 fade-in-up project-item" data-category="typescript">
+                        <div class="card project-card">
+                            <div class="project-img-placeholder game">🎮 Syck Sai-Vhen</div>
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Syck Sai-Vhen</h5>
+                                <p class="card-text">Shoot-em-up multijoueur en TypeScript/WebSocket avec IA ennemis, boss, et assets faits maison.</p>
+                                <button class="btn btn-primary" data-modal-target="#project-modal-game">En savoir plus</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- SAE3.03 Matrix -->
+                    <div class="col-md-4 mb-4 fade-in-up project-item" data-category="devops">
+                        <div class="card project-card">
+                            <div class="project-img-placeholder devops">🖥️ Matrix/Synapse</div>
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Déploiement Matrix/Synapse</h5>
+                                <p class="card-text">Déploiement d'un serveur de communication Matrix sur 3 VMs Debian avec PostgreSQL et nginx.</p>
+                                <button class="btn btn-primary" data-modal-target="#project-modal-devops">En savoir plus</button>
                             </div>
                         </div>
                     </div>
@@ -208,11 +231,13 @@
         <dialog id="project-modal-1" class="project-modal">
             <div class="modal-content">
                 <button class="close-modal-btn" aria-label="Fermer la modale">&times;</button>
-                <h2>Jeux Java - RISK</h2>
-                <p>Ce projet est un jeu en Java créé pour être utilisé dans un terminal Linux.</p>
+                <h2>Jeux Java — RISK</h2>
+                <p>Jeu de stratégie en Java fonctionnant entièrement dans un terminal Linux. Développé en groupe selon la méthode agile avec sprints, rétrospectives et gestion de backlog.</p>
                 <h5>Technologies utilisées :</h5>
                 <div class="skills mb-3">
                     <span class="badge bg-primary">Java</span>
+                    <span class="badge bg-secondary">Terminal Linux</span>
+                    <span class="badge bg-dark">Méthode Agile</span>
                 </div>
                 <a href="https://gitlab.univ-lille.fr/iut-info/p3.01/2025-2026/groupe-7" class="btn btn-dark">Code source</a>
             </div>
@@ -221,8 +246,8 @@
         <dialog id="project-modal-2" class="project-modal">
             <div class="modal-content">
                 <button class="close-modal-btn" aria-label="Fermer la modale">&times;</button>
-                <h2>Jeux Java Labyrinthe</h2>
-                <p>Ce projet Java était destiné à créer un labyrinthe de façon aléatoire et d'en faire un jeu avec plusieurs sortes de labyrinthes, d'avoir plusieurs modes de jeu.</p>
+                <h2>Jeux Java — Labyrinthe</h2>
+                <p>Génération aléatoire de labyrinthes avec plusieurs algorithmes, plusieurs modes de jeu et une interface graphique JavaFX. Gestion des collisions, détection de sortie et chronomètre.</p>
                 <h5>Technologies utilisées :</h5>
                 <div class="skills mb-3">
                     <span class="badge bg-success">Java</span>
@@ -232,17 +257,74 @@
             </div>
         </dialog>
 
-        <dialog id="project-modal-3" class="project-modal">
+        <dialog id="project-modal-eco" class="project-modal">
             <div class="modal-content">
                 <button class="close-modal-btn" aria-label="Fermer la modale">&times;</button>
-                <h2>Un casino hébergé en local</h2>
-                <p>Ce projet est un serveur Tomcat hébergeant un casino, permettant donc la sauvegarde de données, et d'avoir plusieurs sessions disponibles. Il est en cours de fabrication !</p>
+                <h2>EcoDrop — API REST</h2>
+                <p>API REST complète sur le thème de l'écologie. Gestion de points de collecte de déchets, types de déchets, dépôts et utilisateurs. Authentification par token JWT (Basic Auth), réponses JSON et XML, gestion des rôles USER/ADMIN, et leaderboard des 10 meilleurs recycleurs.</p>
+                <h5>Points techniques :</h5>
+                <ul class="mb-3" style="font-size:0.9rem;">
+                    <li>Architecture REST complète (GET, POST, PUT, PATCH, DELETE)</li>
+                    <li>Authentification JWT avec gestion des rôles</li>
+                    <li>Réponses négociées JSON / XML</li>
+                    <li>Déployé sur serveur Tomcat</li>
+                </ul>
                 <h5>Technologies utilisées :</h5>
                 <div class="skills mb-3">
-                     <span class="badge bg-secondary">Java</span>
-                     <span class="badge bg-info">HTML</span>
+                    <span class="badge bg-primary">Java</span>
+                    <span class="badge bg-warning text-dark">REST API</span>
+                    <span class="badge bg-info text-dark">SQL</span>
+                    <span class="badge bg-secondary">Tomcat</span>
+                    <span class="badge bg-dark">JWT</span>
                 </div>
-                <a href="https://github.com/Kinakosao/CasinoTomcat" class="btn btn-dark">Code source</a>
+                <a href="https://github.com/Kinakosao/SAE4.02" class="btn btn-dark">Code source</a>
+            </div>
+        </dialog>
+
+        <dialog id="project-modal-game" class="project-modal">
+            <div class="modal-content">
+                <button class="close-modal-btn" aria-label="Fermer la modale">&times;</button>
+                <h2>Syck Sai-Vhen — Shoot-em-up</h2>
+                <p>Jeu de type shoot-em-up multijoueur développé en TypeScript avec une architecture client/serveur via WebSockets. Les joueurs se connectent depuis différentes machines et affrontent des vagues d'ennemis avec IA, un boss spécial, et un système de bonus.</p>
+                <h5>Points techniques :</h5>
+                <ul class="mb-3" style="font-size:0.9rem;">
+                    <li>Architecture WebSocket temps réel (client TypeScript + serveur Node.js)</li>
+                    <li>IA ennemis avec comportements paramétrés et boss final</li>
+                    <li>Système de hitbox, collisions et projectiles</li>
+                    <li>Contrôles hybrides clavier + souris</li>
+                    <li>Top 10 des scores sauvegardé côté serveur</li>
+                    <li>Tous les assets graphiques créés par l'équipe</li>
+                </ul>
+                <h5>Technologies utilisées :</h5>
+                <div class="skills mb-3">
+                    <span class="badge bg-warning text-dark">TypeScript</span>
+                    <span class="badge bg-success">Node.js</span>
+                    <span class="badge bg-primary">WebSocket</span>
+                </div>
+                <a href="https://github.com/Kinakosao/JSAE" class="btn btn-dark">Code source</a>
+            </div>
+        </dialog>
+
+        <dialog id="project-modal-devops" class="project-modal">
+            <div class="modal-content">
+                <button class="close-modal-btn" aria-label="Fermer la modale">&times;</button>
+                <h2>Déploiement Matrix/Synapse</h2>
+                <p>Déploiement complet d'un serveur de messagerie instantanée Matrix (implémentation Synapse) sur une architecture distribuée de 3 machines virtuelles Debian 12, avec le client web Element.</p>
+                <h5>Architecture :</h5>
+                <ul class="mb-3" style="font-size:0.9rem;">
+                    <li><strong>VM matrix</strong> — Serveur Synapse</li>
+                    <li><strong>VM db</strong> — Base de données PostgreSQL</li>
+                    <li><strong>VM element</strong> — Client Element Web + nginx (reverse proxy)</li>
+                </ul>
+                <h5>Technologies utilisées :</h5>
+                <div class="skills mb-3">
+                    <span class="badge bg-dark">Debian 12</span>
+                    <span class="badge bg-primary">Matrix/Synapse</span>
+                    <span class="badge bg-info text-dark">PostgreSQL</span>
+                    <span class="badge bg-secondary">nginx</span>
+                    <span class="badge bg-warning text-dark">VirtualBox</span>
+                </div>
+                <a href="https://github.com/Kinakosao/SAE3.03" class="btn btn-dark">Code source</a>
             </div>
         </dialog>
 
@@ -260,6 +342,11 @@
     <!-- Scroll to Top Button -->
     <a href="#" id="scroll-to-top-btn" aria-label="Retourner en haut de la page">
         <i class="bi bi-arrow-up-short"></i>
+    </a>
+
+    <!-- Linux Mode Button -->
+    <a href="linux.html" id="linux-mode-btn" title="Passer en mode Linux Terminal">
+        🐧 Mode Linux
     </a>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

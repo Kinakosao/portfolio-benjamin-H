@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Benjamin Hanquart — PortfolioOS</title>
+  <meta name="description" content="Portfolio de Benjamin Hanquart — Étudiant en BUT Informatique, passionné par le développement.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://benjaminhanquart.dev/">
+  <meta property="og:title" content="Benjamin Hanquart — PortfolioOS">
+  <meta property="og:description" content="Un portfolio interactif dans un environnement Linux.">
+  <meta property="og:image" content="https://benjaminhanquart.dev/profile.jpg">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/devicon@2.15.1/devicon.min.css">
+  <link rel="stylesheet" href="linux.css">
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script>
+    (function(){ emailjs.init({ publicKey: "LL3QyQ6RwXs2v5BNk" }); })();
+  </script>
+</head>
+<body>
+
+<!-- Mobile fallback -->
+<div class="no-mobile-notice">
+  <h2>🐧 PortfolioOS</h2>
+  <p>Ce portfolio interactif est optimisé pour un écran d'ordinateur.<br>
+  Vous pouvez quand même accéder au <a href="index.html">site classique</a>.</p>
+</div>
+
+<!-- Boot Screen -->
+<div id="boot-screen">
+  <div id="boot-lines"></div>
+  <div class="boot-bar-wrap" id="boot-bar-wrap">
+    <div class="boot-bar" id="boot-bar"></div>
+  </div>
+</div>
+
+<!-- Desktop -->
+<div id="desktop">
+
+  <!-- Top bar -->
+  <div id="topbar">
+    <div class="tb-left">
+      <span id="activities-btn" title="Afficher toutes les fenêtres">Activités</span>
+    </div>
+    <div class="tb-center">
+      <span id="topbar-clock">jeu. 28 mai 00:00</span>
+    </div>
+    <div class="tb-right">
+      <span class="tb-icon" title="Réseau">📶</span>
+      <span class="tb-icon" title="Volume">🔊</span>
+      <span class="tb-icon" title="Batterie">⚡</span>
+    </div>
+  </div>
+
+  <!-- Desktop area -->
+  <div id="desktop-area">
+
+    <!-- Desktop icons -->
+    <div id="desktop-icons">
+      <div class="desktop-icon" data-action="open-terminal" title="Ouvrir un terminal">
+        <div class="icon-emoji">🖥️</div>
+        <span class="icon-label">Terminal</span>
+      </div>
+      <div class="desktop-icon" data-action="open-about" title="À propos">
+        <div class="icon-emoji">📋</div>
+        <span class="icon-label">about.txt</span>
+      </div>
+      <div class="desktop-icon" data-action="open-projects" title="Mes projets">
+        <div class="icon-emoji">📁</div>
+        <span class="icon-label">projects/</span>
+      </div>
+      <div class="desktop-icon" data-action="open-cv" title="Mon CV">
+        <div class="icon-emoji">📄</div>
+        <span class="icon-label">CV.pdf</span>
+      </div>
+      <div class="desktop-icon" data-action="open-contact" title="Me contacter">
+        <div class="icon-emoji">✉️</div>
+        <span class="icon-label">contact.sh</span>
+      </div>
+    </div>
+
+    <!-- Hint overlay -->
+    <div id="desktop-hint">
+      <div class="hint-box">
+        <p class="hint-title">$ benjamin@portfolio:~</p>
+        <p>Appuyez sur <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>T</kbd> pour ouvrir un terminal</p>
+        <p class="hint-sub">ou double-cliquez sur une icône du bureau</p>
+      </div>
+    </div>
+
+    <!-- Windows rendered here -->
+    <div id="windows-container"></div>
+
+    <!-- Context menu -->
+    <div id="context-menu">
+      <div class="ctx-item" data-action="open-terminal">
+        <span class="ctx-icon">🖥️</span> Nouveau terminal
+      </div>
+      <div class="ctx-sep"></div>
+      <div class="ctx-item" data-action="open-about">
+        <span class="ctx-icon">📋</span> Ouvrir about.txt
+      </div>
+      <div class="ctx-item" data-action="open-projects">
+        <span class="ctx-icon">📁</span> Ouvrir projects/
+      </div>
+      <div class="ctx-item" data-action="open-cv">
+        <span class="ctx-icon">📄</span> Ouvrir CV.pdf
+      </div>
+      <div class="ctx-item" data-action="open-contact">
+        <span class="ctx-icon">✉️</span> Ouvrir contact.sh
+      </div>
+      <div class="ctx-sep"></div>
+      <div class="ctx-item" data-action="wallpaper">
+        <span class="ctx-icon">🖼️</span> Changer le fond
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Taskbar -->
+  <div id="taskbar">
+    <div id="taskbar-windows"></div>
+    <div id="taskbar-right">
+      <a href="index.html" id="classic-btn" title="Accéder au site classique">
+        🌐 Site classique
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<script src="linux.js"></script>
+</body>
+</html>
