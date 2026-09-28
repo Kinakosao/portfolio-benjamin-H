@@ -1,10 +1,29 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-bs-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mon Portfolio - Benjamin Hanquart</title>
+    <!-- Apply saved / system theme before first paint (avoids the light flash) -->
+    <script>
+        (function () {
+            try {
+                var t = localStorage.getItem('theme');
+                if (t === 'dark-mode') t = 'dark';
+                if (t === 'light-mode') t = 'light';
+                if (t !== 'dark' && t !== 'light') {
+                    t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                }
+                document.documentElement.setAttribute('data-bs-theme', t);
+                var l = localStorage.getItem('portfolioLang');
+                if (l === 'en' || l === 'fr') document.documentElement.lang = l;
+            } catch (e) {}
+        })();
+    </script>
+    <title>Benjamin Hanquart — Portfolio</title>
     <meta name="description" content="Découvrez le portfolio de Benjamin Hanquart, étudiant en BUT Informatique passionné par le développement Java, TypeScript, DevOps et les API REST.">
+    <meta name="author" content="Benjamin Hanquart">
+    <meta name="theme-color" content="#0f0c29">
+    <link rel="canonical" href="https://benjaminhanquart.dev/">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
@@ -12,13 +31,15 @@
     <meta property="og:title" content="Portfolio de Benjamin Hanquart">
     <meta property="og:description" content="Étudiant en BUT Informatique, passionné par le développement.">
     <meta property="og:image" content="https://benjaminhanquart.dev/profile.jpg">
+    <meta property="og:locale" content="fr_FR">
+    <meta property="og:locale:alternate" content="en_US">
     <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://benjaminhanquart.dev/">
-    <meta property="twitter:title" content="Portfolio de Benjamin Hanquart">
-    <meta property="twitter:description" content="Découvrez le portfolio de Benjamin Hanquart, un développeur passionné avec des projets en Java, C, et développement web.">
-    <meta property="twitter:image" content="https://benjaminhanquart.dev/profile.jpg">
-    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://benjaminhanquart.dev/">
+    <meta name="twitter:title" content="Portfolio de Benjamin Hanquart">
+    <meta name="twitter:description" content="Découvrez le portfolio de Benjamin Hanquart, un développeur passionné avec des projets en Java, TypeScript, DevOps et développement web.">
+    <meta name="twitter:image" content="https://benjaminhanquart.dev/profile.jpg">
+
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="icons/icon-192.png">
     <link rel="manifest" href="manifest.json">
@@ -27,13 +48,16 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/devicon@2.15.1/devicon.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="style.css">
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-    <script type="text/javascript">
-        (function() {
-            emailjs.init({
-              publicKey: "LL3QyQ6RwXs2v5BNk",
-            });
-        })();
+    <noscript>
+        <style>
+            #preloader { display: none !important; }
+            .hidden-content { display: block !important; }
+            .fade-in-up { opacity: 1 !important; transform: none !important; }
+        </style>
+    </noscript>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script>
+        if (window.emailjs) emailjs.init({ publicKey: "LL3QyQ6RwXs2v5BNk" });
     </script>
     <script type="application/ld+json">
     {
@@ -56,194 +80,194 @@
     }
     </script>
 </head>
-<body>
-    <a href="#main-content" class="skip-link">Aller au contenu principal</a>
-    <div id="reading-progress" style="position:fixed;top:0;left:0;height:3px;width:0%;background:linear-gradient(90deg,#0d6efd,#0dcaf0);z-index:99999;transition:width 0.1s;pointer-events:none;"></div>
+<body data-title-key="js.title">
+    <a href="#about" class="skip-link" data-i18n="skip">Aller au contenu</a>
+    <div id="reading-progress"></div>
     <div id="preloader">
         <div class="spinner"></div>
     </div>
 
-    <div id="main-content" class="hidden-content" role="main">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div id="main-content" class="hidden-content">
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
             <div class="container">
-                <a class="navbar-brand" href="index.html">Mon Portfolio</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <a class="navbar-brand d-flex align-items-center" href="#hero"><span class="brand-mark">BH</span><span data-i18n="brand">Mon Portfolio</span></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Menu" data-i18n-attr="aria-label:nav.toggle">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#about" data-i18n="nav-about">À propos</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#projects" data-i18n="nav-projects">Projets</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#veille">Veille</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#contact" data-i18n="nav-contact">Contact</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="resume.html">Mon CV</a>
-                        </li>
-                        <li class="nav-item">
-                          <button id="lang-toggle" class="btn btn-sm" onclick="toggleLang()" style="background:transparent;border:1px solid rgba(255,255,255,0.3);color:inherit;padding:3px 10px;font-size:12px;">FR/EN</button>
-                        </li>
-                        <li class="nav-item ms-lg-3 d-flex align-items-center">
-                           <label class="theme-switcher-label" for="theme-switch-checkbox" aria-label="Changer de thème">
-                               <input type="checkbox" id="theme-switch-checkbox">
-                               <span class="theme-switcher-icon sun"><i class="bi bi-sun-fill"></i></span>
-                               <span class="theme-switcher-icon moon"><i class="bi bi-moon-stars-fill"></i></span>
-                           </label>
+                    <ul class="navbar-nav ms-auto align-items-lg-center">
+                        <li class="nav-item"><a class="nav-link" href="#about" data-i18n="nav.about">À propos</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#projects" data-i18n="nav.projects">Projets</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#veille" data-i18n="nav.veille">Veille</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#contact" data-i18n="nav.contact">Contact</a></li>
+                        <li class="nav-item"><a class="nav-link" href="resume.html" data-i18n="nav.cv">Mon CV</a></li>
+                        <li class="nav-item d-flex nav-tools ms-lg-3 mt-2 mt-lg-0">
+                            <button id="lang-toggle" class="nav-icon-btn" type="button" aria-label="Switch to English" data-i18n-attr="aria-label:lang.switch;title:lang.switch">
+                                <i class="bi bi-translate"></i><span class="lang-label">EN</span>
+                            </button>
+                            <button id="theme-toggle" class="nav-icon-btn theme-toggle" type="button" aria-label="Changer de thème" data-i18n-attr="aria-label:theme.toggle;title:theme.toggle">
+                                <i class="bi bi-sun-fill"></i>
+                                <i class="bi bi-moon-stars-fill"></i>
+                            </button>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
 
-        <header id="hero" class="text-white text-center">
-            <div class="container d-flex justify-content-center align-items-center h-100">
-                <div>
-                    <h1>Benjamin Hanquart</h1>
-                    <div class="lead">
-                        <span id="typing-text"></span>
-                        <span class="cursor">&nbsp;</span>
-                    </div>
-                    <div class="mt-3 fade-in-up">
-                        <span class="availability-badge"><span class="dot"></span> Ouvert aux opportunités — alternance ingénieur (CÉSI)</span>
-                    </div>
-                    <a href="#contact" class="btn btn-lg btn-outline-light mt-4 fade-in-up">Me Contacter</a>
-                    <br>
-                    <button id="share-btn" class="btn btn-outline-light btn-sm mt-2" onclick="sharePortfolio()">
-                      <i class="bi bi-share"></i> Partager mon portfolio
-                    </button>
+        <header id="hero" class="text-center">
+            <span class="hero-blob b1"></span>
+            <span class="hero-blob b2"></span>
+            <span class="hero-blob b3"></span>
+            <div class="container">
+                <div class="hero-kicker fade-in-up"><span class="dot"></span><span data-i18n="hero.kicker">Ouvert aux opportunités — alternance ingénieur (CÉSI)</span></div>
+                <h1 class="fade-in-up">Benjamin Hanquart</h1>
+                <p class="lead">
+                    <span id="typing-text"></span><span class="cursor">&nbsp;</span>
+                </p>
+                <div class="hero-actions mt-4 fade-in-up">
+                    <a href="#projects" class="btn btn-lg btn-light"><i class="bi bi-grid-3x3-gap me-2"></i><span data-i18n="hero.projects">Voir mes projets</span></a>
+                    <a href="#contact" class="btn btn-lg btn-outline-light"><i class="bi bi-envelope me-2"></i><span data-i18n="hero.contact">Me contacter</span></a>
+                </div>
+                <div class="hero-social mt-4 fade-in-up">
+                    <a href="https://github.com/Kinakosao" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub"><i class="bi bi-github"></i></a>
+                    <a href="https://www.linkedin.com/in/benjamin-hanquart-692b10288/" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn"><i class="bi bi-linkedin"></i></a>
+                    <a href="CV.pdf" download="CV_Benjamin_Hanquart.pdf" aria-label="CV (PDF)" title="CV (PDF)"><i class="bi bi-file-earmark-arrow-down"></i></a>
+                    <button id="share-btn" type="button" aria-label="Partager mon portfolio" title="Partager mon portfolio" data-i18n-attr="aria-label:hero.share;title:hero.share"><i class="bi bi-share"></i></button>
                 </div>
             </div>
+            <a href="#about" class="scroll-indicator" aria-label="Défiler vers le bas" data-i18n-attr="aria-label:hero.scroll"></a>
         </header>
 
-        <section id="about" class="py-5">
+        <section id="about">
             <div class="container">
-                <h2 class="text-center mb-4 fade-in-up" data-i18n="about-title">À propos de moi</h2>
-                <div class="row align-items-center">
-                    <div class="col-lg-7">
-                        <p class="fade-in-up">Passionné par l'informatique, je suis en 3ème année de BUT Informatique à l'IUT de Lille (parcours Réalisation d'Applications). Ce portfolio retrace mon parcours en BUT Informatique à travers des projets variés qui démontrent mes compétences techniques et ma capacité à relever des défis en équipe.</p>
-                        <div class="border rounded p-3 mt-3 fade-in-up" style="border-color:rgba(13,110,253,0.3)!important;background:rgba(13,110,253,0.04);">
-                            <h3 class="fw-bold text-primary mb-2 heading-sm">🎯 Mon orientation professionnelle</h3>
+                <h2 class="text-center mb-5 section-heading fade-in-up" data-i18n="about.title">À propos de moi</h2>
+                <div class="row align-items-center g-5">
+                    <div class="col-lg-7 order-2 order-lg-1">
+                        <p class="fade-in-up" data-i18n="about.intro">Passionné par l'informatique, je suis en 3ème année de BUT Informatique à l'IUT de Lille (parcours Réalisation d'Applications). Ce portfolio retrace mon parcours en BUT Informatique à travers des projets variés qui démontrent mes compétences techniques et ma capacité à relever des défis en équipe.</p>
+                        <div class="orientation-box p-3 mt-3 fade-in-up">
+                            <h3 class="fw-bold mb-2 heading-sm" data-i18n="about.orientation">🎯 Mon orientation professionnelle</h3>
                             <ul class="mb-0" style="font-size:0.9rem;">
-                                <li><strong>Stage&nbsp;:</strong> Développement d'une application web de réservation et de consultation de salles de réunion chez <strong>Santelys</strong> (Lille), du 13&nbsp;avril au 19&nbsp;juin&nbsp;2025 — intégration de l'API Microsoft&nbsp;Graph (Outlook).</li>
-                                <li class="mt-1"><strong>Ambition&nbsp;:</strong> Intégrer l'<strong>école CÉSI</strong> (école d'ingénieur) après le BUT pour approfondir mes compétences.</li>
-                                <li class="mt-1"><strong>Spécialisation&nbsp;:</strong> Développement <strong>back-end</strong> — avec un intérêt particulier pour le jeu vidéo et l'automatisation.</li>
+                                <li data-i18n="about.internship"><strong>Stage&nbsp;:</strong> Développement d'une application web de réservation et de consultation de salles de réunion chez <strong>Santelys</strong> (Lille), du 13&nbsp;avril au 19&nbsp;juin&nbsp;2025 — intégration de l'API Microsoft&nbsp;Graph (Outlook).</li>
+                                <li class="mt-1" data-i18n="about.ambition"><strong>Ambition&nbsp;:</strong> Intégrer l'<strong>école CÉSI</strong> (école d'ingénieur) après le BUT pour approfondir mes compétences.</li>
+                                <li class="mt-1" data-i18n="about.speciality"><strong>Spécialisation&nbsp;:</strong> Développement <strong>back-end</strong> — avec un intérêt particulier pour le jeu vidéo et l'automatisation.</li>
                             </ul>
                         </div>
                     </div>
-                    <div class="col-lg-5 text-center">
+                    <div class="col-lg-5 text-center order-1 order-lg-2">
                         <div class="profile-picture-container fade-in-up">
                             <picture>
                                 <source srcset="profile.webp" type="image/webp">
-                                <img src="profile.jpg" alt="Photo de Benjamin Hanquart" class="img-fluid" width="600" height="600" loading="lazy">
+                                <img src="profile.jpg" alt="Photo de Benjamin Hanquart" data-i18n-attr="alt:about.photo" width="600" height="600" loading="lazy">
                             </picture>
                         </div>
                     </div>
                 </div>
 
-                <h3 class="mt-5 text-center fade-in-up">Compétences techniques</h3>
-                <div class="skills mt-4 d-flex justify-content-center flex-wrap stagger-children">
-                    <div class="skill-item mx-3 fade-in-up"><i class="devicon-java-plain-wordmark colored"></i></div>
-                    <div class="skill-item mx-3 fade-in-up"><i class="devicon-c-plain-wordmark colored"></i></div>
-                    <div class="skill-item mx-3 fade-in-up"><i class="devicon-html5-plain-wordmark colored"></i></div>
-                    <div class="skill-item mx-3 fade-in-up"><i class="devicon-css3-plain-wordmark colored"></i></div>
-                    <div class="skill-item mx-3 fade-in-up"><i class="devicon-javascript-plain colored"></i></div>
-                    <div class="skill-item mx-3 fade-in-up"><i class="devicon-typescript-plain colored"></i></div>
-                    <div class="skill-item mx-3 fade-in-up"><i class="devicon-mysql-plain-wordmark colored"></i></div>
+                <h3 class="mt-5 text-center fade-in-up" data-i18n="about.hard">Compétences techniques</h3>
+                <div class="skills mt-3 d-flex justify-content-center flex-wrap stagger-children">
+                    <div class="skill-item fade-in-up"><i class="devicon-java-plain colored"></i><span class="skill-name">Java</span></div>
+                    <div class="skill-item fade-in-up"><i class="devicon-c-plain colored"></i><span class="skill-name">C</span></div>
+                    <div class="skill-item fade-in-up"><i class="devicon-html5-plain colored"></i><span class="skill-name">HTML5</span></div>
+                    <div class="skill-item fade-in-up"><i class="devicon-css3-plain colored"></i><span class="skill-name">CSS3</span></div>
+                    <div class="skill-item fade-in-up"><i class="devicon-javascript-plain colored"></i><span class="skill-name">JavaScript</span></div>
+                    <div class="skill-item fade-in-up"><i class="devicon-typescript-plain colored"></i><span class="skill-name">TypeScript</span></div>
+                    <div class="skill-item fade-in-up"><i class="devicon-mysql-plain colored"></i><span class="skill-name">SQL</span></div>
+                    <div class="skill-item fade-in-up"><i class="devicon-git-plain colored"></i><span class="skill-name">Git</span></div>
                 </div>
 
-                <h3 class="mt-4 text-center fade-in-up">Compétences transversales</h3>
+                <h3 class="mt-5 text-center fade-in-up" data-i18n="about.soft">Compétences transversales</h3>
                 <div class="d-flex justify-content-center flex-wrap mt-3 fade-in-up" style="gap:8px;">
-                    <span class="soft-skill-badge">🤝 Travail en équipe</span>
-                    <span class="soft-skill-badge">💬 Communication</span>
-                    <span class="soft-skill-badge">⏱️ Gestion du temps</span>
-                    <span class="soft-skill-badge">🔍 Autonomie</span>
-                    <span class="soft-skill-badge">🔧 Résolution de problèmes</span>
-                    <span class="soft-skill-badge">📐 Organisation</span>
-                    <span class="soft-skill-badge">🔄 Adaptabilité</span>
-                    <span class="soft-skill-badge">📚 Recherche documentaire</span>
-                    <span class="soft-skill-badge">✏️ Rigueur</span>
-                    <span class="soft-skill-badge">💡 Créativité</span>
-                    <span class="soft-skill-badge">🚀 Esprit d'initiative</span>
-                    <span class="soft-skill-badge">🧠 Esprit critique</span>
+                    <span class="soft-skill-badge" data-i18n="ss.team">🤝 Travail en équipe</span>
+                    <span class="soft-skill-badge" data-i18n="ss.comm">💬 Communication</span>
+                    <span class="soft-skill-badge" data-i18n="ss.time">⏱️ Gestion du temps</span>
+                    <span class="soft-skill-badge" data-i18n="ss.autonomy">🔍 Autonomie</span>
+                    <span class="soft-skill-badge" data-i18n="ss.problem">🔧 Résolution de problèmes</span>
+                    <span class="soft-skill-badge" data-i18n="ss.orga">📐 Organisation</span>
+                    <span class="soft-skill-badge" data-i18n="ss.adapt">🔄 Adaptabilité</span>
+                    <span class="soft-skill-badge" data-i18n="ss.research">📚 Recherche documentaire</span>
+                    <span class="soft-skill-badge" data-i18n="ss.rigor">✏️ Rigueur</span>
+                    <span class="soft-skill-badge" data-i18n="ss.creativity">💡 Créativité</span>
+                    <span class="soft-skill-badge" data-i18n="ss.initiative">🚀 Esprit d'initiative</span>
+                    <span class="soft-skill-badge" data-i18n="ss.critical">🧠 Esprit critique</span>
                 </div>
             </div>
         </section>
 
-        <section id="projects" class="py-5">
+        <section id="projects">
             <div class="container">
-                <h2 class="text-center mb-5 fade-in-up" data-i18n="projects-title">Mes Projets</h2>
+                <h2 class="text-center mb-3 section-heading fade-in-up" data-i18n="projects.title">Mes Projets</h2>
+                <p class="text-center text-muted-theme mb-4 fade-in-up" data-i18n="projects.subtitle">Cliquez sur un projet pour découvrir mon rôle, les résultats et ce que j'en retiens.</p>
 
-                <div id="project-filters" class="text-center mb-4 fade-in-up">
-                    <button class="btn btn-outline-primary active" data-filter="all" data-i18n="filter-all">Tout</button>
-                    <button class="btn btn-outline-primary" data-filter="java">Java</button>
-                    <button class="btn btn-outline-primary" data-filter="typescript">TypeScript</button>
-                    <button class="btn btn-outline-primary" data-filter="api">API</button>
-                    <button class="btn btn-outline-primary" data-filter="devops">DevOps</button>
+                <div id="project-filters" class="text-center mb-4 fade-in-up" role="group" aria-label="Filtres">
+                    <button class="btn btn-outline-primary active" data-filter="all" aria-pressed="true"><span data-i18n="filter.all">Tout</span></button>
+                    <button class="btn btn-outline-primary" data-filter="java" aria-pressed="false">Java</button>
+                    <button class="btn btn-outline-primary" data-filter="typescript" aria-pressed="false">TypeScript</button>
+                    <button class="btn btn-outline-primary" data-filter="api" aria-pressed="false">API</button>
+                    <button class="btn btn-outline-primary" data-filter="devops" aria-pressed="false">DevOps</button>
                 </div>
 
                 <div class="row" id="project-grid">
                     <!-- RISK -->
-                    <div class="col-md-4 mb-4 fade-in-up project-item" data-category="java">
+                    <div class="col-md-6 col-lg-4 mb-4 project-item" data-category="java">
                         <div class="card project-card">
-                            <div class="project-img-placeholder game"><span>☕</span> Jeux Java — RISK</div>
+                            <div class="project-img-placeholder game"><span class="sae-chip">SAÉ 2.01</span><span class="emoji">☕</span> RISK</div>
                             <div class="card-body text-center">
-                                <h3 class="card-title">Jeux en Java — RISK</h3>
-                                <p class="card-text">Jeu de stratégie en Java dans un terminal Linux, développé en méthode agile en groupe.</p>
-                                <button class="btn btn-primary" data-modal-target="#project-modal-1">En savoir plus</button>
+                                <h3 class="card-title" data-i18n="p1.title">Jeux en Java — RISK</h3>
+                                <p class="card-text" data-i18n="p1.card">Jeu de stratégie en Java dans un terminal Linux, développé en méthode agile en groupe.</p>
+                                <div class="project-tags"><span>Java</span><span>Scrum</span><span>Git</span></div>
+                                <button class="btn btn-primary" data-modal-target="#project-modal-1" data-i18n="more">En savoir plus</button>
                             </div>
                         </div>
                     </div>
                     <!-- Labyrinthe -->
-                    <div class="col-md-4 mb-4 fade-in-up project-item" data-category="java">
+                    <div class="col-md-6 col-lg-4 mb-4 project-item" data-category="java">
                         <div class="card project-card">
-                            <div class="project-img-placeholder game"><span>🌀</span> Jeux Java — Labyrinthe</div>
+                            <div class="project-img-placeholder maze"><span class="sae-chip">SAÉ 3.02</span><span class="emoji">🌀</span> <span data-i18n="p2.short">Labyrinthe</span></div>
                             <div class="card-body text-center">
-                                <h3 class="card-title">Jeux Java — Labyrinthe</h3>
-                                <p class="card-text">Jeu JavaFX avec génération aléatoire de labyrinthes et plusieurs modes de jeu.</p>
-                                <button class="btn btn-primary" data-modal-target="#project-modal-2">En savoir plus</button>
+                                <h3 class="card-title" data-i18n="p2.title">Jeux Java — Labyrinthe</h3>
+                                <p class="card-text" data-i18n="p2.card">Jeu JavaFX avec génération aléatoire de labyrinthes et plusieurs modes de jeu.</p>
+                                <div class="project-tags"><span>Java</span><span>JavaFX</span><span data-i18n="tag.algo">Algorithmes</span></div>
+                                <button class="btn btn-primary" data-modal-target="#project-modal-2" data-i18n="more">En savoir plus</button>
                             </div>
                         </div>
                     </div>
                     <!-- EcoDrop API -->
-                    <div class="col-md-4 mb-4 fade-in-up project-item" data-category="java api">
+                    <div class="col-md-6 col-lg-4 mb-4 project-item" data-category="java api">
                         <div class="card project-card">
-                            <div class="project-img-placeholder eco">🌿 EcoDrop</div>
+                            <div class="project-img-placeholder eco"><span class="sae-chip">SAÉ 4.02</span><span class="emoji">🌿</span> EcoDrop</div>
                             <div class="card-body text-center">
-                                <h3 class="card-title">EcoDrop — API REST</h3>
-                                <p class="card-text">API REST de gestion de collecte de déchets : points de collecte, auth JWT, leaderboard recycleurs.</p>
+                                <h3 class="card-title" data-i18n="p3.title">EcoDrop — API REST</h3>
+                                <p class="card-text" data-i18n="p3.card">API REST de gestion de collecte de déchets : points de collecte, auth JWT, leaderboard recycleurs.</p>
+                                <div class="project-tags"><span>Java</span><span>REST</span><span>JWT</span><span>SQL</span></div>
                                 <div class="github-stats" data-github="Kinakosao/SAE4.02" aria-live="polite"></div>
-                                <button class="btn btn-primary" data-modal-target="#project-modal-eco">En savoir plus</button>
+                                <button class="btn btn-primary" data-modal-target="#project-modal-eco" data-i18n="more">En savoir plus</button>
                             </div>
                         </div>
                     </div>
                     <!-- Syck Sai-Vhen -->
-                    <div class="col-md-4 mb-4 fade-in-up project-item" data-category="typescript">
+                    <div class="col-md-6 col-lg-4 mb-4 project-item" data-category="typescript">
                         <div class="card project-card">
-                            <div class="project-img-placeholder game">🎮 Syck Sai-Vhen</div>
+                            <div class="project-img-placeholder shmup"><span class="sae-chip">JSAE</span><span class="emoji">🎮</span> Syck Sai-Vhen</div>
                             <div class="card-body text-center">
                                 <h3 class="card-title">Syck Sai-Vhen</h3>
-                                <p class="card-text">Shoot-em-up multijoueur en TypeScript/WebSocket avec IA ennemis, boss, et assets faits maison.</p>
+                                <p class="card-text" data-i18n="p4.card">Shoot-em-up multijoueur en TypeScript/WebSocket avec IA ennemis, boss, et assets faits maison.</p>
+                                <div class="project-tags"><span>TypeScript</span><span>Node.js</span><span>WebSocket</span></div>
                                 <div class="github-stats" data-github="Kinakosao/JSAE" aria-live="polite"></div>
-                                <button class="btn btn-primary" data-modal-target="#project-modal-game">En savoir plus</button>
+                                <button class="btn btn-primary" data-modal-target="#project-modal-game" data-i18n="more">En savoir plus</button>
                             </div>
                         </div>
                     </div>
                     <!-- SAE3.03 Matrix -->
-                    <div class="col-md-4 mb-4 fade-in-up project-item" data-category="devops">
+                    <div class="col-md-6 col-lg-4 mb-4 project-item" data-category="devops">
                         <div class="card project-card">
-                            <div class="project-img-placeholder devops">🖥️ Matrix/Synapse</div>
+                            <div class="project-img-placeholder devops"><span class="sae-chip">SAÉ 3.03</span><span class="emoji">🖥️</span> Matrix/Synapse</div>
                             <div class="card-body text-center">
-                                <h3 class="card-title">Déploiement Matrix/Synapse</h3>
-                                <p class="card-text">Déploiement d'un serveur de communication Matrix sur 3 VMs Debian avec PostgreSQL et nginx.</p>
+                                <h3 class="card-title" data-i18n="p5.title">Déploiement Matrix/Synapse</h3>
+                                <p class="card-text" data-i18n="p5.card">Déploiement d'un serveur de communication Matrix sur 3 VMs Debian avec PostgreSQL et nginx.</p>
+                                <div class="project-tags"><span>Debian</span><span>nginx</span><span>PostgreSQL</span></div>
                                 <div class="github-stats" data-github="Kinakosao/SAE3.03" aria-live="polite"></div>
-                                <button class="btn btn-primary" data-modal-target="#project-modal-devops">En savoir plus</button>
+                                <button class="btn btn-primary" data-modal-target="#project-modal-devops" data-i18n="more">En savoir plus</button>
                             </div>
                         </div>
                     </div>
@@ -251,17 +275,17 @@
             </div>
         </section>
 
-        <section id="veille" class="py-5">
+        <section id="veille">
             <div class="container">
-                <h2 class="text-center mb-2 fade-in-up">Veille Technique</h2>
-                <p class="text-center text-muted mb-5 fade-in-up">Quelques retours d'expérience tirés de mes projets.</p>
+                <h2 class="text-center mb-3 section-heading fade-in-up" data-i18n="veille.title">Veille Technique</h2>
+                <p class="text-center text-muted-theme mb-5 fade-in-up" data-i18n="veille.subtitle">Quelques retours d'expérience tirés de mes projets.</p>
                 <div class="row">
                     <div class="col-md-4 mb-4 fade-in-up">
                         <div class="card veille-card h-100" data-modal-target="#veille-modal-1" role="button" tabindex="0" aria-haspopup="dialog">
                             <div class="card-body">
                                 <div class="veille-date">EcoDrop — SAÉ 4.02</div>
-                                <h3 class="card-title mt-2">JWT expliqué simplement</h3>
-                                <p class="card-text">Ce que j'ai retenu en implémentant l'authentification par token sur une API REST, sans cours formel sur le sujet.</p>
+                                <h3 class="card-title mt-2" data-i18n="veille.c1.title">JWT expliqué simplement</h3>
+                                <p class="card-text" data-i18n="veille.c1.text">Ce que j'ai retenu en implémentant l'authentification par token sur une API REST, sans cours formel sur le sujet.</p>
                             </div>
                         </div>
                     </div>
@@ -269,8 +293,8 @@
                         <div class="card veille-card h-100" data-modal-target="#veille-modal-2" role="button" tabindex="0" aria-haspopup="dialog">
                             <div class="card-body">
                                 <div class="veille-date">EcoDrop — SAÉ 4.02</div>
-                                <h3 class="card-title mt-2">Négocier du JSON... ou du XML</h3>
-                                <p class="card-text">Comment une API peut répondre dans le format demandé par le client, et pourquoi ça compte en vrai.</p>
+                                <h3 class="card-title mt-2" data-i18n="veille.c2.title">Négocier du JSON... ou du XML</h3>
+                                <p class="card-text" data-i18n="veille.c2.text">Comment une API peut répondre dans le format demandé par le client, et pourquoi ça compte en vrai.</p>
                             </div>
                         </div>
                     </div>
@@ -278,8 +302,8 @@
                         <div class="card veille-card h-100" data-modal-target="#veille-modal-3" role="button" tabindex="0" aria-haspopup="dialog">
                             <div class="card-body">
                                 <div class="veille-date">Matrix/Synapse — SAÉ 3.03</div>
-                                <h3 class="card-title mt-2">Déployer sur plusieurs VMs</h3>
-                                <p class="card-text">Ce qui change quand un service ne tourne plus sur une seule machine, et pourquoi ça casse plus souvent.</p>
+                                <h3 class="card-title mt-2" data-i18n="veille.c3.title">Déployer sur plusieurs VMs</h3>
+                                <p class="card-text" data-i18n="veille.c3.text">Ce qui change quand un service ne tourne plus sur une seule machine, et pourquoi ça casse plus souvent.</p>
                             </div>
                         </div>
                     </div>
@@ -287,65 +311,69 @@
             </div>
         </section>
 
-        <section id="testimonials" class="py-5">
+        <section id="testimonials">
             <div class="container">
-                <h2 class="text-center mb-5 fade-in-up">Ce qu'on dit de mon travail</h2>
+                <h2 class="text-center mb-5 section-heading fade-in-up" data-i18n="testi.title">Ce qu'on dit de mon travail</h2>
                 <div class="row">
                     <div class="col-md-6 mb-4 fade-in-up">
                         <div class="testimonial-card">
-                            <p class="testimonial-quote">[Témoignage à compléter — par exemple un retour de votre tuteur de stage chez Santelys]</p>
-                            <div class="testimonial-author">Nom du tuteur</div>
-                            <div class="testimonial-role">Fonction, Santelys</div>
+                            <p class="testimonial-quote" data-i18n="testi.q1">[Témoignage à compléter — par exemple un retour de votre tuteur de stage chez Santelys]</p>
+                            <div class="testimonial-author" data-i18n="testi.a1">Nom du tuteur</div>
+                            <div class="testimonial-role" data-i18n="testi.r1">Fonction, Santelys</div>
                         </div>
                     </div>
                     <div class="col-md-6 mb-4 fade-in-up">
                         <div class="testimonial-card">
-                            <p class="testimonial-quote">[Témoignage à compléter — par exemple un retour d'un professeur ou d'un coéquipier de projet]</p>
-                            <div class="testimonial-author">Nom</div>
-                            <div class="testimonial-role">Fonction</div>
+                            <p class="testimonial-quote" data-i18n="testi.q2">[Témoignage à compléter — par exemple un retour d'un professeur ou d'un coéquipier de projet]</p>
+                            <div class="testimonial-author" data-i18n="testi.a2">Nom</div>
+                            <div class="testimonial-role" data-i18n="testi.r2">Fonction</div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="contact" class="py-5">
+        <section id="contact">
             <div class="container">
-                <h2 class="text-center mb-4 fade-in-up" data-i18n="contact-title">Me Contacter</h2>
+                <h2 class="text-center mb-3 section-heading fade-in-up" data-i18n="contact.title">Me Contacter</h2>
+                <p class="text-center text-muted-theme mb-4 fade-in-up" data-i18n="contact.subtitle">Une question, une proposition de stage ou d'alternance ? Écrivez-moi !</p>
                 <div class="row">
-                    <div class="col-lg-8 mx-auto">
+                    <div class="col-lg-8 mx-auto fade-in-up">
                         <form id="contact-form" novalidate>
                             <div class="hp-field" aria-hidden="true">
                                 <label for="website">Laisser vide</label>
                                 <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
                             </div>
                             <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="name" name="name" placeholder="Votre nom" required>
-                                <label for="name">Nom</label>
-                                <div class="invalid-feedback">Veuillez entrer votre nom.</div>
+                                <input type="text" class="form-control" id="name" name="name" placeholder="Votre nom" data-i18n-attr="placeholder:form.namePh" autocomplete="name" required maxlength="100">
+                                <label for="name" data-i18n="form.name">Nom</label>
+                                <div class="invalid-feedback" data-i18n="form.nameErr">Veuillez entrer votre nom.</div>
                             </div>
                             <div class="form-floating mb-3">
-                                <input type="email" class="form-control" id="email" name="email" placeholder="nom@example.com" required>
-                                <label for="email">Adresse e-mail</label>
-                                <div class="invalid-feedback">Veuillez entrer une adresse e-mail valide.</div>
+                                <input type="email" class="form-control" id="email" name="email" placeholder="nom@example.com" autocomplete="email" required maxlength="150">
+                                <label for="email" data-i18n="form.email">Adresse e-mail</label>
+                                <div class="invalid-feedback" data-i18n="form.emailErr">Veuillez entrer une adresse e-mail valide.</div>
                             </div>
-                            <div class="form-floating mb-3">
-                                <textarea class="form-control" id="message" name="message" placeholder="Votre message ici" style="height: 150px" required></textarea>
-                                <label for="message">Message</label>
-                                <div class="invalid-feedback">Veuillez entrer votre message.</div>
+                            <div class="form-floating mb-1">
+                                <textarea class="form-control" id="message" name="message" placeholder="Votre message ici" data-i18n-attr="placeholder:form.messagePh" style="height: 160px" required maxlength="2000"></textarea>
+                                <label for="message" data-i18n="form.message">Message</label>
+                                <div class="invalid-feedback" data-i18n="form.messageErr">Veuillez entrer votre message.</div>
                             </div>
+                            <div class="char-counter mb-3"><span id="char-count">0</span> / 2000</div>
                             <div class="text-center">
-                                <button type="submit" class="btn btn-primary btn-lg">Envoyer le Message</button>
+                                <button type="submit" class="btn btn-primary btn-lg px-4"><i class="bi bi-send me-2"></i><span data-i18n="form.send">Envoyer le message</span></button>
                             </div>
                         </form>
-                        <div id="form-status" class="mt-4 text-center"></div>
-                        <div class="mt-3 text-center d-flex justify-content-center flex-wrap gap-2">
-                          <button id="copy-email-btn" class="btn btn-outline-secondary btn-sm" onclick="copyEmail()">
-                            <i class="bi bi-clipboard"></i> Copier mon email
-                          </button>
-                          <a href="Benjamin_Hanquart.vcf" download class="btn btn-outline-secondary btn-sm">
-                            <i class="bi bi-person-vcard"></i> Ajouter à mes contacts
-                          </a>
+                        <div id="form-status" class="mt-4 text-center" aria-live="polite"></div>
+                        <div class="contact-alt mt-3">
+                            <button id="copy-email-btn" type="button" class="btn btn-outline-theme btn-sm">
+                                <i class="bi bi-clipboard"></i> <span data-i18n="contact.copy">Copier mon email</span>
+                            </button>
+                            <a href="Benjamin_Hanquart.vcf" download class="btn btn-outline-theme btn-sm">
+                                <i class="bi bi-person-vcard"></i> <span data-i18n="contact.vcard">Ajouter à mes contacts</span>
+                            </a>
+                            <a href="https://www.linkedin.com/in/benjamin-hanquart-692b10288/" target="_blank" rel="noopener" class="btn btn-outline-theme btn-sm"><i class="bi bi-linkedin"></i> LinkedIn</a>
+                            <a href="https://github.com/Kinakosao" target="_blank" rel="noopener" class="btn btn-outline-theme btn-sm"><i class="bi bi-github"></i> GitHub</a>
                         </div>
                     </div>
                 </div>
@@ -353,183 +381,183 @@
         </section>
 
         <!-- Project Modals -->
-        <dialog id="project-modal-1" class="project-modal">
+        <dialog id="project-modal-1" class="project-modal" aria-labelledby="m1-title">
             <div class="modal-content">
-                <button class="close-modal-btn" aria-label="Fermer la modale">&times;</button>
-                <h2>Jeux Java — RISK</h2>
-                <div class="modal-context-badge">📌 SAÉ 2.01 &mdash; Semestre 2 &mdash; Groupe de 6 étudiants</div>
+                <button class="close-modal-btn" aria-label="Fermer" data-i18n-attr="aria-label:close">&times;</button>
+                <h2 id="m1-title" data-i18n="p1.title">Jeux Java — RISK</h2>
+                <div class="modal-context-badge" data-i18n="m1.badge">📌 SAÉ 2.01 &mdash; Semestre 2 &mdash; Groupe de 6 étudiants</div>
 
-                <p class="modal-section-label">🎯 Objectifs</p>
-                <p>Développer une version jouable du jeu de stratégie RISK en Java, fonctionnant entièrement dans un terminal Linux, en appliquant la méthode Agile (sprints, backlog, rétrospectives) au sein d'une équipe de 6.</p>
+                <p class="modal-section-label" data-i18n="lbl.goals">🎯 Objectifs</p>
+                <p data-i18n="m1.goals">Développer une version jouable du jeu de stratégie RISK en Java, fonctionnant entièrement dans un terminal Linux, en appliquant la méthode Agile (sprints, backlog, rétrospectives) au sein d'une équipe de 6.</p>
 
-                <p class="modal-section-label">👤 Mon rôle</p>
-                <p>Rôle tournant de <strong>Scrum Master</strong> et développeur. J'ai principalement conçu les systèmes de jeu (règles de combat, gestion des tours, attribution des territoires) et animé les réunions d'équipe.</p>
+                <p class="modal-section-label" data-i18n="lbl.role">👤 Mon rôle</p>
+                <p data-i18n="m1.role">Rôle tournant de <strong>Scrum Master</strong> et développeur. J'ai principalement conçu les systèmes de jeu (règles de combat, gestion des tours, attribution des territoires) et animé les réunions d'équipe.</p>
 
-                <p class="modal-section-label">✅ Résultats</p>
-                <p>Jeu fonctionnel, présenté et validé positivement lors de l'évaluation par la majorité des étudiants de BUT&nbsp;1.</p>
+                <p class="modal-section-label" data-i18n="lbl.results">✅ Résultats</p>
+                <p data-i18n="m1.results">Jeu fonctionnel, présenté et validé positivement lors de l'évaluation par la majorité des étudiants de BUT&nbsp;1.</p>
 
-                <p class="modal-section-label">🔧 Compétences techniques</p>
+                <p class="modal-section-label" data-i18n="lbl.tech">🔧 Compétences techniques</p>
                 <div class="skills mb-2">
                     <span class="badge bg-primary">Java</span>
                     <span class="badge bg-secondary">Terminal Linux</span>
-                    <span class="badge bg-dark">Méthode Agile / Scrum</span>
+                    <span class="badge bg-dark" data-i18n="badge.agile">Méthode Agile / Scrum</span>
                     <span class="badge bg-info text-dark">Git</span>
                 </div>
 
-                <p class="modal-section-label">💡 Compétences transversales</p>
+                <p class="modal-section-label" data-i18n="lbl.soft">💡 Compétences transversales <small class="text-lowercase fw-normal">(cliquez pour le contexte)</small></p>
                 <div class="mb-2">
-                    <span class="soft-skill-badge" data-context="J'ai coordonné 5 camarades sur plusieurs sprints Agile, réparti les tâches et géré les conflits de fusion Git.">🤝 Travail en équipe</span>
-                    <span class="soft-skill-badge" data-context="En tant que Scrum Master tournant, j'ai animé les réunions quotidiennes pour aligner le groupe sur les priorités du sprint.">💬 Communication</span>
-                    <span class="soft-skill-badge" data-context="J'ai maintenu le backlog et découpé les user stories en sous-tâches estimables pour assurer un suivi clair de l'avancement.">📋 Organisation</span>
-                    <span class="soft-skill-badge" data-context="À mi-sprint, des changements de règles de jeu ont nécessité de revoir l'architecture : j'ai su m'adapter sans bloquer l'équipe.">🔄 Adaptabilité</span>
+                    <span class="soft-skill-badge" data-i18n="ss.team" data-context="J'ai coordonné 5 camarades sur plusieurs sprints Agile, réparti les tâches et géré les conflits de fusion Git." data-i18n-attr="data-context:m1.c1">🤝 Travail en équipe</span>
+                    <span class="soft-skill-badge" data-i18n="ss.comm" data-context="En tant que Scrum Master tournant, j'ai animé les réunions quotidiennes pour aligner le groupe sur les priorités du sprint." data-i18n-attr="data-context:m1.c2">💬 Communication</span>
+                    <span class="soft-skill-badge" data-i18n="ss.orga2" data-context="J'ai maintenu le backlog et découpé les user stories en sous-tâches estimables pour assurer un suivi clair de l'avancement." data-i18n-attr="data-context:m1.c3">📋 Organisation</span>
+                    <span class="soft-skill-badge" data-i18n="ss.adapt" data-context="À mi-sprint, des changements de règles de jeu ont nécessité de revoir l'architecture : j'ai su m'adapter sans bloquer l'équipe." data-i18n-attr="data-context:m1.c4">🔄 Adaptabilité</span>
                 </div>
 
                 <div class="modal-reflexive">
-                    <div class="modal-reflexive-title">🪞 Ce que j'en retiens</div>
-                    Travailler avec 5 camarades inconnus en tout début de formation m'a appris l'importance capitale de la communication dans un projet de groupe. J'ai découvert la méthode Agile de manière concrète et compris que la coordination humaine est aussi exigeante que le développement technique lui-même. Aujourd'hui, je n'hésiterais pas à prendre davantage la parole lors des réunions et à défendre mes propositions techniques avec plus d'assurance — la timidité a parfois freiné des idées qui auraient pu bénéficier au projet.
+                    <div class="modal-reflexive-title" data-i18n="lbl.takeaway">🪞 Ce que j'en retiens</div>
+                    <span data-i18n="m1.takeaway">Travailler avec 5 camarades inconnus en tout début de formation m'a appris l'importance capitale de la communication dans un projet de groupe. J'ai découvert la méthode Agile de manière concrète et compris que la coordination humaine est aussi exigeante que le développement technique lui-même. Aujourd'hui, je n'hésiterais pas à prendre davantage la parole lors des réunions et à défendre mes propositions techniques avec plus d'assurance — la timidité a parfois freiné des idées qui auraient pu bénéficier au projet.</span>
                 </div>
-                <a href="https://gitlab.univ-lille.fr/iut-info/p3.01/2025-2026/groupe-7" class="btn btn-dark mt-3">Code source</a>
+                <a href="https://gitlab.univ-lille.fr/iut-info/p3.01/2025-2026/groupe-7" target="_blank" rel="noopener" class="btn btn-primary mt-3"><i class="bi bi-code-slash me-1"></i> <span data-i18n="source">Code source</span></a>
             </div>
         </dialog>
 
-        <dialog id="project-modal-2" class="project-modal">
+        <dialog id="project-modal-2" class="project-modal" aria-labelledby="m2-title">
             <div class="modal-content">
-                <button class="close-modal-btn" aria-label="Fermer la modale">&times;</button>
-                <h2>Jeux Java — Labyrinthe</h2>
-                <div class="modal-context-badge">📌 SAÉ 3.02 &mdash; Semestre 3 &mdash; Groupe de 4 étudiants</div>
+                <button class="close-modal-btn" aria-label="Fermer" data-i18n-attr="aria-label:close">&times;</button>
+                <h2 id="m2-title" data-i18n="p2.title">Jeux Java — Labyrinthe</h2>
+                <div class="modal-context-badge" data-i18n="m2.badge">📌 SAÉ 3.02 &mdash; Semestre 3 &mdash; Groupe de 4 étudiants</div>
 
-                <p class="modal-section-label">🎯 Objectifs</p>
-                <p>Créer un jeu de labyrinthe avec génération algorithmique aléatoire, plusieurs modes de jeu, et une interface graphique développée avec JavaFX.</p>
+                <p class="modal-section-label" data-i18n="lbl.goals">🎯 Objectifs</p>
+                <p data-i18n="m2.goals">Créer un jeu de labyrinthe avec génération algorithmique aléatoire, plusieurs modes de jeu, et une interface graphique développée avec JavaFX.</p>
 
-                <p class="modal-section-label">👤 Mon rôle</p>
-                <p>J'ai développé les <strong>systèmes de fonctionnement du jeu</strong> : logique de déplacement du joueur, détection des collisions avec les murs, ainsi que le système de <strong>sauvegarde et de chargement</strong> des données de partie.</p>
+                <p class="modal-section-label" data-i18n="lbl.role">👤 Mon rôle</p>
+                <p data-i18n="m2.role">J'ai développé les <strong>systèmes de fonctionnement du jeu</strong> : logique de déplacement du joueur, détection des collisions avec les murs, ainsi que le système de <strong>sauvegarde et de chargement</strong> des données de partie.</p>
 
-                <p class="modal-section-label">✅ Résultats</p>
-                <p>Jeu complet et fonctionnel intégrant l'ensemble des fonctionnalités planifiées : génération de labyrinthe, modes de jeu multiples, interface graphique JavaFX et sauvegarde de progression.</p>
+                <p class="modal-section-label" data-i18n="lbl.results">✅ Résultats</p>
+                <p data-i18n="m2.results">Jeu complet et fonctionnel intégrant l'ensemble des fonctionnalités planifiées : génération de labyrinthe, modes de jeu multiples, interface graphique JavaFX et sauvegarde de progression.</p>
 
-                <p class="modal-section-label">🔧 Compétences techniques</p>
+                <p class="modal-section-label" data-i18n="lbl.tech">🔧 Compétences techniques</p>
                 <div class="skills mb-2">
                     <span class="badge bg-success">Java</span>
                     <span class="badge bg-danger">JavaFX</span>
-                    <span class="badge bg-warning text-dark">Algorithmes de génération</span>
-                    <span class="badge bg-info text-dark">Sérialisation / Sauvegarde</span>
+                    <span class="badge bg-warning text-dark" data-i18n="badge.gen">Algorithmes de génération</span>
+                    <span class="badge bg-info text-dark" data-i18n="badge.save">Sérialisation / Sauvegarde</span>
                 </div>
 
-                <p class="modal-section-label">💡 Compétences transversales</p>
+                <p class="modal-section-label" data-i18n="lbl.soft">💡 Compétences transversales <small class="text-lowercase fw-normal">(cliquez pour le contexte)</small></p>
                 <div class="mb-2">
-                    <span class="soft-skill-badge" data-context="Face aux retards accumulés sur les graphismes, j'ai priorisé les fonctionnalités essentielles pour respecter la date de livraison.">⏱️ Gestion du temps</span>
-                    <span class="soft-skill-badge" data-context="J'ai mis en place des jalons intermédiaires pour synchroniser les 4 membres sur les dépendances techniques du projet.">📐 Organisation</span>
-                    <span class="soft-skill-badge" data-context="J'ai intégré le code de 4 développeurs en parallèle, résolu les conflits Git et effectué des revues croisées régulières.">🤝 Travail en équipe</span>
-                    <span class="soft-skill-badge" data-context="J'ai diagnostiqué un bug de collision aléatoire dans la génération du labyrinthe en écrivant des tests unitaires ciblés.">🔧 Résolution de problèmes</span>
-                    <span class="soft-skill-badge" data-context="J'ai écrit des tests unitaires systématiques et documenté chaque composant du système de jeu pour garantir un code maintenable par toute l'équipe.">✏️ Rigueur</span>
+                    <span class="soft-skill-badge" data-i18n="ss.time" data-context="Face aux retards accumulés sur les graphismes, j'ai priorisé les fonctionnalités essentielles pour respecter la date de livraison." data-i18n-attr="data-context:m2.c1">⏱️ Gestion du temps</span>
+                    <span class="soft-skill-badge" data-i18n="ss.orga" data-context="J'ai mis en place des jalons intermédiaires pour synchroniser les 4 membres sur les dépendances techniques du projet." data-i18n-attr="data-context:m2.c2">📐 Organisation</span>
+                    <span class="soft-skill-badge" data-i18n="ss.team" data-context="J'ai intégré le code de 4 développeurs en parallèle, résolu les conflits Git et effectué des revues croisées régulières." data-i18n-attr="data-context:m2.c3">🤝 Travail en équipe</span>
+                    <span class="soft-skill-badge" data-i18n="ss.problem" data-context="J'ai diagnostiqué un bug de collision aléatoire dans la génération du labyrinthe en écrivant des tests unitaires ciblés." data-i18n-attr="data-context:m2.c4">🔧 Résolution de problèmes</span>
+                    <span class="soft-skill-badge" data-i18n="ss.rigor" data-context="J'ai écrit des tests unitaires systématiques et documenté chaque composant du système de jeu pour garantir un code maintenable par toute l'équipe." data-i18n-attr="data-context:m2.c5">✏️ Rigueur</span>
                 </div>
 
                 <div class="modal-reflexive">
-                    <div class="modal-reflexive-title">🪞 Ce que j'en retiens</div>
-                    La difficulté à nous mettre d'accord sur les fonctionnalités et les graphismes, combinée à des retards accumulés, m'a appris l'importance de la gestion du temps et de la planification. Ne pas tout remettre à la fin est une leçon que j'applique désormais à chacun de mes projets. Aujourd'hui, j'aurais instauré des jalons de validation intermédiaires dès le début — une réunion de synchronisation hebdomadaire aurait suffi à détecter les dérives bien avant qu'elles deviennent bloquantes.
+                    <div class="modal-reflexive-title" data-i18n="lbl.takeaway">🪞 Ce que j'en retiens</div>
+                    <span data-i18n="m2.takeaway">La difficulté à nous mettre d'accord sur les fonctionnalités et les graphismes, combinée à des retards accumulés, m'a appris l'importance de la gestion du temps et de la planification. Ne pas tout remettre à la fin est une leçon que j'applique désormais à chacun de mes projets. Aujourd'hui, j'aurais instauré des jalons de validation intermédiaires dès le début — une réunion de synchronisation hebdomadaire aurait suffi à détecter les dérives bien avant qu'elles deviennent bloquantes.</span>
                 </div>
-                <a href="https://gitlab.univ-lille.fr/sae302/2025/I4_SAE3.3" class="btn btn-dark mt-3">Code source</a>
+                <a href="https://gitlab.univ-lille.fr/sae302/2025/I4_SAE3.3" target="_blank" rel="noopener" class="btn btn-primary mt-3"><i class="bi bi-code-slash me-1"></i> <span data-i18n="source">Code source</span></a>
             </div>
         </dialog>
 
-        <dialog id="project-modal-eco" class="project-modal">
+        <dialog id="project-modal-eco" class="project-modal" aria-labelledby="m3-title">
             <div class="modal-content">
-                <button class="close-modal-btn" aria-label="Fermer la modale">&times;</button>
-                <h2>EcoDrop — API REST</h2>
-                <div class="modal-context-badge">📌 SAÉ 4.02 &mdash; Semestre 4 &mdash; Binôme</div>
+                <button class="close-modal-btn" aria-label="Fermer" data-i18n-attr="aria-label:close">&times;</button>
+                <h2 id="m3-title" data-i18n="p3.title">EcoDrop — API REST</h2>
+                <div class="modal-context-badge" data-i18n="m3.badge">📌 SAÉ 4.02 &mdash; Semestre 4 &mdash; Binôme</div>
 
-                <p class="modal-section-label">🎯 Objectifs</p>
-                <p>Concevoir et développer une API REST complète sur le thème de l'écologie : gestion de points de collecte de déchets, dépôts, authentification sécurisée avec gestion des rôles, et classement des meilleurs recycleurs.</p>
+                <p class="modal-section-label" data-i18n="lbl.goals">🎯 Objectifs</p>
+                <p data-i18n="m3.goals">Concevoir et développer une API REST complète sur le thème de l'écologie : gestion de points de collecte de déchets, dépôts, authentification sécurisée avec gestion des rôles, et classement des meilleurs recycleurs.</p>
 
-                <p class="modal-section-label">👤 Mon rôle</p>
-                <p>Développement en binôme de l'ensemble de l'API : conception de l'architecture des endpoints, implémentation des routes CRUD, contribution à l'<strong>authentification JWT</strong>, à la base de données SQL et à la <strong>négociation de contenu JSON/XML</strong>.</p>
+                <p class="modal-section-label" data-i18n="lbl.role">👤 Mon rôle</p>
+                <p data-i18n="m3.role">Développement en binôme de l'ensemble de l'API : conception de l'architecture des endpoints, implémentation des routes CRUD, contribution à l'<strong>authentification JWT</strong>, à la base de données SQL et à la <strong>négociation de contenu JSON/XML</strong>.</p>
 
-                <p class="modal-section-label">✅ Résultats</p>
-                <p>API REST fonctionnelle supportant toutes les opérations CRUD, l'authentification par token JWT avec rôles USER/ADMIN, les réponses négociées JSON/XML, et un leaderboard des 10 meilleurs recycleurs. Déployée sur Tomcat.</p>
+                <p class="modal-section-label" data-i18n="lbl.results">✅ Résultats</p>
+                <p data-i18n="m3.results">API REST fonctionnelle supportant toutes les opérations CRUD, l'authentification par token JWT avec rôles USER/ADMIN, les réponses négociées JSON/XML, et un leaderboard des 10 meilleurs recycleurs. Déployée sur Tomcat.</p>
 
-                <p class="modal-section-label">🔧 Compétences techniques</p>
+                <p class="modal-section-label" data-i18n="lbl.tech">🔧 Compétences techniques</p>
                 <div class="skills mb-2">
                     <span class="badge bg-primary">Java</span>
                     <span class="badge bg-warning text-dark">REST API</span>
                     <span class="badge bg-info text-dark">SQL</span>
                     <span class="badge bg-secondary">Tomcat</span>
                     <span class="badge bg-dark">JWT</span>
-                    <span class="badge bg-success">Négociation JSON/XML</span>
+                    <span class="badge bg-success" data-i18n="badge.nego">Négociation JSON/XML</span>
                 </div>
 
-                <p class="modal-section-label">💡 Compétences transversales</p>
+                <p class="modal-section-label" data-i18n="lbl.soft">💡 Compétences transversales <small class="text-lowercase fw-normal">(cliquez pour le contexte)</small></p>
                 <div class="mb-2">
-                    <span class="soft-skill-badge" data-context="Développement simultané de fonctionnalités en parallèle avec mon binôme, avec synchronisation quotidienne pour éviter les conflits de code.">🤝 Travail en binôme</span>
-                    <span class="soft-skill-badge" data-context="Nous avons attribué les endpoints par domaine fonctionnel dès le début pour avancer en parallèle sans se bloquer mutuellement.">📊 Répartition du travail</span>
-                    <span class="soft-skill-badge" data-context="J'ai implémenté JWT et la négociation JSON/XML de façon autonome, sans cours formel sur ces technologies.">🔍 Autonomie</span>
-                    <span class="soft-skill-badge" data-context="Suivi de l'avancement via un tableau Kanban partagé pour rester alignés et anticiper les dépendances entre nos tâches.">📐 Organisation</span>
+                    <span class="soft-skill-badge" data-i18n="ss.pair" data-context="Développement simultané de fonctionnalités en parallèle avec mon binôme, avec synchronisation quotidienne pour éviter les conflits de code." data-i18n-attr="data-context:m3.c1">🤝 Travail en binôme</span>
+                    <span class="soft-skill-badge" data-i18n="ss.split" data-context="Nous avons attribué les endpoints par domaine fonctionnel dès le début pour avancer en parallèle sans se bloquer mutuellement." data-i18n-attr="data-context:m3.c2">📊 Répartition du travail</span>
+                    <span class="soft-skill-badge" data-i18n="ss.autonomy" data-context="J'ai implémenté JWT et la négociation JSON/XML de façon autonome, sans cours formel sur ces technologies." data-i18n-attr="data-context:m3.c3">🔍 Autonomie</span>
+                    <span class="soft-skill-badge" data-i18n="ss.orga" data-context="Suivi de l'avancement via un tableau Kanban partagé pour rester alignés et anticiper les dépendances entre nos tâches." data-i18n-attr="data-context:m3.c4">📐 Organisation</span>
                 </div>
 
                 <div class="modal-reflexive">
-                    <div class="modal-reflexive-title">🪞 Ce que j'en retiens</div>
-                    La principale difficulté fut de maîtriser simultanément l'authentification JWT et la négociation de contenu JSON/XML — deux concepts nouveaux à implémenter dans un délai contraint. Ce projet m'a aussi appris qu'une répartition déséquilibrée en binôme peut créer des blocages en fin de projet : communiquer tôt sur la charge de travail est essentiel. Aujourd'hui, j'aurais instauré des points de synchronisation réguliers avec mon binôme pour rééquilibrer la charge dès les premiers signes de déséquilibre, plutôt d'attendre que le problème soit visible.
+                    <div class="modal-reflexive-title" data-i18n="lbl.takeaway">🪞 Ce que j'en retiens</div>
+                    <span data-i18n="m3.takeaway">La principale difficulté fut de maîtriser simultanément l'authentification JWT et la négociation de contenu JSON/XML — deux concepts nouveaux à implémenter dans un délai contraint. Ce projet m'a aussi appris qu'une répartition déséquilibrée en binôme peut créer des blocages en fin de projet : communiquer tôt sur la charge de travail est essentiel. Aujourd'hui, j'aurais instauré des points de synchronisation réguliers avec mon binôme pour rééquilibrer la charge dès les premiers signes de déséquilibre, plutôt que d'attendre que le problème soit visible.</span>
                 </div>
-                <a href="https://github.com/Kinakosao/SAE4.02" class="btn btn-dark mt-3">Code source</a>
+                <a href="https://github.com/Kinakosao/SAE4.02" target="_blank" rel="noopener" class="btn btn-primary mt-3"><i class="bi bi-github me-1"></i> <span data-i18n="source">Code source</span></a>
             </div>
         </dialog>
 
-        <dialog id="project-modal-game" class="project-modal">
+        <dialog id="project-modal-game" class="project-modal" aria-labelledby="m4-title">
             <div class="modal-content">
-                <button class="close-modal-btn" aria-label="Fermer la modale">&times;</button>
-                <h2>Syck Sai-Vhen — Shoot-em-up</h2>
-                <div class="modal-context-badge">📌 JSAE (projet tutoré) &mdash; Semestre 4 &mdash; Groupe de 3 étudiants</div>
+                <button class="close-modal-btn" aria-label="Fermer" data-i18n-attr="aria-label:close">&times;</button>
+                <h2 id="m4-title">Syck Sai-Vhen — Shoot-em-up</h2>
+                <div class="modal-context-badge" data-i18n="m4.badge">📌 JSAE (projet tutoré) &mdash; Semestre 4 &mdash; Groupe de 3 étudiants</div>
 
-                <p class="modal-section-label">🎯 Objectifs</p>
-                <p>Développer un jeu de type shoot-em-up multijoueur en TypeScript avec une architecture client/serveur WebSocket, une IA ennemie paramétrable, un boss final et un système de score.</p>
+                <p class="modal-section-label" data-i18n="lbl.goals">🎯 Objectifs</p>
+                <p data-i18n="m4.goals">Développer un jeu de type shoot-em-up multijoueur en TypeScript avec une architecture client/serveur WebSocket, une IA ennemie paramétrable, un boss final et un système de score.</p>
 
-                <p class="modal-section-label">👤 Mon rôle</p>
-                <p>J'ai développé l'<strong>intelligence artificielle des ennemis</strong> (comportements, déplacements, patterns d'attaque) et le <strong>système d'affichage côté client</strong> : gestion du rendu, animation des entités et mise à jour de l'état de jeu en temps réel via WebSocket.</p>
+                <p class="modal-section-label" data-i18n="lbl.role">👤 Mon rôle</p>
+                <p data-i18n="m4.role">J'ai développé l'<strong>intelligence artificielle des ennemis</strong> (comportements, déplacements, patterns d'attaque) et le <strong>système d'affichage côté client</strong> : gestion du rendu, animation des entités et mise à jour de l'état de jeu en temps réel via WebSocket.</p>
 
-                <p class="modal-section-label">✅ Résultats</p>
-                <p>Jeu fonctionnel et complet avec toutes les fonctionnalités prévues : multijoueur WebSocket, IA ennemis, boss final, hitbox, système de score, et assets graphiques créés entièrement par l'équipe.</p>
+                <p class="modal-section-label" data-i18n="lbl.results">✅ Résultats</p>
+                <p data-i18n="m4.results">Jeu fonctionnel et complet avec toutes les fonctionnalités prévues : multijoueur WebSocket, IA ennemis, boss final, hitbox, système de score, et assets graphiques créés entièrement par l'équipe.</p>
 
-                <p class="modal-section-label">🔧 Compétences techniques</p>
+                <p class="modal-section-label" data-i18n="lbl.tech">🔧 Compétences techniques</p>
                 <div class="skills mb-2">
                     <span class="badge bg-warning text-dark">TypeScript</span>
                     <span class="badge bg-success">Node.js</span>
                     <span class="badge bg-primary">WebSocket</span>
-                    <span class="badge bg-info text-dark">Algorithmique IA</span>
+                    <span class="badge bg-info text-dark" data-i18n="badge.ai">Algorithmique IA</span>
                 </div>
 
-                <p class="modal-section-label">💡 Compétences transversales</p>
+                <p class="modal-section-label" data-i18n="lbl.soft">💡 Compétences transversales <small class="text-lowercase fw-normal">(cliquez pour le contexte)</small></p>
                 <div class="mb-2">
-                    <span class="soft-skill-badge" data-context="Face aux indisponibilités imprévues, j'ai recadré les priorités et redistribué les tâches lors de réunions d'équipe.">💬 Communication</span>
-                    <span class="soft-skill-badge" data-context="J'ai repris un module non terminé par un membre indisponible pour maintenir le planning de livraison du projet.">🔄 Adaptabilité</span>
-                    <span class="soft-skill-badge" data-context="J'ai partiellement réécrit le système de rendu suite à des performances insuffisantes détectées en fin de développement.">⚡ Gestion de l'imprévu</span>
-                    <span class="soft-skill-badge" data-context="J'ai apporté un soutien technique à un équipier en difficulté sur l'implémentation WebSocket côté serveur.">🤝 Solidarité d'équipe</span>
-                    <span class="soft-skill-badge" data-context="J'ai conçu les patterns d'attaque des ennemis et contribué à la création des assets graphiques, entièrement réalisés par l'équipe sans ressources externes.">💡 Créativité</span>
-                    <span class="soft-skill-badge" data-context="Sans y être assigné, j'ai repris spontanément le module non terminé d'un membre indisponible pour maintenir le planning de livraison.">🚀 Esprit d'initiative</span>
+                    <span class="soft-skill-badge" data-i18n="ss.comm" data-context="Face aux indisponibilités imprévues, j'ai recadré les priorités et redistribué les tâches lors de réunions d'équipe." data-i18n-attr="data-context:m4.c1">💬 Communication</span>
+                    <span class="soft-skill-badge" data-i18n="ss.adapt" data-context="J'ai repris un module non terminé par un membre indisponible pour maintenir le planning de livraison du projet." data-i18n-attr="data-context:m4.c2">🔄 Adaptabilité</span>
+                    <span class="soft-skill-badge" data-i18n="ss.unexpected" data-context="J'ai partiellement réécrit le système de rendu suite à des performances insuffisantes détectées en fin de développement." data-i18n-attr="data-context:m4.c3">⚡ Gestion de l'imprévu</span>
+                    <span class="soft-skill-badge" data-i18n="ss.solidarity" data-context="J'ai apporté un soutien technique à un équipier en difficulté sur l'implémentation WebSocket côté serveur." data-i18n-attr="data-context:m4.c4">🤝 Solidarité d'équipe</span>
+                    <span class="soft-skill-badge" data-i18n="ss.creativity" data-context="J'ai conçu les patterns d'attaque des ennemis et contribué à la création des assets graphiques, entièrement réalisés par l'équipe sans ressources externes." data-i18n-attr="data-context:m4.c5">💡 Créativité</span>
+                    <span class="soft-skill-badge" data-i18n="ss.initiative" data-context="Sans y être assigné, j'ai repris spontanément le module non terminé d'un membre indisponible pour maintenir le planning de livraison." data-i18n-attr="data-context:m4.c6">🚀 Esprit d'initiative</span>
                 </div>
 
                 <div class="modal-reflexive">
-                    <div class="modal-reflexive-title">🪞 Ce que j'en retiens</div>
-                    Des imprévus personnels chez certains membres ont déséquilibré la répartition du travail. Ce projet m'a appris l'importance de communiquer clairement ses disponibilités et ses attentes, et d'anticiper les réajustements collectifs pour maintenir l'avancement malgré les aléas. Aujourd'hui, j'aurais établi dès le début un plan de contingence — identifier à l'avance qui peut reprendre quelle tâche en cas d'indisponibilité aurait évité les blocages de dernière minute.
+                    <div class="modal-reflexive-title" data-i18n="lbl.takeaway">🪞 Ce que j'en retiens</div>
+                    <span data-i18n="m4.takeaway">Des imprévus personnels chez certains membres ont déséquilibré la répartition du travail. Ce projet m'a appris l'importance de communiquer clairement ses disponibilités et ses attentes, et d'anticiper les réajustements collectifs pour maintenir l'avancement malgré les aléas. Aujourd'hui, j'aurais établi dès le début un plan de contingence — identifier à l'avance qui peut reprendre quelle tâche en cas d'indisponibilité aurait évité les blocages de dernière minute.</span>
                 </div>
-                <a href="https://github.com/Kinakosao/JSAE" class="btn btn-dark mt-3">Code source</a>
+                <a href="https://github.com/Kinakosao/JSAE" target="_blank" rel="noopener" class="btn btn-primary mt-3"><i class="bi bi-github me-1"></i> <span data-i18n="source">Code source</span></a>
             </div>
         </dialog>
 
-        <dialog id="project-modal-devops" class="project-modal">
+        <dialog id="project-modal-devops" class="project-modal" aria-labelledby="m5-title">
             <div class="modal-content">
-                <button class="close-modal-btn" aria-label="Fermer la modale">&times;</button>
-                <h2>Déploiement Matrix/Synapse</h2>
-                <div class="modal-context-badge">📌 SAÉ 3.03 &mdash; Semestre 3 &mdash; Binôme</div>
+                <button class="close-modal-btn" aria-label="Fermer" data-i18n-attr="aria-label:close">&times;</button>
+                <h2 id="m5-title" data-i18n="p5.title">Déploiement Matrix/Synapse</h2>
+                <div class="modal-context-badge" data-i18n="m5.badge">📌 SAÉ 3.03 &mdash; Semestre 3 &mdash; Binôme</div>
 
-                <p class="modal-section-label">🎯 Objectifs</p>
-                <p>Déployer un serveur de messagerie instantanée Matrix (Synapse) sur une architecture distribuée de 3 VMs Debian&nbsp;12 : serveur Synapse, base PostgreSQL, et client web Element via nginx reverse proxy.</p>
+                <p class="modal-section-label" data-i18n="lbl.goals">🎯 Objectifs</p>
+                <p data-i18n="m5.goals">Déployer un serveur de messagerie instantanée Matrix (Synapse) sur une architecture distribuée de 3 VMs Debian&nbsp;12 : serveur Synapse, base PostgreSQL, et client web Element via nginx reverse proxy.</p>
 
-                <p class="modal-section-label">👤 Mon rôle</p>
-                <p>Recherche et analyse de la <strong>documentation technique</strong> (Matrix, Synapse, nginx, PostgreSQL) et aide à la <strong>configuration des machines virtuelles</strong> et à la résolution des problèmes d'interconnexion réseau.</p>
+                <p class="modal-section-label" data-i18n="lbl.role">👤 Mon rôle</p>
+                <p data-i18n="m5.role">Recherche et analyse de la <strong>documentation technique</strong> (Matrix, Synapse, nginx, PostgreSQL) et aide à la <strong>configuration des machines virtuelles</strong> et à la résolution des problèmes d'interconnexion réseau.</p>
 
-                <p class="modal-section-label">✅ Résultats</p>
-                <p>Architecture déployée mais non fonctionnelle lors de l'évaluation, pour une cause liée à l'infrastructure du serveur de l'IUT — impossible à identifier de notre côté. Selon le professeur, notre configuration était techniquement correcte.</p>
+                <p class="modal-section-label" data-i18n="lbl.results">✅ Résultats</p>
+                <p data-i18n="m5.results">Architecture déployée mais non fonctionnelle lors de l'évaluation, pour une cause liée à l'infrastructure du serveur de l'IUT — impossible à identifier de notre côté. Selon le professeur, notre configuration était techniquement correcte.</p>
 
-                <p class="modal-section-label">🔧 Compétences techniques</p>
+                <p class="modal-section-label" data-i18n="lbl.tech">🔧 Compétences techniques</p>
                 <div class="skills mb-2">
                     <span class="badge bg-dark">Debian 12</span>
                     <span class="badge bg-primary">Matrix/Synapse</span>
@@ -538,65 +566,65 @@
                     <span class="badge bg-warning text-dark">VirtualBox</span>
                 </div>
 
-                <p class="modal-section-label">💡 Compétences transversales</p>
+                <p class="modal-section-label" data-i18n="lbl.soft">💡 Compétences transversales <small class="text-lowercase fw-normal">(cliquez pour le contexte)</small></p>
                 <div class="mb-2">
-                    <span class="soft-skill-badge" data-context="J'ai lu et interprété la documentation officielle de Synapse et nginx sans support de cours pour configurer l'architecture.">🔍 Autonomie</span>
-                    <span class="soft-skill-badge" data-context="J'ai compilé sources officielles et forums techniques pour résoudre des problèmes d'interconnexion réseau entre les VMs.">📚 Recherche documentaire</span>
-                    <span class="soft-skill-badge" data-context="Nous avons réparti clairement les rôles : configuration réseau et VMs pour moi, déploiement Synapse pour mon collègue.">🤝 Travail en binôme</span>
-                    <span class="soft-skill-badge" data-context="Après plusieurs heures de débogage sans résultat, j'ai sollicité le professeur et des camarades — une démarche professionnelle à part entière.">🆘 Demande d'aide extérieure</span>
-                    <span class="soft-skill-badge" data-context="En croisant nos observations avec la documentation officielle, j'ai conclu que l'erreur provenait de l'infrastructure IUT et non de notre configuration — ce qui a été confirmé par le professeur.">🧠 Esprit critique</span>
+                    <span class="soft-skill-badge" data-i18n="ss.autonomy" data-context="J'ai lu et interprété la documentation officielle de Synapse et nginx sans support de cours pour configurer l'architecture." data-i18n-attr="data-context:m5.c1">🔍 Autonomie</span>
+                    <span class="soft-skill-badge" data-i18n="ss.research" data-context="J'ai compilé sources officielles et forums techniques pour résoudre des problèmes d'interconnexion réseau entre les VMs." data-i18n-attr="data-context:m5.c2">📚 Recherche documentaire</span>
+                    <span class="soft-skill-badge" data-i18n="ss.pair" data-context="Nous avons réparti clairement les rôles : configuration réseau et VMs pour moi, déploiement Synapse pour mon collègue." data-i18n-attr="data-context:m5.c3">🤝 Travail en binôme</span>
+                    <span class="soft-skill-badge" data-i18n="ss.help" data-context="Après plusieurs heures de débogage sans résultat, j'ai sollicité le professeur et des camarades — une démarche professionnelle à part entière." data-i18n-attr="data-context:m5.c4">🆘 Demande d'aide extérieure</span>
+                    <span class="soft-skill-badge" data-i18n="ss.critical" data-context="En croisant nos observations avec la documentation officielle, j'ai conclu que l'erreur provenait de l'infrastructure IUT et non de notre configuration — ce qui a été confirmé par le professeur." data-i18n-attr="data-context:m5.c5">🧠 Esprit critique</span>
                 </div>
 
                 <div class="modal-reflexive">
-                    <div class="modal-reflexive-title">🪞 Ce que j'en retiens</div>
-                    Face à un bug impossible à résoudre avec nos ressources (infrastructure hébergée sur les serveurs de l'IUT), j'ai appris qu'il est parfois nécessaire de solliciter une aide extérieure plutôt que de persister seul. Savoir reconnaître ses limites et demander de l'aide est une compétence professionnelle à part entière. Aujourd'hui, plutôt que de laisser mon collègue déployer seul sur une unique VM, j'aurais configuré en parallèle une seconde machine de mon côté — cette redondance nous aurait permis de comparer les configurations et d'isoler bien plus rapidement la source du problème.
+                    <div class="modal-reflexive-title" data-i18n="lbl.takeaway">🪞 Ce que j'en retiens</div>
+                    <span data-i18n="m5.takeaway">Face à un bug impossible à résoudre avec nos ressources (infrastructure hébergée sur les serveurs de l'IUT), j'ai appris qu'il est parfois nécessaire de solliciter une aide extérieure plutôt que de persister seul. Savoir reconnaître ses limites et demander de l'aide est une compétence professionnelle à part entière. Aujourd'hui, plutôt que de laisser mon collègue déployer seul sur une unique VM, j'aurais configuré en parallèle une seconde machine de mon côté — cette redondance nous aurait permis de comparer les configurations et d'isoler bien plus rapidement la source du problème.</span>
                 </div>
-                <a href="https://github.com/Kinakosao/SAE3.03" class="btn btn-dark mt-3">Code source</a>
+                <a href="https://github.com/Kinakosao/SAE3.03" target="_blank" rel="noopener" class="btn btn-primary mt-3"><i class="bi bi-github me-1"></i> <span data-i18n="source">Code source</span></a>
             </div>
         </dialog>
 
-        <!-- Veille Technique Modals -->
-        <dialog id="veille-modal-1" class="project-modal">
+        <!-- Tech watch modals -->
+        <dialog id="veille-modal-1" class="project-modal" aria-labelledby="v1-title">
             <div class="modal-content">
-                <button class="close-modal-btn" aria-label="Fermer la modale">&times;</button>
-                <h2>JWT expliqué simplement</h2>
-                <div class="modal-context-badge">📌 Retour d'expérience — EcoDrop, SAÉ 4.02</div>
-                <p>En implémentant l'authentification d'EcoDrop, j'ai dû comprendre le JWT (JSON Web Token) sans avoir eu de cours dessus. Voici ce que j'en retiens, expliqué comme j'aurais aimé qu'on me l'explique :</p>
-                <p>Un JWT, c'est un jeton signé que le serveur donne au client après une connexion réussie. Il contient trois parties séparées par des points : un en-tête (l'algorithme utilisé), une charge utile (les infos sur l'utilisateur, comme son rôle USER ou ADMIN) et une signature (qui garantit que personne n'a modifié le contenu). Le client renvoie ensuite ce jeton à chaque requête, dans l'en-tête <code>Authorization</code>, et le serveur vérifie la signature avant de laisser passer la requête — sans avoir besoin de garder une session en mémoire côté serveur.</p>
-                <p>Ce qui m'a pris du temps à comprendre : le jeton n'est pas chiffré, seulement signé. N'importe qui peut lire son contenu (il suffit de le décoder en base64), donc il ne faut jamais y mettre d'information sensible comme un mot de passe. Sur EcoDrop, ça m'a servi à distinguer les rôles USER et ADMIN pour restreindre certaines routes.</p>
+                <button class="close-modal-btn" aria-label="Fermer" data-i18n-attr="aria-label:close">&times;</button>
+                <h2 id="v1-title" data-i18n="veille.c1.title">JWT expliqué simplement</h2>
+                <div class="modal-context-badge" data-i18n="v1.badge">📌 Retour d'expérience — EcoDrop, SAÉ 4.02</div>
+                <p data-i18n="v1.p1">En implémentant l'authentification d'EcoDrop, j'ai dû comprendre le JWT (JSON Web Token) sans avoir eu de cours dessus. Voici ce que j'en retiens, expliqué comme j'aurais aimé qu'on me l'explique :</p>
+                <p data-i18n="v1.p2">Un JWT, c'est un jeton signé que le serveur donne au client après une connexion réussie. Il contient trois parties séparées par des points : un en-tête (l'algorithme utilisé), une charge utile (les infos sur l'utilisateur, comme son rôle USER ou ADMIN) et une signature (qui garantit que personne n'a modifié le contenu). Le client renvoie ensuite ce jeton à chaque requête, dans l'en-tête <code>Authorization</code>, et le serveur vérifie la signature avant de laisser passer la requête — sans avoir besoin de garder une session en mémoire côté serveur.</p>
+                <p data-i18n="v1.p3">Ce qui m'a pris du temps à comprendre : le jeton n'est pas chiffré, seulement signé. N'importe qui peut lire son contenu (il suffit de le décoder en base64), donc il ne faut jamais y mettre d'information sensible comme un mot de passe. Sur EcoDrop, ça m'a servi à distinguer les rôles USER et ADMIN pour restreindre certaines routes.</p>
                 <div class="modal-reflexive">
-                    <div class="modal-reflexive-title">🪞 Ce que j'en retiens</div>
-                    Apprendre une techno en autonomie, sans cours, m'a forcé à vraiment comprendre le "pourquoi" avant le "comment" — ça reste la méthode que je préfère aujourd'hui.
-                </div>
-            </div>
-        </dialog>
-
-        <dialog id="veille-modal-2" class="project-modal">
-            <div class="modal-content">
-                <button class="close-modal-btn" aria-label="Fermer la modale">&times;</button>
-                <h2>Négocier du JSON... ou du XML</h2>
-                <div class="modal-context-badge">📌 Retour d'expérience — EcoDrop, SAÉ 4.02</div>
-                <p>Sur l'API EcoDrop, on devait supporter à la fois des réponses en JSON et en XML selon ce que demandait le client. C'est ce qu'on appelle la <strong>négociation de contenu</strong> : le client envoie un en-tête <code>Accept</code> (par exemple <code>application/json</code> ou <code>application/xml</code>), et le serveur choisit le format de sa réponse en conséquence.</p>
-                <p>Concrètement, ça évite de dupliquer les endpoints (pas besoin d'un <code>/points-json</code> et d'un <code>/points-xml</code> séparés) : une seule route sait produire plusieurs représentations de la même ressource. C'est un principe REST qu'on ne voit pas forcément dans les API "jouets" des tutoriels, mais qui devient utile dès qu'une API a plusieurs types de clients (une appli mobile, un service tiers, etc.).</p>
-                <p>La difficulté a surtout été de structurer le code pour que la logique métier ne soit pas dupliquée entre les deux formats — la sérialisation devait rester une couche séparée de la logique de l'API.</p>
-                <div class="modal-reflexive">
-                    <div class="modal-reflexive-title">🪞 Ce que j'en retiens</div>
-                    Séparer clairement "que fait l'API" de "comment elle répond" rend le code beaucoup plus facile à faire évoluer — un principe que j'essaie de réappliquer depuis.
+                    <div class="modal-reflexive-title" data-i18n="lbl.takeaway">🪞 Ce que j'en retiens</div>
+                    <span data-i18n="v1.takeaway">Apprendre une techno en autonomie, sans cours, m'a forcé à vraiment comprendre le "pourquoi" avant le "comment" — ça reste la méthode que je préfère aujourd'hui.</span>
                 </div>
             </div>
         </dialog>
 
-        <dialog id="veille-modal-3" class="project-modal">
+        <dialog id="veille-modal-2" class="project-modal" aria-labelledby="v2-title">
             <div class="modal-content">
-                <button class="close-modal-btn" aria-label="Fermer la modale">&times;</button>
-                <h2>Déployer sur plusieurs VMs</h2>
-                <div class="modal-context-badge">📌 Retour d'expérience — Matrix/Synapse, SAÉ 3.03</div>
-                <p>Déployer Matrix/Synapse sur trois VMs Debian distinctes (serveur applicatif, base PostgreSQL, reverse proxy nginx) m'a fait réaliser à quel point une architecture distribuée multiplie les points de défaillance possibles par rapport à "tout sur une seule machine".</p>
-                <p>Chaque VM doit pouvoir joindre les autres sur le réseau, ce qui veut dire configurer correctement les adresses IP, les ports ouverts, et parfois un pare-feu. Une erreur de configuration réseau sur une seule des trois machines suffit à casser toute la chaîne, et le message d'erreur visible ("le client ne se connecte pas") ne dit pas forcément où est le vrai problème.</p>
-                <p>On a fini par bloquer sur un problème d'infrastructure côté serveurs de l'IUT, indépendant de notre configuration — mais le vrai apprentissage a été méthodologique : isoler chaque VM, tester la connectivité étape par étape (ping, telnet sur les ports, logs de chaque service) plutôt que de tout tester en bloc.</p>
+                <button class="close-modal-btn" aria-label="Fermer" data-i18n-attr="aria-label:close">&times;</button>
+                <h2 id="v2-title" data-i18n="veille.c2.title">Négocier du JSON... ou du XML</h2>
+                <div class="modal-context-badge" data-i18n="v2.badge">📌 Retour d'expérience — EcoDrop, SAÉ 4.02</div>
+                <p data-i18n="v2.p1">Sur l'API EcoDrop, on devait supporter à la fois des réponses en JSON et en XML selon ce que demandait le client. C'est ce qu'on appelle la <strong>négociation de contenu</strong> : le client envoie un en-tête <code>Accept</code> (par exemple <code>application/json</code> ou <code>application/xml</code>), et le serveur choisit le format de sa réponse en conséquence.</p>
+                <p data-i18n="v2.p2">Concrètement, ça évite de dupliquer les endpoints (pas besoin d'un <code>/points-json</code> et d'un <code>/points-xml</code> séparés) : une seule route sait produire plusieurs représentations de la même ressource. C'est un principe REST qu'on ne voit pas forcément dans les API "jouets" des tutoriels, mais qui devient utile dès qu'une API a plusieurs types de clients (une appli mobile, un service tiers, etc.).</p>
+                <p data-i18n="v2.p3">La difficulté a surtout été de structurer le code pour que la logique métier ne soit pas dupliquée entre les deux formats — la sérialisation devait rester une couche séparée de la logique de l'API.</p>
                 <div class="modal-reflexive">
-                    <div class="modal-reflexive-title">🪞 Ce que j'en retiens</div>
-                    Sur une architecture multi-machines, déboguer "de bout en bout" ne marche pas — il faut isoler chaque composant et vérifier la connectivité couche par couche.
+                    <div class="modal-reflexive-title" data-i18n="lbl.takeaway">🪞 Ce que j'en retiens</div>
+                    <span data-i18n="v2.takeaway">Séparer clairement "que fait l'API" de "comment elle répond" rend le code beaucoup plus facile à faire évoluer — un principe que j'essaie de réappliquer depuis.</span>
+                </div>
+            </div>
+        </dialog>
+
+        <dialog id="veille-modal-3" class="project-modal" aria-labelledby="v3-title">
+            <div class="modal-content">
+                <button class="close-modal-btn" aria-label="Fermer" data-i18n-attr="aria-label:close">&times;</button>
+                <h2 id="v3-title" data-i18n="veille.c3.title">Déployer sur plusieurs VMs</h2>
+                <div class="modal-context-badge" data-i18n="v3.badge">📌 Retour d'expérience — Matrix/Synapse, SAÉ 3.03</div>
+                <p data-i18n="v3.p1">Déployer Matrix/Synapse sur trois VMs Debian distinctes (serveur applicatif, base PostgreSQL, reverse proxy nginx) m'a fait réaliser à quel point une architecture distribuée multiplie les points de défaillance possibles par rapport à "tout sur une seule machine".</p>
+                <p data-i18n="v3.p2">Chaque VM doit pouvoir joindre les autres sur le réseau, ce qui veut dire configurer correctement les adresses IP, les ports ouverts, et parfois un pare-feu. Une erreur de configuration réseau sur une seule des trois machines suffit à casser toute la chaîne, et le message d'erreur visible ("le client ne se connecte pas") ne dit pas forcément où est le vrai problème.</p>
+                <p data-i18n="v3.p3">On a fini par bloquer sur un problème d'infrastructure côté serveurs de l'IUT, indépendant de notre configuration — mais le vrai apprentissage a été méthodologique : isoler chaque VM, tester la connectivité étape par étape (ping, telnet sur les ports, logs de chaque service) plutôt que de tout tester en bloc.</p>
+                <div class="modal-reflexive">
+                    <div class="modal-reflexive-title" data-i18n="lbl.takeaway">🪞 Ce que j'en retiens</div>
+                    <span data-i18n="v3.takeaway">Sur une architecture multi-machines, déboguer "de bout en bout" ne marche pas — il faut isoler chaque composant et vérifier la connectivité couche par couche.</span>
                 </div>
             </div>
         </dialog>
@@ -605,59 +633,64 @@
         <footer class="main-footer py-4">
             <div class="container text-center">
                 <div class="footer-social-links mb-3">
-                    <a href="https://github.com/Kinakosao" title="GitHub" class="social-link" aria-label="Voir mon profil GitHub"><i class="bi bi-github"></i></a>
-                    <a href="https://www.linkedin.com/in/benjamin-hanquart-692b10288/" title="LinkedIn" class="social-link" aria-label="Voir mon profil LinkedIn"><i class="bi bi-linkedin"></i></a>
+                    <a href="https://github.com/Kinakosao" target="_blank" rel="noopener" title="GitHub" class="social-link" aria-label="GitHub"><i class="bi bi-github"></i></a>
+                    <a href="https://www.linkedin.com/in/benjamin-hanquart-692b10288/" target="_blank" rel="noopener" title="LinkedIn" class="social-link" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
                 </div>
-                <p class="mb-0">&copy; <span id="copyright-year"></span> Benjamin Hanquart. Tous droits réservés.</p>
-                <p class="retro-counter mt-2" title="Compteur rétro purement local et cosmétique, pour le clin d'œil aux sites perso des années 2000 — pas une vraie statistique de fréquentation.">
-                    👾 Vous êtes le visiteur n°<span id="retro-visitor-count">000000</span> (sur ce navigateur)
+                <p class="mb-1">&copy; <span id="copyright-year"></span> Benjamin Hanquart. <span data-i18n="footer.rights">Tous droits réservés.</span></p>
+                <p class="retro-counter mt-2" title="Compteur rétro purement local et cosmétique, pour le clin d'œil aux sites perso des années 2000 — pas une vraie statistique de fréquentation." data-i18n-attr="title:footer.retroTitle">
+                    <span data-i18n="footer.retroPre">👾 Vous êtes le visiteur n°</span><span id="retro-visitor-count">000000</span> <span data-i18n="footer.retroPost">(sur ce navigateur)</span>
                 </p>
+                <p class="footer-hint mt-2 mb-0" data-i18n="footer.hint2">Astuce : <kbd>Ctrl</kbd>+<kbd>K</kbd> ouvre la palette de commandes, <kbd>T</kbd> change le thème, <kbd>L</kbd> la langue… et essayez le code Konami 🎮</p>
             </div>
         </footer>
     </div>
+
     <!-- Scroll to Top Button -->
-    <a href="#" id="scroll-to-top-btn" aria-label="Retourner en haut de la page">
+    <a href="#hero" id="scroll-to-top-btn" aria-label="Retourner en haut de la page" data-i18n-attr="aria-label:top">
         <i class="bi bi-arrow-up-short"></i>
     </a>
 
     <!-- Linux Mode Button -->
-    <a href="linux.html" id="linux-mode-btn" title="Passer en mode Linux Terminal">
-        🐧 Mode Linux
+    <a href="linux.html" id="linux-mode-btn" title="Passer en mode Linux Terminal" data-i18n-attr="title:linux.title">
+        🐧 <span data-i18n="linux.btn">Mode Linux</span>
     </a>
 
     <!-- Achievements Button -->
-    <button id="achievements-btn" data-modal-target="#achievements-modal" title="Succès cachés">
-        <span class="visually-hidden">Voir les succès cachés : </span>🏆 <span id="ach-count-badge">0/8</span>
+    <button id="achievements-btn" type="button" data-modal-target="#achievements-modal" title="Succès cachés" data-i18n-attr="title:ach.btnTitle">
+        <span class="visually-hidden" data-i18n="ach.btn">Voir les succès cachés : </span>🏆 <span id="ach-count-badge">0/8</span>
     </button>
 
-    <dialog id="achievements-modal" class="project-modal">
+    <dialog id="achievements-modal" class="project-modal" aria-labelledby="ach-title">
         <div class="modal-content">
-            <button class="close-modal-btn" aria-label="Fermer la modale">&times;</button>
-            <h2>🏆 Succès cachés</h2>
-            <p class="text-muted">Ce portfolio contient quelques easter eggs. Certains se trouvent ici, d'autres dans le <a href="linux.html">mode Linux</a>.</p>
+            <button class="close-modal-btn" aria-label="Fermer" data-i18n-attr="aria-label:close">&times;</button>
+            <h2 id="ach-title" data-i18n="ach.title">🏆 Succès cachés</h2>
+            <p class="text-muted-theme" data-i18n="ach.text">Ce portfolio contient quelques easter eggs. Certains se trouvent ici, d'autres dans le <a href="linux.html">mode Linux</a>.</p>
             <div id="achievements-list"></div>
         </div>
     </dialog>
 
     <!-- Command Palette -->
-    <button id="cmdk-hint" title="Ouvrir la palette de commandes (Ctrl+K)">
-        <i class="bi bi-search" aria-hidden="true"></i> <span class="visually-hidden">Ouvrir la palette de commandes : </span><kbd>Ctrl</kbd>+<kbd>K</kbd>
+    <button id="cmdk-hint" type="button" title="Ouvrir la palette de commandes (Ctrl+K)" data-i18n-attr="title:cmdk.title">
+        <i class="bi bi-search" aria-hidden="true"></i> <span class="visually-hidden" data-i18n="cmdk.hint">Ouvrir la palette de commandes : </span><kbd>Ctrl</kbd>+<kbd>K</kbd>
     </button>
-    <div id="cmdk-overlay" role="dialog" aria-modal="true" aria-label="Palette de commandes">
+    <div id="cmdk-overlay" role="dialog" aria-modal="true" aria-label="Palette de commandes" data-i18n-attr="aria-label:cmdk.label">
         <div id="cmdk-box">
             <div id="cmdk-input-row">
                 <i class="bi bi-search"></i>
-                <input id="cmdk-input" type="text" placeholder="Aller à... ouvrir un projet... contact..." autocomplete="off">
+                <input id="cmdk-input" type="text" placeholder="Aller à… ouvrir un projet… contact…" autocomplete="off" aria-controls="cmdk-results">
                 <kbd>Esc</kbd>
             </div>
-            <div id="cmdk-results"></div>
+            <div id="cmdk-results" role="listbox"></div>
         </div>
     </div>
+
+    <div id="toast" role="status" aria-live="polite"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
     <script src="achievements.js"></script>
+    <script src="i18n.js"></script>
     <script src="script.js"></script>
-    <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
+    <script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
 </body>
 </html>
