@@ -1056,13 +1056,28 @@ body.modal-open-lock {
 }
 
 .veille-card:hover,
-.veille-card:focus-visible {
+.veille-card:focus-within {
     transform: translateY(-4px);
     border-color: rgba(var(--accent-rgb), 0.4);
     box-shadow: 0 10px 25px var(--card-shadow);
 }
 
 .veille-card .card-text { color: var(--muted-color); }
+
+.veille-card .veille-read {
+    color: var(--accent);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.veille-card:hover .veille-read .bi {
+    transform: translateX(3px);
+}
+
+.veille-card .veille-read .bi {
+    display: inline-block;
+    transition: transform 0.2s ease;
+}
 
 .veille-date {
     font-size: 0.78rem;

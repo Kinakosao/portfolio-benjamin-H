@@ -35,7 +35,9 @@ def check_file(path):
             continue
 
         file_part, _, frag = link.partition("#")
-        target = (path.parent / file_part).resolve()
+        # Root-relative links ("/style.css") point to the site root, i.e. the repo root.
+        base = ROOT if file_part.startswith("/") else path.parent
+        target = (base / file_part.lstrip("/")).resolve()
         if not target.exists():
             errors.append(f"{path.name}: fichier introuvable pour le lien '{link}'")
             continue

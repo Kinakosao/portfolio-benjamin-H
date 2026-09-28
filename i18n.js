@@ -216,6 +216,7 @@ const I18N_STRINGS = {
     'veille.c2.title': "Negotiating JSON… or XML",
     'veille.c2.text': "How an API can answer in the format the client asks for, and why it matters in real life.",
     'veille.c3.title': "Deploying across several VMs",
+    'veille.read': "Read the article",
     'veille.c3.text': "What changes when a service no longer runs on a single machine, and why it breaks more often.",
     'v1.badge': "📌 Lessons learned — EcoDrop, SAÉ 4.02",
     'v1.p1': "While implementing EcoDrop's authentication, I had to understand JWT (JSON Web Token) without any course on it. Here's what I took away, explained the way I wish someone had explained it to me:",
