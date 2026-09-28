@@ -1,83 +1,98 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-bs-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>404 - Page non trouvée</title>
-    <meta name="description" content="Cette page n'existe pas. Retournez au portfolio de Benjamin Hanquart.">
+    <script>
+        (function () {
+            try {
+                var t = localStorage.getItem('theme');
+                if (t === 'dark-mode') t = 'dark';
+                if (t === 'light-mode') t = 'light';
+                if (t !== 'dark' && t !== 'light') {
+                    t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                }
+                document.documentElement.setAttribute('data-bs-theme', t);
+                var l = localStorage.getItem('portfolioLang');
+                if (l === 'en' || l === 'fr') document.documentElement.lang = l;
+            } catch (e) {}
+        })();
+    </script>
+    <title>404 — Page introuvable</title>
     <meta name="robots" content="noindex">
-    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <!-- Absolute paths: this page can be served from any URL depth -->
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/404.css">
+    <noscript>
+        <style>
+            #preloader { display: none !important; }
+            .hidden-content { display: block !important; }
+            .fade-in-up { opacity: 1 !important; transform: none !important; }
+        </style>
+    </noscript>
 </head>
-<body>
-    <a href="#main-content" class="skip-link">Aller au contenu principal</a>
+<body data-title-key="js.title404">
     <div id="preloader">
         <div class="spinner"></div>
     </div>
 
-    <div id="main-content" class="hidden-content" role="main">
-        <div class="cursor-dot"></div>
-        <div class="cursor-outline"></div>
-
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top navbar-scrolled">
-             <div class="container">
-                <a class="navbar-brand" href="index.html">Mon Portfolio</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <div id="main-content" class="hidden-content">
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top navbar-scrolled">
+            <div class="container">
+                <a class="navbar-brand d-flex align-items-center" href="/"><span class="brand-mark">BH</span><span data-i18n="brand">Mon Portfolio</span></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Menu" data-i18n-attr="aria-label:nav.toggle">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
-                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="index.html">Portfolio</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="resume.html">Mon CV</a>
-                        </li>
-                        <li class="nav-item ms-lg-3 d-flex align-items-center">
-                           <label class="theme-switcher-label" for="theme-switch-checkbox">
-                               <input type="checkbox" id="theme-switch-checkbox">
-                               <span class="theme-switcher-icon sun"><i class="bi bi-sun-fill"></i></span>
-                               <span class="theme-switcher-icon moon"><i class="bi bi-moon-stars-fill"></i></span>
-                           </label>
+                    <ul class="navbar-nav ms-auto align-items-lg-center">
+                        <li class="nav-item"><a class="nav-link" href="/" data-i18n="nav.portfolio">Portfolio</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/resume.html" data-i18n="nav.cv">Mon CV</a></li>
+                        <li class="nav-item d-flex nav-tools ms-lg-3 mt-2 mt-lg-0">
+                            <button id="lang-toggle" class="nav-icon-btn" type="button" aria-label="Switch to English" data-i18n-attr="aria-label:lang.switch;title:lang.switch">
+                                <i class="bi bi-translate"></i><span class="lang-label">EN</span>
+                            </button>
+                            <button id="theme-toggle" class="nav-icon-btn theme-toggle" type="button" aria-label="Changer de thème" data-i18n-attr="aria-label:theme.toggle;title:theme.toggle">
+                                <i class="bi bi-sun-fill"></i>
+                                <i class="bi bi-moon-stars-fill"></i>
+                            </button>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
 
-        <div class="error-container">
+        <main class="error-container">
             <div class="text-center">
-                <div class="terminal-404 fade-in-up">
-                    <div class="terminal-404-line">benjamin@portfolio:~$ cd <span id="err-path"></span></div>
-                    <div class="terminal-404-line err">bash: cd: <span id="err-path-2"></span>: Aucun fichier ou dossier de ce type</div>
-                    <div class="terminal-404-line">benjamin@portfolio:~$ <span class="err-cursor">_</span></div>
-                </div>
                 <h1 class="error-title fade-in-up">404</h1>
-                <p class="lead fade-in-up">Oups ! La page que vous cherchez n'existe pas.</p>
-                <a href="index.html" class="btn btn-primary mt-4 fade-in-up">Retour à l'accueil</a>
+                <p class="lead fade-in-up" data-i18n="404.text">Oups ! La page que vous cherchez n'existe pas.</p>
+                <div class="error-terminal fade-in-up">$ cd <span id="missing-path">/page</span><br>bash: cd: No such file or directory</div>
+                <div class="mt-4 fade-in-up">
+                    <a href="/" class="btn btn-primary"><i class="bi bi-house me-2"></i><span data-i18n="404.back">Retour à l'accueil</span></a>
+                </div>
             </div>
-        </div>
-        <script>
-            (function() {
-                var path = window.location.pathname || '/';
-                document.querySelectorAll('#err-path, #err-path-2').forEach(function(el) { el.textContent = path; });
-            })();
-        </script>
-        
+        </main>
+
         <footer class="main-footer py-4">
             <div class="container text-center">
                 <div class="footer-social-links mb-3">
-                    <a href="https://github.com/Kinakosao" title="GitHub" class="social-link" aria-label="Voir mon profil GitHub"><i class="bi bi-github"></i></a>
-                    <a href="https://www.linkedin.com/in/benjamin-hanquart-692b10288/" title="LinkedIn" class="social-link" aria-label="Voir mon profil LinkedIn"><i class="bi bi-linkedin"></i></a>
+                    <a href="https://github.com/Kinakosao" target="_blank" rel="noopener" title="GitHub" class="social-link" aria-label="GitHub"><i class="bi bi-github"></i></a>
+                    <a href="https://www.linkedin.com/in/benjamin-hanquart-692b10288/" target="_blank" rel="noopener" title="LinkedIn" class="social-link" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
                 </div>
-                <p class="mb-0">&copy; <span id="copyright-year"></span> Benjamin Hanquart. Tous droits réservés.</p>
+                <p class="mb-0">&copy; <span id="copyright-year"></span> Benjamin Hanquart. <span data-i18n="footer.rights">Tous droits réservés.</span></p>
             </div>
         </footer>
     </div>
-    
+
+    <div id="toast" role="status" aria-live="polite"></div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="script.js"></script>
+    <script src="/i18n.js"></script>
+    <script src="/script.js"></script>
+    <script>
+        document.getElementById('missing-path').textContent = location.pathname;
+    </script>
 </body>
 </html>
