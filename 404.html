@@ -19,6 +19,7 @@
         })();
     </script>
     <title>404 — Page introuvable</title>
+    <meta name="description" content="Cette page n'existe pas. Retournez au portfolio de Benjamin Hanquart.">
     <meta name="robots" content="noindex">
     <!-- Absolute paths: this page can be served from any URL depth -->
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -66,9 +67,13 @@
 
         <main class="error-container">
             <div class="text-center">
+                <div class="terminal-404 fade-in-up">
+                    <div class="terminal-404-line">benjamin@portfolio:~$ cd <span class="err-path"></span></div>
+                    <div class="terminal-404-line err">bash: cd: <span class="err-path"></span>: <span data-i18n="404.term">Aucun fichier ou dossier de ce type</span></div>
+                    <div class="terminal-404-line">benjamin@portfolio:~$ <span class="err-cursor">_</span></div>
+                </div>
                 <h1 class="error-title fade-in-up">404</h1>
                 <p class="lead fade-in-up" data-i18n="404.text">Oups ! La page que vous cherchez n'existe pas.</p>
-                <div class="error-terminal fade-in-up">$ cd <span id="missing-path">/page</span><br>bash: cd: No such file or directory</div>
                 <div class="mt-4 fade-in-up">
                     <a href="/" class="btn btn-primary"><i class="bi bi-house me-2"></i><span data-i18n="404.back">Retour à l'accueil</span></a>
                 </div>
@@ -92,7 +97,7 @@
     <script src="/i18n.js"></script>
     <script src="/script.js"></script>
     <script>
-        document.getElementById('missing-path').textContent = location.pathname;
+        document.querySelectorAll('.err-path').forEach(function (el) { el.textContent = location.pathname || '/'; });
     </script>
 </body>
 </html>
