@@ -29,6 +29,11 @@ const I18N_STRINGS = {
     'js.title': "Benjamin Hanquart — Portfolio",
     'js.titleCv': "Mon CV — Benjamin Hanquart",
     'js.title404': "404 — Page introuvable",
+    'js.achUnlocked': "Succès débloqué",
+    'js.ghStars': "Étoiles GitHub",
+    'js.ghUpdated': "Dernière mise à jour",
+    'js.cmdkEmpty': "Aucun résultat",
+    'js.cmdkPlaceholder': "Aller à… ouvrir un projet… contact…",
   },
   en: {
     'js.typing': ["Computer Science student", "Java developer", "Back-end developer", "Video game enthusiast", "Future CESI engineer"],
@@ -50,6 +55,11 @@ const I18N_STRINGS = {
     'js.title': "Benjamin Hanquart — Portfolio",
     'js.titleCv': "My Resume — Benjamin Hanquart",
     'js.title404': "404 — Page not found",
+    'js.achUnlocked': "Achievement unlocked",
+    'js.ghStars': "GitHub stars",
+    'js.ghUpdated': "Last updated",
+    'js.cmdkEmpty': "No results",
+    'js.cmdkPlaceholder': "Go to… open a project… contact…",
 
     // ---------- Shared / navigation ----------
     'skip': "Skip to content",
@@ -70,7 +80,7 @@ const I18N_STRINGS = {
     'linux.title': "Switch to Linux terminal mode",
 
     // ---------- Hero ----------
-    'hero.kicker': "Computer Science degree (BUT) · IUT de Lille",
+    'hero.kicker': "Open to opportunities — engineering work-study (CESI)",
     'hero.projects': "See my projects",
     'hero.contact': "Contact me",
     'hero.share': "Share my portfolio",
@@ -197,7 +207,56 @@ const I18N_STRINGS = {
     'm5.c5': "By cross-checking our observations with the official documentation, I concluded the error came from the IUT infrastructure rather than our configuration — which the teacher confirmed.",
     'm5.takeaway': "Facing a bug we couldn't solve with our resources (infrastructure hosted on the IUT's servers), I learned that it's sometimes necessary to ask for outside help rather than persisting alone. Recognizing your limits and asking for help is a professional skill in its own right. Today, rather than letting my teammate deploy alone on a single VM, I would configure a second machine in parallel on my side — that redundancy would have let us compare configurations and isolate the source of the problem much faster.",
 
+    // ---------- Tech watch ----------
+    'nav.veille': "Tech watch",
+    'veille.title': "Tech Watch",
+    'veille.subtitle': "A few lessons learned from my projects.",
+    'veille.c1.title': "JWT explained simply",
+    'veille.c1.text': "What I learned implementing token authentication on a REST API, without any formal course on the topic.",
+    'veille.c2.title': "Negotiating JSON… or XML",
+    'veille.c2.text': "How an API can answer in the format the client asks for, and why it matters in real life.",
+    'veille.c3.title': "Deploying across several VMs",
+    'veille.c3.text': "What changes when a service no longer runs on a single machine, and why it breaks more often.",
+    'v1.badge': "📌 Lessons learned — EcoDrop, SAÉ 4.02",
+    'v1.p1': "While implementing EcoDrop's authentication, I had to understand JWT (JSON Web Token) without any course on it. Here's what I took away, explained the way I wish someone had explained it to me:",
+    'v1.p2': "A JWT is a signed token the server gives the client after a successful login. It has three parts separated by dots: a header (the algorithm used), a payload (information about the user, such as their USER or ADMIN role) and a signature (which guarantees nobody tampered with the content). The client then sends this token back with every request, in the <code>Authorization</code> header, and the server checks the signature before letting the request through — without having to keep a session in memory on the server side.",
+    'v1.p3': "What took me a while to understand: the token is not encrypted, only signed. Anyone can read its content (just decode it from base64), so you must never put sensitive information such as a password in it. On EcoDrop, it let me distinguish the USER and ADMIN roles to restrict certain routes.",
+    'v1.takeaway': "Learning a technology on my own, without a course, forced me to really understand the \"why\" before the \"how\" — it's still the method I prefer today.",
+    'v2.badge': "📌 Lessons learned — EcoDrop, SAÉ 4.02",
+    'v2.p1': "On the EcoDrop API, we had to support both JSON and XML responses depending on what the client asked for. This is called <strong>content negotiation</strong>: the client sends an <code>Accept</code> header (for example <code>application/json</code> or <code>application/xml</code>), and the server picks the format of its response accordingly.",
+    'v2.p2': "In practice, it avoids duplicating endpoints (no need for separate <code>/points-json</code> and <code>/points-xml</code>): a single route can produce several representations of the same resource. It's a REST principle you don't always see in tutorial \"toy\" APIs, but it becomes useful as soon as an API has several kinds of clients (a mobile app, a third-party service, etc.).",
+    'v2.p3': "The main difficulty was structuring the code so the business logic wasn't duplicated between the two formats — serialization had to remain a layer separate from the API logic.",
+    'v2.takeaway': "Clearly separating \"what the API does\" from \"how it responds\" makes the code much easier to evolve — a principle I've tried to reapply ever since.",
+    'v3.badge': "📌 Lessons learned — Matrix/Synapse, SAÉ 3.03",
+    'v3.p1': "Deploying Matrix/Synapse on three separate Debian VMs (application server, PostgreSQL database, nginx reverse proxy) made me realize how much a distributed architecture multiplies the possible points of failure compared to \"everything on one machine\".",
+    'v3.p2': "Each VM must be able to reach the others over the network, which means correctly configuring IP addresses, open ports, and sometimes a firewall. A network misconfiguration on just one of the three machines is enough to break the whole chain, and the visible error message (\"the client can't connect\") doesn't necessarily tell you where the real problem is.",
+    'v3.p3': "We ended up blocked by an infrastructure issue on the IUT's servers, unrelated to our configuration — but the real lesson was methodological: isolate each VM and test connectivity step by step (ping, telnet on the ports, each service's logs) rather than testing everything at once.",
+    'v3.takeaway': "On a multi-machine architecture, debugging \"end to end\" doesn't work — you have to isolate each component and check connectivity layer by layer.",
+
+    // ---------- Testimonials ----------
+    'testi.title': "What people say about my work",
+    'testi.q1': "[Testimonial to be added — for example feedback from your internship supervisor at Santelys]",
+    'testi.a1': "Supervisor's name",
+    'testi.r1': "Position, Santelys",
+    'testi.q2': "[Testimonial to be added — for example feedback from a teacher or a project teammate]",
+    'testi.a2': "Name",
+    'testi.r2': "Position",
+
+    // ---------- Achievements / palette ----------
+    'ach.btn': "See hidden achievements: ",
+    'ach.title': "🏆 Hidden achievements",
+    'ach.text': "This portfolio hides a few easter eggs. Some are here, others in <a href=\"linux.html\">Linux mode</a>.",
+    'ach.btnTitle': "Hidden achievements",
+    'cmdk.hint': "Open the command palette: ",
+    'cmdk.title': "Open the command palette (Ctrl+K)",
+    'cmdk.label': "Command palette",
+
     // ---------- Contact ----------
+    'contact.vcard': "Add to my contacts",
+    'footer.retroPre': "👾 You are visitor no.",
+    'footer.retroPost': "(on this browser)",
+    'footer.retroTitle': "A purely local, cosmetic retro counter — a nod to 2000s personal websites, not real traffic statistics.",
+    'footer.hint2': "Tip: <kbd>Ctrl</kbd>+<kbd>K</kbd> opens the command palette, <kbd>T</kbd> toggles the theme, <kbd>L</kbd> the language… and try the Konami code 🎮",
     'contact.title': "Contact me",
     'contact.subtitle': "A question, an internship or work-study offer? Drop me a line!",
     'contact.copy': "Copy my email",
@@ -243,6 +302,7 @@ const I18N_STRINGS = {
     // ---------- 404 ----------
     '404.text': "Oops! The page you're looking for doesn't exist.",
     '404.back': "Back to home",
+    '404.term': "No such file or directory",
   },
 };
 

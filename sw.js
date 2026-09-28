@@ -1,10 +1,11 @@
 // Bump this version whenever cached assets change.
-const CACHE = "portfolio-v2";
+const CACHE = "portfolio-v3";
 const ASSETS = [
   "/", "/index.html", "/resume.html", "/linux.html", "/404.html",
   "/style.css", "/resume.css", "/404.css", "/linux.css",
-  "/i18n.js", "/script.js", "/linux.js",
-  "/favicon.svg", "/profile.jpg", "/manifest.json"
+  "/i18n.js", "/script.js", "/linux.js", "/achievements.js",
+  "/favicon.svg", "/profile.jpg", "/profile.webp", "/manifest.json",
+  "/icons/icon-192.png", "/icons/icon-512.png"
 ];
 
 self.addEventListener("install", e => {
