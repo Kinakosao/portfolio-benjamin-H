@@ -1,0 +1,11 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Hanquart;Benjamin;;;
+FN:Benjamin Hanquart
+TITLE:Étudiant en BUT Informatique — Développement back-end
+EMAIL;TYPE=INTERNET:benjamin.hanquart03@gmail.com
+URL:https://benjaminhanquart.dev/
+URL;TYPE=GitHub:https://github.com/Kinakosao
+URL;TYPE=LinkedIn:https://www.linkedin.com/in/benjamin-hanquart-692b10288/
+NOTE:Portfolio : https://benjaminhanquart.dev/
+END:VCARD

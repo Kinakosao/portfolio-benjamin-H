@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  html-validation:
+    name: Validate HTML5
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate HTML5 (W3C)
+        uses: Cyb3r-Jak3/html5validator-action@v7
+        with:
+          root: .
+
+  link-check:
+    name: Check internal links & assets
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Check for broken internal links / missing files
+        run: python3 scripts/check_links.py
+
+      - name: Validate manifest.json
+        run: python3 -c "import json; json.load(open('manifest.json')); print('manifest.json OK')"
+
+  lighthouse:
+    name: Lighthouse (perf / a11y / SEO)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v11
+        with:
+          configPath: ./.lighthouserc.json
+          uploadArtifacts: true
+          temporaryPublicStorage: false

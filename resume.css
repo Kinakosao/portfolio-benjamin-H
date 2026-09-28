@@ -107,14 +107,15 @@ body.dark-mode .timeline-date {
     gap: 2rem;
 }
 
-.skill-category h4 {
+.skill-category h3 {
+    font-size: 1.5rem;
     margin-bottom: 1.5rem;
     color: var(--bs-primary);
     border-bottom: 2px solid var(--bs-primary);
     padding-bottom: 0.5rem;
 }
 
-body.dark-mode .skill-category h4 {
+body.dark-mode .skill-category h3 {
     color: var(--bs-info);
     border-bottom-color: var(--bs-info);
 }

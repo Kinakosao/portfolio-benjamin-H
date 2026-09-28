@@ -1,3 +1,7 @@
+// Plausible custom events: safe no-throw shim (queues silently if the analytics
+// script is blocked by an ad-blocker or not loaded on this page).
+window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments); };
+
 window.addEventListener('load', () => {
     const preloader = document.getElementById('preloader');
     const mainContent = document.getElementById('main-content');
@@ -51,7 +55,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Theme switcher
     const themeSwitch = document.getElementById('theme-switch-checkbox');
     if(themeSwitch) {
-        const currentTheme = localStorage.getItem('theme');
+        const systemPrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const currentTheme = localStorage.getItem('theme') || (systemPrefersDark ? 'dark-mode' : 'light-mode');
         if (currentTheme) {
             document.body.classList.add(currentTheme);
             if (currentTheme === 'dark-mode') {
@@ -168,11 +173,20 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
         openModalButtons.forEach(button => {
-            button.addEventListener('click', () => {
+            const openModal = () => {
                 const modal = document.querySelector(button.dataset.modalTarget);
                 modal.showModal();
                 trapFocus(modal);
-            });
+            };
+            button.addEventListener('click', openModal);
+            if (button.tagName !== 'BUTTON') {
+                button.addEventListener('keydown', e => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        openModal();
+                    }
+                });
+            }
         });
         closeModalButtons.forEach(button => {
             button.addEventListener('click', () => {
@@ -197,6 +211,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
         contactForm.addEventListener('submit', function(event) {
             event.preventDefault();
+
+            // Honeypot anti-spam : un champ invisible pour les humains, souvent rempli par les bots.
+            const honeypot = contactForm.querySelector('#website');
+            if (honeypot && honeypot.value.trim()) {
+                // Faux succès pour ne pas indiquer au bot qu'il a été détecté.
+                formStatus.innerHTML = `<div class="alert alert-success" role="alert"><strong>Merci pour votre message !</strong> Je vous répondrai dès que possible.</div>`;
+                contactForm.reset();
+                return;
+            }
 
             // Gestion de la limite d'envoi (2 par semaine, reset le lundi)
             const now = new Date();
@@ -257,6 +280,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     let currentCount = parseInt(localStorage.getItem('emailCount') || '0');
                     currentCount++;
                     localStorage.setItem('emailCount', currentCount.toString());
+                    plausible('Message Envoyé');
 
                     if (typeof confetti !== 'undefined') {
                         confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
@@ -267,7 +291,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         contactForm.querySelector(`#${fieldName}`).classList.remove('is-valid');
                     });
                 }, (err) => {
-                    formStatus.innerHTML = `<div class="alert alert-danger" role="alert"><strong>Erreur :</strong> Une erreur s'est produite lors de l'envoi du formulaire. ${JSON.stringify(err)}</div>`;
+                    console.error('EmailJS error:', err);
+                    formStatus.innerHTML = `<div class="alert alert-danger" role="alert"><strong>Erreur :</strong> Une erreur s'est produite lors de l'envoi du formulaire. Merci de réessayer plus tard ou de me contacter directement par email.</div>`;
                 });
         });
     }
@@ -297,7 +322,59 @@ document.addEventListener('DOMContentLoaded', function() {
     if (currentLang !== 'fr') applyLang(currentLang);
     const langBtn = document.getElementById('lang-toggle');
     if (langBtn) langBtn.textContent = currentLang === 'fr' ? 'EN' : 'FR';
+
+    // Live GitHub stats on project cards
+    loadGithubStats();
+
+    // Achievements badge initial state
+    refreshAchievementsUI();
+
+    // CV download tracking (resume.html)
+    document.getElementById('resume-cv-download')?.addEventListener('click', () => {
+        plausible('CV Téléchargé', { props: { source: 'resume-page' } });
+    });
 });
+
+// Fetch and display live star count / last update for project cards linked to a public GitHub repo
+function loadGithubStats() {
+    const nodes = document.querySelectorAll('[data-github]');
+    if (nodes.length === 0) return;
+
+    const timeAgo = (isoDate) => {
+        const days = Math.floor((Date.now() - new Date(isoDate).getTime()) / 86400000);
+        if (days < 1) return "aujourd'hui";
+        if (days === 1) return 'il y a 1 jour';
+        if (days < 30) return `il y a ${days} jours`;
+        const months = Math.floor(days / 30);
+        if (months < 12) return `il y a ${months} mois`;
+        return `il y a ${Math.floor(months / 12)} an(s)`;
+    };
+
+    nodes.forEach(async (node) => {
+        const repo = node.dataset.github;
+        try {
+            const cacheKey = `gh-stats:${repo}`;
+            const cached = sessionStorage.getItem(cacheKey);
+            const data = cached ? JSON.parse(cached) : await (async () => {
+                const res = await fetch(`https://api.github.com/repos/${repo}`);
+                if (!res.ok) throw new Error(`GitHub API ${res.status}`);
+                const json = await res.json();
+                const trimmed = { stars: json.stargazers_count, updated: json.pushed_at, language: json.language };
+                sessionStorage.setItem(cacheKey, JSON.stringify(trimmed));
+                return trimmed;
+            })();
+
+            node.innerHTML = `
+                <span class="gh-stat" title="Étoiles GitHub"><i class="bi bi-star-fill"></i> ${data.stars}</span>
+                <span class="gh-stat" title="Dernière mise à jour"><i class="bi bi-clock-history"></i> ${timeAgo(data.updated)}</span>
+                ${data.language ? `<span class="gh-stat">${data.language}</span>` : ''}
+            `;
+        } catch (e) {
+            // Repo private, renamed, or GitHub API rate-limited: fail silently, no badge shown.
+            node.remove();
+        }
+    });
+}
 
 
 // Soft skill badge tooltip on click
@@ -336,6 +413,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function copyEmail() {
   const email = 'benjamin.hanquart03@gmail.com';
   navigator.clipboard.writeText(email).then(() => {
+    plausible('Email Copié');
     const btn = document.getElementById('copy-email-btn');
     if (btn) { const orig = btn.innerHTML; btn.innerHTML = '<i class="bi bi-check"></i> Copié !'; btn.classList.replace('btn-outline-secondary','btn-success'); setTimeout(() => { btn.innerHTML = orig; btn.classList.replace('btn-success','btn-outline-secondary'); }, 2000); }
   });
@@ -363,7 +441,7 @@ const TRANSLATIONS = {
     'about-title': 'À propos de moi',
     'projects-title': 'Mes Projets',
     'contact-title': 'Me Contacter',
-    'filter-all': 'Tous',
+    'filter-all': 'Tout',
   },
   en: {
     'nav-about': 'About',
@@ -377,6 +455,151 @@ const TRANSLATIONS = {
   }
 };
 let currentLang = localStorage.getItem('portfolioLang') || 'fr';
+
+// --- Achievements (easter eggs) ---
+window.onAchievementUnlocked = function(meta, count) {
+  const toast = document.createElement('div');
+  toast.className = 'achievement-toast';
+  toast.innerHTML = `<span style="font-size:1.4rem">${meta.icon}</span><div><strong>Succès débloqué</strong><br>${meta.name}</div>`;
+  document.body.appendChild(toast);
+  requestAnimationFrame(() => toast.classList.add('show'));
+  setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 300); }, 3500);
+  if (typeof confetti !== 'undefined') confetti({ particleCount: 60, spread: 55, origin: { y: 0.85 } });
+  refreshAchievementsUI();
+};
+
+function refreshAchievementsUI() {
+  if (typeof getAchievementProgress !== 'function') return;
+  const progress = getAchievementProgress();
+  const badge = document.getElementById('ach-count-badge');
+  if (badge) badge.textContent = `${progress.unlocked}/${progress.total}`;
+  const list = document.getElementById('achievements-list');
+  if (list) list.innerHTML = renderAchievementsHTML();
+}
+
+// Konami code: ↑ ↑ ↓ ↓ ← → ← → B A
+(function() {
+  const sequence = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+  let progress = 0;
+  document.addEventListener('keydown', (e) => {
+    const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+    if (key === sequence[progress]) {
+      progress++;
+      if (progress === sequence.length) {
+        progress = 0;
+        if (typeof unlockAchievement === 'function') unlockAchievement('konami');
+      }
+    } else {
+      progress = (key === sequence[0]) ? 1 : 0;
+    }
+  });
+})();
+
+// Command Palette (Ctrl+K / Cmd+K)
+(function() {
+  const overlay = document.getElementById('cmdk-overlay');
+  const input = document.getElementById('cmdk-input');
+  const resultsEl = document.getElementById('cmdk-results');
+  const hintBtn = document.getElementById('cmdk-hint');
+  if (!overlay || !input || !resultsEl) return;
+
+  const openModalById = (selector) => {
+    const modal = document.querySelector(selector);
+    if (modal && typeof modal.showModal === 'function') modal.showModal();
+  };
+
+  const items = [
+    { label: 'Aller à : À propos', tag: 'section', action: () => location.hash = '#about' },
+    { label: 'Aller à : Projets', tag: 'section', action: () => location.hash = '#projects' },
+    { label: 'Aller à : Veille Technique', tag: 'section', action: () => location.hash = '#veille' },
+    { label: 'Aller à : Contact', tag: 'section', action: () => location.hash = '#contact' },
+    { label: 'Ouvrir : Mon CV (page)', tag: 'page', action: () => location.href = 'resume.html' },
+    { label: 'Télécharger mon CV (PDF)', tag: 'fichier', action: () => { plausible('CV Téléchargé', { props: { source: 'palette' } }); location.href = 'CV.pdf'; } },
+    { label: 'Passer en mode Linux 🐧', tag: 'page', action: () => location.href = 'linux.html' },
+    { label: 'Projet : RISK (Java)', tag: 'projet', action: () => openModalById('#project-modal-1') },
+    { label: 'Projet : Labyrinthe (Java)', tag: 'projet', action: () => openModalById('#project-modal-2') },
+    { label: 'Projet : EcoDrop (API REST)', tag: 'projet', action: () => openModalById('#project-modal-eco') },
+    { label: 'Projet : Syck Sai-Vhen', tag: 'projet', action: () => openModalById('#project-modal-game') },
+    { label: 'Projet : Matrix/Synapse', tag: 'projet', action: () => openModalById('#project-modal-devops') },
+    { label: 'Article : JWT expliqué simplement', tag: 'veille', action: () => openModalById('#veille-modal-1') },
+    { label: 'Article : Négocier du JSON/XML', tag: 'veille', action: () => openModalById('#veille-modal-2') },
+    { label: 'Article : Déployer sur plusieurs VMs', tag: 'veille', action: () => openModalById('#veille-modal-3') },
+    { label: 'Voir les succès cachés 🏆', tag: 'fun', action: () => openModalById('#achievements-modal') },
+    { label: 'Copier mon email', tag: 'action', action: () => copyEmail() },
+    { label: 'Ajouter à mes contacts (vCard)', tag: 'action', action: () => location.href = 'Benjamin_Hanquart.vcf' },
+    { label: 'Changer le thème clair / sombre', tag: 'action', action: () => document.getElementById('theme-switch-checkbox')?.click() },
+    { label: 'GitHub ↗', tag: 'lien', action: () => window.open('https://github.com/Kinakosao', '_blank') },
+    { label: 'LinkedIn ↗', tag: 'lien', action: () => window.open('https://www.linkedin.com/in/benjamin-hanquart-692b10288/', '_blank') },
+  ];
+
+  let filtered = items;
+  let activeIndex = 0;
+
+  function render() {
+    if (filtered.length === 0) {
+      resultsEl.innerHTML = '<div class="cmdk-empty">Aucun résultat</div>';
+      return;
+    }
+    resultsEl.innerHTML = filtered.map((item, i) =>
+      `<div class="cmdk-item${i === activeIndex ? ' active' : ''}" data-index="${i}">
+        <span>${item.label}</span><span class="cmdk-hint-tag">${item.tag}</span>
+      </div>`
+    ).join('');
+  }
+
+  function filterItems(query) {
+    const q = query.trim().toLowerCase();
+    filtered = q ? items.filter(i => i.label.toLowerCase().includes(q)) : items;
+    activeIndex = 0;
+    render();
+  }
+
+  function openPalette() {
+    overlay.classList.add('show');
+    input.value = '';
+    filterItems('');
+    setTimeout(() => input.focus(), 0);
+  }
+
+  function closePalette() {
+    overlay.classList.remove('show');
+  }
+
+  function runActive() {
+    const item = filtered[activeIndex];
+    if (item) { closePalette(); item.action(); }
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+      e.preventDefault();
+      overlay.classList.contains('show') ? closePalette() : openPalette();
+    } else if (overlay.classList.contains('show')) {
+      if (e.key === 'Escape') { closePalette(); }
+      else if (e.key === 'ArrowDown') { e.preventDefault(); activeIndex = Math.min(activeIndex + 1, filtered.length - 1); render(); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); activeIndex = Math.max(activeIndex - 1, 0); render(); }
+      else if (e.key === 'Enter') { e.preventDefault(); runActive(); }
+    }
+  });
+
+  input.addEventListener('input', () => filterItems(input.value));
+  resultsEl.addEventListener('click', (e) => {
+    const row = e.target.closest('.cmdk-item');
+    if (row) { activeIndex = parseInt(row.dataset.index, 10); runActive(); }
+  });
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) closePalette(); });
+  if (hintBtn) hintBtn.addEventListener('click', openPalette);
+})();
+
+// Retro visitor counter (purely local/cosmetic, not real site-wide analytics)
+(function() {
+  const el = document.getElementById('retro-visitor-count');
+  if (!el) return;
+  let count = parseInt(localStorage.getItem('retroVisitCount') || '0', 10);
+  count++;
+  localStorage.setItem('retroVisitCount', count.toString());
+  el.textContent = String(count).padStart(6, '0');
+})();
 
 function applyLang(lang) {
   currentLang = lang;

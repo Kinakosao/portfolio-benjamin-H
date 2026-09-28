@@ -615,6 +615,45 @@ body {
 .ctx-item .ctx-icon { font-size: 14px; width: 16px; }
 .ctx-sep { height: 1px; background: var(--win-border); margin: 4px 8px; }
 
+/* ── Achievements Panel ─────────────────────────────────────── */
+#achievements-btn #ach-count { font-family: var(--font-mono); font-weight: 700; }
+
+#achievements-panel {
+  position: fixed;
+  top: 36px;
+  right: 12px;
+  width: 300px;
+  max-height: 70vh;
+  overflow-y: auto;
+  background: rgba(22, 27, 34, 0.97);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--win-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  z-index: 9000;
+  display: none;
+  font-family: var(--font-ui);
+}
+#achievements-panel.show { display: block; }
+.ach-panel-header {
+  padding: 12px 16px;
+  font-weight: 700;
+  color: var(--text);
+  border-bottom: 1px solid var(--win-border);
+  font-size: 14px;
+}
+#achievements-panel-list { padding: 4px 16px; }
+#achievements-panel .achievement-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+#achievements-panel .achievement-row:last-child { border-bottom: none; }
+#achievements-panel .ach-icon { font-size: 1.3rem; width: 28px; text-align: center; flex-shrink: 0; }
+#achievements-panel .achievement-row.locked { opacity: 0.45; }
+#achievements-panel .ach-name { font-weight: 600; font-size: 13px; color: var(--text); }
+#achievements-panel .ach-desc { font-size: 11px; color: var(--text-dim); }
+
 /* ── Linux Mode Button (on classic.html) ────────────────────── */
 #linux-mode-btn {
   position: fixed; bottom: 80px; right: 20px;

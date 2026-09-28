@@ -4,17 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>404 - Page non trouvée</title>
+    <meta name="description" content="Cette page n'existe pas. Retournez au portfolio de Benjamin Hanquart.">
+    <meta name="robots" content="noindex">
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <a href="#main-content" class="skip-link">Aller au contenu principal</a>
     <div id="preloader">
         <div class="spinner"></div>
     </div>
 
-    <div id="main-content" class="hidden-content">
+    <div id="main-content" class="hidden-content" role="main">
         <div class="cursor-dot"></div>
         <div class="cursor-outline"></div>
 
@@ -46,11 +49,22 @@
 
         <div class="error-container">
             <div class="text-center">
+                <div class="terminal-404 fade-in-up">
+                    <div class="terminal-404-line">benjamin@portfolio:~$ cd <span id="err-path"></span></div>
+                    <div class="terminal-404-line err">bash: cd: <span id="err-path-2"></span>: Aucun fichier ou dossier de ce type</div>
+                    <div class="terminal-404-line">benjamin@portfolio:~$ <span class="err-cursor">_</span></div>
+                </div>
                 <h1 class="error-title fade-in-up">404</h1>
                 <p class="lead fade-in-up">Oups ! La page que vous cherchez n'existe pas.</p>
                 <a href="index.html" class="btn btn-primary mt-4 fade-in-up">Retour à l'accueil</a>
             </div>
         </div>
+        <script>
+            (function() {
+                var path = window.location.pathname || '/';
+                document.querySelectorAll('#err-path, #err-path-2').forEach(function(el) { el.textContent = path; });
+            })();
+        </script>
         
         <footer class="main-footer py-4">
             <div class="container text-center">

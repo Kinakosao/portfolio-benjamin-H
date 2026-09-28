@@ -11,6 +11,7 @@
   <meta property="og:description" content="Un portfolio interactif dans un environnement Linux.">
   <meta property="og:image" content="https://benjaminhanquart.dev/profile.jpg">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet">
@@ -18,6 +19,7 @@
   <link rel="manifest" href="manifest.json">
   <link rel="stylesheet" href="linux.css">
   <script defer data-domain="benjaminhanquart.dev" src="https://plausible.io/js/script.js"></script>
+  <script src="achievements.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script>
     (function(){ emailjs.init({ publicKey: "LL3QyQ6RwXs2v5BNk" }); })();
@@ -52,10 +54,17 @@
       <span id="topbar-clock">jeu. 28 mai 00:00</span>
     </div>
     <div class="tb-right">
+      <span class="tb-icon" id="achievements-btn" title="Succès cachés">🏆 <span id="ach-count">0/8</span></span>
       <span class="tb-icon" id="sound-toggle" title="Son">🔇</span>
       <span class="tb-icon" title="Réseau">📶</span>
       <span class="tb-icon" title="Batterie">⚡</span>
     </div>
+  </div>
+
+  <!-- Achievements panel -->
+  <div id="achievements-panel">
+    <div class="ach-panel-header">🏆 Succès cachés</div>
+    <div id="achievements-panel-list"></div>
   </div>
 
   <!-- Desktop area -->

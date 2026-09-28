@@ -5,6 +5,10 @@
 
 "use strict";
 
+// Plausible custom events: safe no-throw shim (queues silently if the analytics
+// script is blocked by an ad-blocker or not loaded on this page).
+window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments); };
+
 /* ── State ──────────────────────────────────────────────────── */
 const state = {
   windows: {}, // id → { el, minimized, maximized, icon, title }
@@ -61,6 +65,37 @@ function toggleSound() {
   const btn = document.getElementById("sound-toggle");
   if (btn) btn.textContent = soundEnabled ? "🔊" : "🔇";
   if (soundEnabled) playSound("notify");
+}
+
+/* ── Achievements (easter eggs) ─────────────────────────────── */
+window.onAchievementUnlocked = function(meta, count) {
+  showNotification(`🏆 Succès débloqué : ${meta.name}`, "success");
+  refreshAchievementsBadge();
+};
+
+function refreshAchievementsBadge() {
+  if (typeof getAchievementProgress !== "function") return;
+  const progress = getAchievementProgress();
+  const badge = document.getElementById("ach-count");
+  if (badge) badge.textContent = `${progress.unlocked}/${progress.total}`;
+  const list = document.getElementById("achievements-panel-list");
+  if (list) list.innerHTML = renderAchievementsHTML();
+}
+
+function toggleAchievementsPanel() {
+  const panel = document.getElementById("achievements-panel");
+  const btn = document.getElementById("achievements-btn");
+  if (!panel) return;
+  const willShow = !panel.classList.contains("show");
+  if (willShow) {
+    refreshAchievementsBadge();
+    if (btn) {
+      const rect = btn.getBoundingClientRect();
+      panel.style.left = Math.max(8, rect.left - 40) + "px";
+      panel.style.right = "auto";
+    }
+  }
+  panel.classList.toggle("show", willShow);
 }
 
 /* ── System Notifications ───────────────────────────────────── */
@@ -449,6 +484,7 @@ function removeFromTaskbar(id) {
 
 /* ── Terminal ───────────────────────────────────────────────── */
 function openTerminal() {
+  if (typeof unlockAchievement === "function") unlockAchievement("terminal");
   const id = `terminal-${Date.now()}`;
   const termContent = `
     <div class="terminal-content">
@@ -540,11 +576,12 @@ function openTerminal() {
       }
     } else if (e.key === "Tab") {
       e.preventDefault();
-      const ALL_CMDS = ["help","ls","open","neofetch","whoami","pwd","clear","history","echo","date","uname","sudo","man","exit","cat","git","ping","vim","nano","npm","ssh","htop","cowsay","fortune","chmod","matrix","./contact.sh"];
+      const ALL_CMDS = ["help","ls","open","neofetch","whoami","pwd","clear","history","echo","date","uname","sudo","man","exit","cat","git","ping","vim","nano","npm","ssh","htop","cowsay","fortune","chmod","matrix","resume","sl","curl","./contact.sh"];
       const OPEN_ARGS = ["about","projects","cv","contact","github","linkedin","spotify","music"];
-      const MAN_ARGS  = ["open","ls","neofetch","help","sudo","git","cat","ping","echo","date","uname","man","whoami","pwd","clear","history","htop","cowsay","fortune","chmod","vim","npm"];
+      const MAN_ARGS  = ["open","ls","neofetch","help","sudo","git","cat","ping","echo","date","uname","man","whoami","pwd","clear","history","htop","cowsay","fortune","chmod","vim","npm","resume"];
       const GIT_ARGS  = ["log","status","branch","diff","init"];
       const CAT_ARGS  = ["about.txt","README.md","/etc/passwd"];
+      const RESUME_ARGS = ["--json"];
 
       const val = input.value;
       const parts = val.trimStart().split(/\s+/);
@@ -561,6 +598,7 @@ function openTerminal() {
         if (cmd0 === "man")  argList = MAN_ARGS;
         if (cmd0 === "git")  argList = GIT_ARGS;
         if (cmd0 === "cat")  argList = CAT_ARGS;
+        if (cmd0 === "resume") argList = RESUME_ARGS;
         const matches = argList.filter(a => a.startsWith(partial) && a !== partial);
         if (matches.length === 1) input.value = parts.slice(0, -1).join(" ") + " " + matches[0];
         else if (matches.length > 1) { appendPromptLine(id, val); appendLine(id, matches.join("   "), "term-dim"); }
@@ -672,7 +710,10 @@ function processCommand(termId, raw) {
     cowsay:   () => cmdCowsay(termId, args),
     fortune:  () => cmdFortune(termId),
     chmod:    () => { cmdChmod(termId, args); return true; },
-    matrix:   () => { activateScreensaver(); },
+    matrix:   () => { if (typeof unlockAchievement === "function") unlockAchievement("matrix"); activateScreensaver(); },
+    resume:   () => cmdResume(termId, args),
+    sl:       () => { cmdSl(termId); return true; },
+    curl:     () => { cmdCurl(termId, args); return true; },
     "./contact.sh": () => { cmdOpen(termId, ["contact"]); },
   };
 
@@ -714,6 +755,7 @@ function cmdHelp(id) {
     ["fortune", "Citation aléatoire"],
     ["chmod 777 life", "Easter egg"],
     ["matrix", "Activer l'économiseur d'écran"],
+    ["resume [--json]", "Affiche mon CV (texte ou JSON structuré)"],
     ["clear", "Vider le terminal  (ou Ctrl+L)"],
     ["man <commande>", "Manuel d'une commande"],
     ["exit", "Fermer le terminal"],
@@ -909,6 +951,48 @@ function cmdCat(id, args) {
   }
 }
 
+function cmdResume(id, args) {
+  const resumeData = {
+    name: "Benjamin Hanquart",
+    title: "Étudiant en BUT Informatique — spécialisation back-end",
+    location: "Lille, France",
+    contact: { email: "benjamin.hanquart03@gmail.com", github: "https://github.com/Kinakosao", linkedin: "https://www.linkedin.com/in/benjamin-hanquart-692b10288/" },
+    education: [
+      { degree: "BUT Informatique — parcours Réalisation d'Applications", school: "IUT de Lille", period: "2023 - Présent" },
+      { degree: "Baccalauréat Technologique STI2D (mention Bien)", school: "Lycée Jean Prouvé, Lomme", period: "2023" }
+    ],
+    experience: [
+      { role: "Stagiaire développeur", company: "Santelys, Lille", period: "13 avril - 19 juin 2025", detail: "Application web de réservation de salles, intégration API Microsoft Graph (Outlook)" },
+      { role: "Hôte de caisse", company: "Carrefour, Lomme", period: "Février 2025 - Actuellement" }
+    ],
+    skills: ["Java", "C", "TypeScript", "JavaScript", "SQL", "HTML/CSS", "REST API", "JWT", "Node.js", "Linux"],
+    goal: "Intégrer l'école d'ingénieur CÉSI après le BUT",
+    resume_pdf: "https://benjaminhanquart.dev/CV.pdf"
+  };
+
+  if (args.includes("--json")) {
+    appendLine(id, '<span style="color:var(--green);font-weight:700">resume --json</span>', "");
+    const json = JSON.stringify(resumeData, null, 2);
+    json.split("\n").forEach(line => {
+      const colored = escHtml(line).replace(/"([^"]+)":/g, '<span style="color:var(--cyan)">"$1"</span>:');
+      appendLine(id, colored, "");
+    });
+  } else {
+    appendLine(id, '<span style="color:var(--green);font-weight:700">═══ resume ═══</span>', "");
+    appendLine(id, "", "");
+    appendLine(id, `${resumeData.name} — ${resumeData.title}`, "");
+    appendLine(id, `${resumeData.location}`, "term-dim");
+    appendLine(id, "", "");
+    appendLine(id, '<span style="color:var(--blue);font-weight:700">Formation</span>', "");
+    resumeData.education.forEach(e => appendLine(id, `  ${e.period} — ${e.degree} (${e.school})`, ""));
+    appendLine(id, "", "");
+    appendLine(id, '<span style="color:var(--blue);font-weight:700">Expérience</span>', "");
+    resumeData.experience.forEach(e => appendLine(id, `  ${e.period} — ${e.role}, ${e.company}`, ""));
+    appendLine(id, "", "");
+    appendLine(id, '<span style="color:var(--text-dim)">Astuce : resume --json pour une sortie structurée, ou open cv pour le PDF.</span>', "");
+  }
+}
+
 function cmdNeofetch(id) {
   const out = document.getElementById(`term-output-${id}`);
   if (!out) return;
@@ -1018,6 +1102,7 @@ function cmdUname(id, args) {
 function cmdSudo(id, args) {
   const subcmd = args[0] || "";
   if (subcmd === "rm" && args.includes("-rf") && (args.includes("/") || args.includes("/*"))) {
+    if (typeof unlockAchievement === "function") unlockAchievement("sudo");
     appendLine(id, "Suppression en cours...", "term-error");
     setTimeout(() => {
       appendLine(id, "[██████████████████████████████] 100%", "term-error");
@@ -1069,6 +1154,7 @@ function cmdMan(id, args) {
     vim:      `VIM(1)\n\nNOM\n  vim — éditeur de texte\n\nSYNTAXE\n  vim\n\nFUITE\n  :q!  pour quitter (le plus difficile)`,
     npm:      `NPM(1)\n\nNOM\n  npm — gestionnaire de paquets Node\n\nSYNTAXE\n  npm install`,
     exit:     `EXIT(1)\n\nNOM\n  exit — ferme le terminal\n\nSYNTAXE\n  exit`,
+    resume:   `RESUME(1)\n\nNOM\n  resume — affiche le CV de Benjamin\n\nSYNTAXE\n  resume [--json]\n\nOPTIONS\n  --json   sortie structurée au format JSON`,
   };
   if (manPages[cmd]) {
     appendLine(id, `<span style="color:var(--blue);font-weight:700">MAN(1) — ${cmd.toUpperCase()}</span>`, "");
@@ -1232,7 +1318,60 @@ function cmdHtop(id) {
   appendLine(id, '<span style="color:var(--text-dim)">F10 Quitter (simulé)</span>', "");
 }
 
+function cmdSl(id) {
+  if (typeof unlockAchievement === "function") unlockAchievement("sl");
+  appendLine(id, "🚂 Choo choo ! (petite faute de frappe...)", "term-dim");
+  const out = document.getElementById(`term-output-${id}`);
+  if (out) {
+    const train = document.createElement("div");
+    train.style.cssText = "white-space:pre;font-family:var(--font-mono);font-size:11px;line-height:1.2;color:var(--green);position:relative;left:100%;transition:left 2.2s linear;";
+    train.textContent =
+"      ====        ________                ___________\n" +
+"  _D _|  |_______/        \\__I_I_____===__|_________|\n" +
+"   |(_)---  |   H\\________/ |   |        =|___ ___|\n" +
+"   /     |  |   H  |  |     |   |         ||_| |_|\n" +
+"  |      |  |   H  |__--------------------| [___] |\n" +
+"  | ________|___H__/__|_____/[][]~\\_______|       |\n" +
+"  |/ |   |-----------I_____I [][] []  D   |=======|__";
+    out.appendChild(train);
+    scrollToBottom(id);
+    requestAnimationFrame(() => requestAnimationFrame(() => { train.style.left = "-230%"; }));
+  }
+  setTimeout(() => appendLine(id, "", ""), 2300);
+}
+
+function cmdCurl(id, args) {
+  const target = (args[0] || "").toLowerCase();
+  if (!target) {
+    appendLine(id, "curl: try 'curl <url>'", "term-error");
+    appendLine(id, "", "");
+    return;
+  }
+  if (target.includes("hire-me")) {
+    if (typeof unlockAchievement === "function") unlockAchievement("curl");
+    appendLine(id, '<span style="color:var(--text-dim)">*   Trying benjaminhanquart.dev:443...</span>', "");
+    appendLine(id, '<span style="color:var(--text-dim)">* Connected to benjaminhanquart.dev port 443</span>', "");
+    appendLine(id, '<span style="color:var(--text-dim)">> GET /hire-me HTTP/1.1</span>', "");
+    appendLine(id, '<span style="color:var(--text-dim)">< HTTP/1.1 200 OK</span>', "");
+    appendLine(id, '<span style="color:var(--text-dim)">< Content-Type: application/json</span>', "");
+    appendLine(id, "", "");
+    const json = JSON.stringify({
+      status: 200,
+      candidate: "Benjamin Hanquart",
+      available: true,
+      target_role: "Alternance ingénieur (CÉSI)",
+      skills: ["Java", "TypeScript", "REST API", "JWT", "SQL", "Linux"],
+      message: "Candidature reçue. Contactez-moi via la section #contact !"
+    }, null, 2);
+    json.split("\n").forEach(line => appendLine(id, escHtml(line), "term-success"));
+  } else {
+    appendLine(id, `curl: (6) Could not resolve host: ${escHtml(target)}`, "term-error");
+  }
+  appendLine(id, "", "");
+}
+
 function cmdCowsay(id, args) {
+  if (typeof unlockAchievement === "function") unlockAchievement("cowsay");
   const text = args.join(" ") || "Moo! Passez-moi un bon projet 🐮";
   const len = Math.min(text.length, 60);
   const top    = " " + "_".repeat(len + 2);
@@ -1248,6 +1387,7 @@ function cmdCowsay(id, args) {
 }
 
 function cmdFortune(id) {
+  if (typeof unlockAchievement === "function") unlockAchievement("fortune");
   const f = FORTUNES[Math.floor(Math.random() * FORTUNES.length)];
   appendLine(id, "─────────────────────────────────────────────────", "term-dim");
   appendLine(id, escHtml(f), "term-yellow");
@@ -1363,7 +1503,7 @@ function openAboutWindow() {
   const content = `
   <div class="about-content">
     <div class="about-header">
-      <img src="profile.jpg" alt="Benjamin Hanquart" class="about-photo">
+      <img src="profile.jpg" alt="Benjamin Hanquart" class="about-photo" width="80" height="80" loading="lazy">
       <div>
         <div class="about-name">Benjamin Hanquart</div>
         <div class="about-role">Étudiant en BUT Informatique — 3ème année</div>
@@ -1666,6 +1806,9 @@ function openCVWindow() {
     width: 660,
     height: 600,
   });
+  document.querySelector("#window-cv .cv-download-btn")?.addEventListener("click", () => {
+    plausible("CV Téléchargé", { props: { source: "linux-window" } });
+  });
 }
 
 function openContactWindow() {
@@ -1674,6 +1817,10 @@ function openContactWindow() {
     <h3>✉️ Me Contacter</h3>
     <p class="sub">Envoyez-moi un message directement depuis ce formulaire.</p>
     <form id="linux-contact-form" novalidate>
+      <div class="hp-field" aria-hidden="true">
+        <label for="cf-website">Laisser vide</label>
+        <input type="text" id="cf-website" name="website" tabindex="-1" autocomplete="off">
+      </div>
       <div class="cf-group">
         <label class="cf-label">$ nom</label>
         <input class="cf-input" id="cf-name" type="text" placeholder="Votre nom" required>
@@ -1715,6 +1862,15 @@ function initContactForm(winId) {
       const email = document.getElementById("cf-email");
       const message = document.getElementById("cf-message");
       const status = document.getElementById("cf-status");
+
+      // Honeypot anti-spam : champ invisible pour les humains, souvent rempli par les bots.
+      const honeypot = document.getElementById("cf-website");
+      if (honeypot && honeypot.value.trim()) {
+        status.className = "cf-status success";
+        status.textContent = "✅ Message envoyé ! Je vous répondrai dès que possible.";
+        form.reset();
+        return;
+      }
 
       // Rate limiting (2 per week)
       const now = new Date();
@@ -1758,6 +1914,7 @@ function initContactForm(winId) {
         () => {
           count++;
           localStorage.setItem("emailCount", count.toString());
+          plausible("Message Envoyé");
           status.className = "cf-status success";
           status.textContent =
             "✅ Message envoyé ! Je vous répondrai dès que possible.";
@@ -1765,8 +1922,9 @@ function initContactForm(winId) {
           form.reset();
         },
         (err) => {
+          console.error("EmailJS error:", err);
           status.className = "cf-status error";
-          status.textContent = `❌ Erreur : ${JSON.stringify(err)}`;
+          status.textContent = "❌ Erreur lors de l'envoi. Merci de réessayer plus tard ou de me contacter directement par email.";
         },
       );
     });
@@ -1899,6 +2057,22 @@ function initEvents() {
     .getElementById("activities-btn")
     .addEventListener("click", toggleActivities);
 
+  // Achievements panel
+  const achBtn = document.getElementById("achievements-btn");
+  if (achBtn) {
+    achBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      toggleAchievementsPanel();
+    });
+  }
+  document.addEventListener("click", (e) => {
+    const panel = document.getElementById("achievements-panel");
+    if (panel && panel.classList.contains("show") && !panel.contains(e.target) && e.target !== achBtn) {
+      panel.classList.remove("show");
+    }
+  });
+  refreshAchievementsBadge();
+
   // Screensaver activity reset
   ["mousemove","mousedown","keydown"].forEach(ev =>
     document.addEventListener(ev, resetSsTimer, { passive: true })
@@ -1908,6 +2082,8 @@ function initEvents() {
 
 /* ── Init ───────────────────────────────────────────────────── */
 document.addEventListener("DOMContentLoaded", () => {
+  plausible("Mode Linux Activé");
+
   // Load persistent history
   state.cmdHistory = JSON.parse(localStorage.getItem("portfolioOS_history") || "[]");
 

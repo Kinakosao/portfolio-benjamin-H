@@ -20,6 +20,7 @@
     <meta property="twitter:image" content="https://benjaminhanquart.dev/profile.jpg">
     
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
     <link rel="manifest" href="manifest.json">
     <script defer data-domain="benjaminhanquart.dev" src="https://plausible.io/js/script.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -34,14 +35,35 @@
             });
         })();
     </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Benjamin Hanquart",
+      "url": "https://benjaminhanquart.dev/",
+      "image": "https://benjaminhanquart.dev/profile.jpg",
+      "jobTitle": "Étudiant en BUT Informatique — développement back-end",
+      "email": "mailto:benjamin.hanquart03@gmail.com",
+      "alumniOf": {
+        "@type": "CollegeOrUniversity",
+        "name": "IUT de Lille"
+      },
+      "knowsAbout": ["Java", "TypeScript", "JavaScript", "PHP", "SQL", "Node.js", "REST API", "Linux"],
+      "sameAs": [
+        "https://github.com/Kinakosao",
+        "https://www.linkedin.com/in/benjamin-hanquart-692b10288/"
+      ]
+    }
+    </script>
 </head>
 <body>
+    <a href="#main-content" class="skip-link">Aller au contenu principal</a>
     <div id="reading-progress" style="position:fixed;top:0;left:0;height:3px;width:0%;background:linear-gradient(90deg,#0d6efd,#0dcaf0);z-index:99999;transition:width 0.1s;pointer-events:none;"></div>
     <div id="preloader">
         <div class="spinner"></div>
     </div>
 
-    <div id="main-content" class="hidden-content">
+    <div id="main-content" class="hidden-content" role="main">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
             <div class="container">
                 <a class="navbar-brand" href="index.html">Mon Portfolio</a>
@@ -51,13 +73,16 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="#about">À propos</a>
+                            <a class="nav-link" href="#about" data-i18n="nav-about">À propos</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#projects">Projets</a>
+                            <a class="nav-link" href="#projects" data-i18n="nav-projects">Projets</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#contact">Contact</a>
+                            <a class="nav-link" href="#veille">Veille</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#contact" data-i18n="nav-contact">Contact</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="resume.html">Mon CV</a>
@@ -85,6 +110,9 @@
                         <span id="typing-text"></span>
                         <span class="cursor">&nbsp;</span>
                     </div>
+                    <div class="mt-3 fade-in-up">
+                        <span class="availability-badge"><span class="dot"></span> Ouvert aux opportunités — alternance ingénieur (CÉSI)</span>
+                    </div>
                     <a href="#contact" class="btn btn-lg btn-outline-light mt-4 fade-in-up">Me Contacter</a>
                     <br>
                     <button id="share-btn" class="btn btn-outline-light btn-sm mt-2" onclick="sharePortfolio()">
@@ -96,12 +124,12 @@
 
         <section id="about" class="py-5">
             <div class="container">
-                <h2 class="text-center mb-4 fade-in-up">À propos de moi</h2>
+                <h2 class="text-center mb-4 fade-in-up" data-i18n="about-title">À propos de moi</h2>
                 <div class="row align-items-center">
                     <div class="col-lg-7">
                         <p class="fade-in-up">Passionné par l'informatique, je suis en 3ème année de BUT Informatique à l'IUT de Lille (parcours Réalisation d'Applications). Ce portfolio retrace mon parcours en BUT Informatique à travers des projets variés qui démontrent mes compétences techniques et ma capacité à relever des défis en équipe.</p>
                         <div class="border rounded p-3 mt-3 fade-in-up" style="border-color:rgba(13,110,253,0.3)!important;background:rgba(13,110,253,0.04);">
-                            <h6 class="fw-bold text-primary mb-2">🎯 Mon orientation professionnelle</h6>
+                            <h3 class="fw-bold text-primary mb-2 heading-sm">🎯 Mon orientation professionnelle</h3>
                             <ul class="mb-0" style="font-size:0.9rem;">
                                 <li><strong>Stage&nbsp;:</strong> Développement d'une application web de réservation et de consultation de salles de réunion chez <strong>Santelys</strong> (Lille), du 13&nbsp;avril au 19&nbsp;juin&nbsp;2025 — intégration de l'API Microsoft&nbsp;Graph (Outlook).</li>
                                 <li class="mt-1"><strong>Ambition&nbsp;:</strong> Intégrer l'<strong>école CÉSI</strong> (école d'ingénieur) après le BUT pour approfondir mes compétences.</li>
@@ -111,7 +139,10 @@
                     </div>
                     <div class="col-lg-5 text-center">
                         <div class="profile-picture-container fade-in-up">
-                            <img src="profile.jpg" alt="Photo de Benjamin Hanquart" class="img-fluid">
+                            <picture>
+                                <source srcset="profile.webp" type="image/webp">
+                                <img src="profile.jpg" alt="Photo de Benjamin Hanquart" class="img-fluid" width="600" height="600" loading="lazy">
+                            </picture>
                         </div>
                     </div>
                 </div>
@@ -147,10 +178,10 @@
 
         <section id="projects" class="py-5">
             <div class="container">
-                <h2 class="text-center mb-5 fade-in-up">Mes Projets</h2>
+                <h2 class="text-center mb-5 fade-in-up" data-i18n="projects-title">Mes Projets</h2>
 
                 <div id="project-filters" class="text-center mb-4 fade-in-up">
-                    <button class="btn btn-outline-primary active" data-filter="all">Tout</button>
+                    <button class="btn btn-outline-primary active" data-filter="all" data-i18n="filter-all">Tout</button>
                     <button class="btn btn-outline-primary" data-filter="java">Java</button>
                     <button class="btn btn-outline-primary" data-filter="typescript">TypeScript</button>
                     <button class="btn btn-outline-primary" data-filter="api">API</button>
@@ -163,7 +194,7 @@
                         <div class="card project-card">
                             <div class="project-img-placeholder game"><span>☕</span> Jeux Java — RISK</div>
                             <div class="card-body text-center">
-                                <h5 class="card-title">Jeux en Java — RISK</h5>
+                                <h3 class="card-title">Jeux en Java — RISK</h3>
                                 <p class="card-text">Jeu de stratégie en Java dans un terminal Linux, développé en méthode agile en groupe.</p>
                                 <button class="btn btn-primary" data-modal-target="#project-modal-1">En savoir plus</button>
                             </div>
@@ -174,7 +205,7 @@
                         <div class="card project-card">
                             <div class="project-img-placeholder game"><span>🌀</span> Jeux Java — Labyrinthe</div>
                             <div class="card-body text-center">
-                                <h5 class="card-title">Jeux Java — Labyrinthe</h5>
+                                <h3 class="card-title">Jeux Java — Labyrinthe</h3>
                                 <p class="card-text">Jeu JavaFX avec génération aléatoire de labyrinthes et plusieurs modes de jeu.</p>
                                 <button class="btn btn-primary" data-modal-target="#project-modal-2">En savoir plus</button>
                             </div>
@@ -185,8 +216,9 @@
                         <div class="card project-card">
                             <div class="project-img-placeholder eco">🌿 EcoDrop</div>
                             <div class="card-body text-center">
-                                <h5 class="card-title">EcoDrop — API REST</h5>
+                                <h3 class="card-title">EcoDrop — API REST</h3>
                                 <p class="card-text">API REST de gestion de collecte de déchets : points de collecte, auth JWT, leaderboard recycleurs.</p>
+                                <div class="github-stats" data-github="Kinakosao/SAE4.02" aria-live="polite"></div>
                                 <button class="btn btn-primary" data-modal-target="#project-modal-eco">En savoir plus</button>
                             </div>
                         </div>
@@ -196,8 +228,9 @@
                         <div class="card project-card">
                             <div class="project-img-placeholder game">🎮 Syck Sai-Vhen</div>
                             <div class="card-body text-center">
-                                <h5 class="card-title">Syck Sai-Vhen</h5>
+                                <h3 class="card-title">Syck Sai-Vhen</h3>
                                 <p class="card-text">Shoot-em-up multijoueur en TypeScript/WebSocket avec IA ennemis, boss, et assets faits maison.</p>
+                                <div class="github-stats" data-github="Kinakosao/JSAE" aria-live="polite"></div>
                                 <button class="btn btn-primary" data-modal-target="#project-modal-game">En savoir plus</button>
                             </div>
                         </div>
@@ -207,8 +240,9 @@
                         <div class="card project-card">
                             <div class="project-img-placeholder devops">🖥️ Matrix/Synapse</div>
                             <div class="card-body text-center">
-                                <h5 class="card-title">Déploiement Matrix/Synapse</h5>
+                                <h3 class="card-title">Déploiement Matrix/Synapse</h3>
                                 <p class="card-text">Déploiement d'un serveur de communication Matrix sur 3 VMs Debian avec PostgreSQL et nginx.</p>
+                                <div class="github-stats" data-github="Kinakosao/SAE3.03" aria-live="polite"></div>
                                 <button class="btn btn-primary" data-modal-target="#project-modal-devops">En savoir plus</button>
                             </div>
                         </div>
@@ -217,12 +251,74 @@
             </div>
         </section>
 
+        <section id="veille" class="py-5">
+            <div class="container">
+                <h2 class="text-center mb-2 fade-in-up">Veille Technique</h2>
+                <p class="text-center text-muted mb-5 fade-in-up">Quelques retours d'expérience tirés de mes projets.</p>
+                <div class="row">
+                    <div class="col-md-4 mb-4 fade-in-up">
+                        <div class="card veille-card h-100" data-modal-target="#veille-modal-1" role="button" tabindex="0" aria-haspopup="dialog">
+                            <div class="card-body">
+                                <div class="veille-date">EcoDrop — SAÉ 4.02</div>
+                                <h3 class="card-title mt-2">JWT expliqué simplement</h3>
+                                <p class="card-text">Ce que j'ai retenu en implémentant l'authentification par token sur une API REST, sans cours formel sur le sujet.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4 fade-in-up">
+                        <div class="card veille-card h-100" data-modal-target="#veille-modal-2" role="button" tabindex="0" aria-haspopup="dialog">
+                            <div class="card-body">
+                                <div class="veille-date">EcoDrop — SAÉ 4.02</div>
+                                <h3 class="card-title mt-2">Négocier du JSON... ou du XML</h3>
+                                <p class="card-text">Comment une API peut répondre dans le format demandé par le client, et pourquoi ça compte en vrai.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4 fade-in-up">
+                        <div class="card veille-card h-100" data-modal-target="#veille-modal-3" role="button" tabindex="0" aria-haspopup="dialog">
+                            <div class="card-body">
+                                <div class="veille-date">Matrix/Synapse — SAÉ 3.03</div>
+                                <h3 class="card-title mt-2">Déployer sur plusieurs VMs</h3>
+                                <p class="card-text">Ce qui change quand un service ne tourne plus sur une seule machine, et pourquoi ça casse plus souvent.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="testimonials" class="py-5">
+            <div class="container">
+                <h2 class="text-center mb-5 fade-in-up">Ce qu'on dit de mon travail</h2>
+                <div class="row">
+                    <div class="col-md-6 mb-4 fade-in-up">
+                        <div class="testimonial-card">
+                            <p class="testimonial-quote">[Témoignage à compléter — par exemple un retour de votre tuteur de stage chez Santelys]</p>
+                            <div class="testimonial-author">Nom du tuteur</div>
+                            <div class="testimonial-role">Fonction, Santelys</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4 fade-in-up">
+                        <div class="testimonial-card">
+                            <p class="testimonial-quote">[Témoignage à compléter — par exemple un retour d'un professeur ou d'un coéquipier de projet]</p>
+                            <div class="testimonial-author">Nom</div>
+                            <div class="testimonial-role">Fonction</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section id="contact" class="py-5">
             <div class="container">
-                <h2 class="text-center mb-4 fade-in-up">Me Contacter</h2>
+                <h2 class="text-center mb-4 fade-in-up" data-i18n="contact-title">Me Contacter</h2>
                 <div class="row">
                     <div class="col-lg-8 mx-auto">
                         <form id="contact-form" novalidate>
+                            <div class="hp-field" aria-hidden="true">
+                                <label for="website">Laisser vide</label>
+                                <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+                            </div>
                             <div class="form-floating mb-3">
                                 <input type="text" class="form-control" id="name" name="name" placeholder="Votre nom" required>
                                 <label for="name">Nom</label>
@@ -243,10 +339,13 @@
                             </div>
                         </form>
                         <div id="form-status" class="mt-4 text-center"></div>
-                        <div class="mt-3 text-center">
+                        <div class="mt-3 text-center d-flex justify-content-center flex-wrap gap-2">
                           <button id="copy-email-btn" class="btn btn-outline-secondary btn-sm" onclick="copyEmail()">
                             <i class="bi bi-clipboard"></i> Copier mon email
                           </button>
+                          <a href="Benjamin_Hanquart.vcf" download class="btn btn-outline-secondary btn-sm">
+                            <i class="bi bi-person-vcard"></i> Ajouter à mes contacts
+                          </a>
                         </div>
                     </div>
                 </div>
@@ -456,6 +555,52 @@
             </div>
         </dialog>
 
+        <!-- Veille Technique Modals -->
+        <dialog id="veille-modal-1" class="project-modal">
+            <div class="modal-content">
+                <button class="close-modal-btn" aria-label="Fermer la modale">&times;</button>
+                <h2>JWT expliqué simplement</h2>
+                <div class="modal-context-badge">📌 Retour d'expérience — EcoDrop, SAÉ 4.02</div>
+                <p>En implémentant l'authentification d'EcoDrop, j'ai dû comprendre le JWT (JSON Web Token) sans avoir eu de cours dessus. Voici ce que j'en retiens, expliqué comme j'aurais aimé qu'on me l'explique :</p>
+                <p>Un JWT, c'est un jeton signé que le serveur donne au client après une connexion réussie. Il contient trois parties séparées par des points : un en-tête (l'algorithme utilisé), une charge utile (les infos sur l'utilisateur, comme son rôle USER ou ADMIN) et une signature (qui garantit que personne n'a modifié le contenu). Le client renvoie ensuite ce jeton à chaque requête, dans l'en-tête <code>Authorization</code>, et le serveur vérifie la signature avant de laisser passer la requête — sans avoir besoin de garder une session en mémoire côté serveur.</p>
+                <p>Ce qui m'a pris du temps à comprendre : le jeton n'est pas chiffré, seulement signé. N'importe qui peut lire son contenu (il suffit de le décoder en base64), donc il ne faut jamais y mettre d'information sensible comme un mot de passe. Sur EcoDrop, ça m'a servi à distinguer les rôles USER et ADMIN pour restreindre certaines routes.</p>
+                <div class="modal-reflexive">
+                    <div class="modal-reflexive-title">🪞 Ce que j'en retiens</div>
+                    Apprendre une techno en autonomie, sans cours, m'a forcé à vraiment comprendre le "pourquoi" avant le "comment" — ça reste la méthode que je préfère aujourd'hui.
+                </div>
+            </div>
+        </dialog>
+
+        <dialog id="veille-modal-2" class="project-modal">
+            <div class="modal-content">
+                <button class="close-modal-btn" aria-label="Fermer la modale">&times;</button>
+                <h2>Négocier du JSON... ou du XML</h2>
+                <div class="modal-context-badge">📌 Retour d'expérience — EcoDrop, SAÉ 4.02</div>
+                <p>Sur l'API EcoDrop, on devait supporter à la fois des réponses en JSON et en XML selon ce que demandait le client. C'est ce qu'on appelle la <strong>négociation de contenu</strong> : le client envoie un en-tête <code>Accept</code> (par exemple <code>application/json</code> ou <code>application/xml</code>), et le serveur choisit le format de sa réponse en conséquence.</p>
+                <p>Concrètement, ça évite de dupliquer les endpoints (pas besoin d'un <code>/points-json</code> et d'un <code>/points-xml</code> séparés) : une seule route sait produire plusieurs représentations de la même ressource. C'est un principe REST qu'on ne voit pas forcément dans les API "jouets" des tutoriels, mais qui devient utile dès qu'une API a plusieurs types de clients (une appli mobile, un service tiers, etc.).</p>
+                <p>La difficulté a surtout été de structurer le code pour que la logique métier ne soit pas dupliquée entre les deux formats — la sérialisation devait rester une couche séparée de la logique de l'API.</p>
+                <div class="modal-reflexive">
+                    <div class="modal-reflexive-title">🪞 Ce que j'en retiens</div>
+                    Séparer clairement "que fait l'API" de "comment elle répond" rend le code beaucoup plus facile à faire évoluer — un principe que j'essaie de réappliquer depuis.
+                </div>
+            </div>
+        </dialog>
+
+        <dialog id="veille-modal-3" class="project-modal">
+            <div class="modal-content">
+                <button class="close-modal-btn" aria-label="Fermer la modale">&times;</button>
+                <h2>Déployer sur plusieurs VMs</h2>
+                <div class="modal-context-badge">📌 Retour d'expérience — Matrix/Synapse, SAÉ 3.03</div>
+                <p>Déployer Matrix/Synapse sur trois VMs Debian distinctes (serveur applicatif, base PostgreSQL, reverse proxy nginx) m'a fait réaliser à quel point une architecture distribuée multiplie les points de défaillance possibles par rapport à "tout sur une seule machine".</p>
+                <p>Chaque VM doit pouvoir joindre les autres sur le réseau, ce qui veut dire configurer correctement les adresses IP, les ports ouverts, et parfois un pare-feu. Une erreur de configuration réseau sur une seule des trois machines suffit à casser toute la chaîne, et le message d'erreur visible ("le client ne se connecte pas") ne dit pas forcément où est le vrai problème.</p>
+                <p>On a fini par bloquer sur un problème d'infrastructure côté serveurs de l'IUT, indépendant de notre configuration — mais le vrai apprentissage a été méthodologique : isoler chaque VM, tester la connectivité étape par étape (ping, telnet sur les ports, logs de chaque service) plutôt que de tout tester en bloc.</p>
+                <div class="modal-reflexive">
+                    <div class="modal-reflexive-title">🪞 Ce que j'en retiens</div>
+                    Sur une architecture multi-machines, déboguer "de bout en bout" ne marche pas — il faut isoler chaque composant et vérifier la connectivité couche par couche.
+                </div>
+            </div>
+        </dialog>
+
 
         <footer class="main-footer py-4">
             <div class="container text-center">
@@ -464,6 +609,9 @@
                     <a href="https://www.linkedin.com/in/benjamin-hanquart-692b10288/" title="LinkedIn" class="social-link" aria-label="Voir mon profil LinkedIn"><i class="bi bi-linkedin"></i></a>
                 </div>
                 <p class="mb-0">&copy; <span id="copyright-year"></span> Benjamin Hanquart. Tous droits réservés.</p>
+                <p class="retro-counter mt-2" title="Compteur rétro purement local et cosmétique, pour le clin d'œil aux sites perso des années 2000 — pas une vraie statistique de fréquentation.">
+                    👾 Vous êtes le visiteur n°<span id="retro-visitor-count">000000</span> (sur ce navigateur)
+                </p>
             </div>
         </footer>
     </div>
@@ -477,8 +625,38 @@
         🐧 Mode Linux
     </a>
 
+    <!-- Achievements Button -->
+    <button id="achievements-btn" data-modal-target="#achievements-modal" title="Succès cachés">
+        <span class="visually-hidden">Voir les succès cachés : </span>🏆 <span id="ach-count-badge">0/8</span>
+    </button>
+
+    <dialog id="achievements-modal" class="project-modal">
+        <div class="modal-content">
+            <button class="close-modal-btn" aria-label="Fermer la modale">&times;</button>
+            <h2>🏆 Succès cachés</h2>
+            <p class="text-muted">Ce portfolio contient quelques easter eggs. Certains se trouvent ici, d'autres dans le <a href="linux.html">mode Linux</a>.</p>
+            <div id="achievements-list"></div>
+        </div>
+    </dialog>
+
+    <!-- Command Palette -->
+    <button id="cmdk-hint" title="Ouvrir la palette de commandes (Ctrl+K)">
+        <i class="bi bi-search" aria-hidden="true"></i> <span class="visually-hidden">Ouvrir la palette de commandes : </span><kbd>Ctrl</kbd>+<kbd>K</kbd>
+    </button>
+    <div id="cmdk-overlay" role="dialog" aria-modal="true" aria-label="Palette de commandes">
+        <div id="cmdk-box">
+            <div id="cmdk-input-row">
+                <i class="bi bi-search"></i>
+                <input id="cmdk-input" type="text" placeholder="Aller à... ouvrir un projet... contact..." autocomplete="off">
+                <kbd>Esc</kbd>
+            </div>
+            <div id="cmdk-results"></div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+    <script src="achievements.js"></script>
     <script src="script.js"></script>
     <script>if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');</script>
 </body>
